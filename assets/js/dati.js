@@ -54,6 +54,8 @@ window.GRAZIELLA = {
     { id: 'sposi-tortora', nome: 'Coppia sposi tortora', materiale: 'Porcellana', prezzo: 6, feste: ['matrimonio'], giorni: 5, stile: 'moderno', misure: 'altezza 15,5 cm', codice: '28100', disponibili: 64, viste: 3 },
     /* Enrico, 04/11/2026 */
     { id: 'papero-terracotta', nome: 'Papero in terracotta, assortiti', materiale: 'Terracotta', prezzo: 1, feste: ['battesimo'], giorni: 5, stile: 'spiritoso', misure: '6 cm', codice: '3971', disponibili: 540, minimo: 16, viste: 2 },
+    { id: 'portafoto-elefantino-rosa', nome: 'Portafoto elefantino rosa, 2 forme', materiale: 'Portafoto da tavolo', prezzo: 3.3, feste: ['battesimo'], giorni: 5, stile: 'spiritoso', misure: '10 × 8 cm', codice: '6093', disponibili: 128, minimo: 6, viste: 2 },
+    { id: 'portafoto-elefantino-celeste', nome: 'Portafoto elefantino celeste, 2 assortiti', materiale: 'Portafoto da tavolo', prezzo: 3.3, feste: ['battesimo'], giorni: 5, stile: 'spiritoso', misure: '10 × 8 cm', codice: '6092', disponibili: 123, minimo: 6, viste: 2 },
     { id: 'vaso-fiori-blu', nome: 'Vaso a fiori blu', materiale: 'Ceramica', prezzo: 6.5, feste: ['matrimonio'], giorni: 5, stile: 'classico', misure: 'altezza 18 cm, ⌀ 9,5 cm', codice: '51061', disponibili: 300, viste: 3, modello: 'assets/prodotti/3d/vaso-fiori-blu.glb' },
     { id: 'bacio', nome: 'Il bacio', materiale: 'Resina effetto porcellana', prezzo: 6.9, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico' },
     { id: 'coppie-bianche', nome: 'Coppie in porcellana', materiale: 'Porcellana bianca', prezzo: 7.5, feste: ['matrimonio'], giorni: 5, stile: 'moderno' },

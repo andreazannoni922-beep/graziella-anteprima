@@ -29,7 +29,7 @@
   const prezzoRiga = r => (prodotto(r.id).prezzo + CONFEZIONI.find(c => c.id === r.conf).extra) * r.qty;
   const pezzi = () => borsa.reduce((s, r) => s + 1, 0);
 
-  /* Alcuni prodotti hanno un minimo loro (papero terracotta: 16, indicato da Enrico) */
+  /* Alcuni prodotti hanno un minimo loro, indicato da Enrico (papero terracotta 16, portafoto elefantino 6) */
   const minimoDi = id => prodotto(id).minimo || MINIMO;
   function aggiungi(id, conf = 'oggetto', qty = minimoDi(id), nomi = '') {
     const r = borsa.find(x => x.id === id && x.conf === conf && x.nomi === nomi);
