@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/logo-graziella.png">
+<script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
+<title>Condizioni di trasporto · Graziella</title>
+<meta name="description" content="Ritiro gratuito nel negozio di Bomporto o spedizione in tutta Italia, gratuita oltre 180 €: tempi, costi e cosa fare alla consegna delle bomboniere Graziella.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/negozio.css">
+<style>
+/* Condizioni di trasporto: struttura presa dalla pagina spedizioni di Nara Bomboniere (indicata da Enrico, 02/11/2026), testi e dati di Graziella */
+.sped { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(32px, 6vw, 112px); padding: 8px 0 120px; align-items: start; }
+.sped__lato { position: sticky; top: calc(var(--head) + 72px); }
+.sped__lato p { margin: 22px 0 0; max-width: 32ch; color: var(--graphite); }
+.sped__soglia { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--hair); }
+.sped__soglia b { display: block; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(56px, 6vw, 92px); line-height: 1; }
+.sped__voci { border-top: 1px solid var(--hair); }
+.sped__voce { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px 40px; padding: 30px 0; border-bottom: 1px solid var(--hair); }
+.sped__voce h2 { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(26px, 2.3vw, 36px); line-height: 1.1; }
+.sped__voce p { margin: 0 0 12px; color: var(--graphite); max-width: 56ch; }
+.sped__voce p:last-child { margin-bottom: 0; }
+.conferma { color: var(--bruno-chiaro); background: linear-gradient(transparent 62%, var(--crema) 62%); }
+@media (max-width: 900px) {
+  .sped { grid-template-columns: 1fr; }
+  .sped__lato { position: static; }
+  .sped__voce { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body data-pagina="spedizioni">
+<div id="testata"></div>
+<main class="wrap">
+  <nav class="crumbs label" aria-label="Percorso"><a href="index.html">Home</a><span>/</span><span>Condizioni di trasporto</span></nav>
+  <div class="sped">
+    <div class="sped__lato">
+      <h1 class="h-xl" data-split>Condizioni di trasporto</h1>
+      <p>Le bomboniere si possono ritirare in negozio a Bomporto oppure ricevere a casa. Qui sotto trovate tempi, costi e cosa fare alla consegna.</p>
+      <div class="sped__soglia"><b>180 €</b><span class="label muted">oltre questa spesa la consegna è gratuita</span></div>
+    </div>
+    <div class="sped__voci">
+      <section class="sped__voce">
+        <h2>Ritiro in negozio</h2>
+        <div>
+          <p>Gratuito, al banco di Bomboniere Graziella in via Carlo Testa 4 a Bomporto (MO), negli orari di apertura: <span id="orari-bomb"></span>.</p>
+          <p>Vi avvisiamo noi quando le bomboniere sono pronte.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Spedizione in Italia</h2>
+        <div>
+          <p>Spediamo con corriere espresso e il pacco è sempre tracciabile: la sera della partenza ricevete via email il codice per seguirlo. <span class="conferma">[Corriere da confermare con il negozio.]</span></p>
+          <p>Sopra i 180 € di spesa la consegna è gratuita. Sotto, il costo dipende da peso e volume: <span class="conferma">[tariffe da confermare con il negozio]</span>.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Tempi</h2>
+        <div>
+          <p>Ogni bomboniera viene confezionata a mano al banco: i giorni di preparazione sono indicati nella scheda di ogni prodotto. Dalla partenza il corriere consegna di solito in 1–2 giorni lavorativi <span class="conferma">[da confermare]</span>.</p>
+          <p>Potete scegliere voi la data: consigliamo di far arrivare le bomboniere 20–30 giorni prima dell'evento <span class="conferma">[da confermare]</span>.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Isole ed estero</h2>
+        <div>
+          <p>Per Sicilia, Sardegna, Calabria e Laguna di Venezia il costo si calcola a parte, in base al pacco <span class="conferma">[da confermare]</span>.</p>
+          <p>Per l'estero vi mandiamo un preventivo: scriveteci dalla scheda del prodotto o chiamate il 059 909858. Fuori dall'Unione europea i costi di dogana sono a parte.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Alla consegna</h2>
+        <div>
+          <p>Le bomboniere viaggiano imballate una per una. Se la scatola esterna arriva rovinata, firmate la consegna scrivendo «con riserva».</p>
+          <p>Se qualcosa si è rotto, mandateci una foto entro <span class="conferma">[giorni da confermare]</span> dalla consegna: rifacciamo e rispediamo i pezzi a nostre spese <span class="conferma">[da confermare]</span>.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Se non siete in casa</h2>
+        <div>
+          <p>Il corriere lascia un avviso e riprova il giorno lavorativo dopo. Lasciateci un numero di telefono da dare al corriere: è il modo più semplice per non perdere la consegna.</p>
+          <p>Potete anche farvi spedire al lavoro, oppure ritirare il pacco in una filiale del corriere <span class="conferma">[fermo deposito da confermare]</span>.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<div id="piede"></div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/js/dati.js"></script>
+<script src="assets/js/negozio.js"></script>
+<script>
+(() => {
+  const G = window.GRAZIELLA;
+  document.getElementById('orari-bomb').textContent = G.orariTesto.bomboniere;
+})();
+</script>
+</body>
+</html>

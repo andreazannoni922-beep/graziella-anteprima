@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/logo-graziella.png">
+<script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
+<title>Abiti da sposa su misura · Sposi &amp; Sposi · Graziella</title>
+<meta name="description" content="Abiti da sposa su misura dell'atelier Sposi & Sposi a Bomporto: si provano in atelier e la sartoria interna li adatta a te.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/negozio.css">
+<style>
+/* Hero: tre abiti a ventaglio nello spazio, si aprono con lo scroll e seguono il mouse */
+.ab-hero { position: relative; height: 190vh; }
+.ab-hero__stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: center; gap: 24px; max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); overflow: hidden; }
+.ab-hero__testo { position: relative; z-index: 2; }
+.ab-hero__testo p { margin: 24px 0 32px; }
+/* Telefono per prenotare in evidenza (cliente, 26/10): la maggior parte delle spose chiama */
+.ab-hero__tel { margin-top: 26px; color: var(--graphite); display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.ab-hero__tel a { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(26px, 2.4vw, 36px); letter-spacing: .01em; color: var(--ink); text-transform: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .5s var(--ease); }
+.ab-hero__tel a:hover { background-size: 100% 1px; }
+.ventaglio { position: relative; z-index: 1; height: 88vh; perspective: 1600px; display: grid; place-items: center; }
+.ventaglio__in { position: relative; width: min(27vw, 430px, 54vh); aspect-ratio: 3 / 4; transform-style: preserve-3d; will-change: transform; }
+.ventaglio__in img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; box-shadow: 0 40px 60px -30px rgba(11, 11, 11, .35); }
+.ab-hero__azioni { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 900px) {
+  .ab-hero { height: auto; }
+  .ab-hero__stick { position: relative; height: auto; grid-template-columns: 1fr; padding-top: 32px; padding-bottom: 32px; }
+  /* L'altezza segue le foto, così sotto il ventaglio non resta un vuoto */
+  .ventaglio { height: calc(62vw * 4 / 3 + 72px); }
+  .ventaglio__in { width: 62vw; }
+}
+
+/* Filtri e griglia degli abiti */
+.ab-tools { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); height: 52px; margin-bottom: 28px; }
+.tabs { display: flex; gap: 22px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { position: relative; padding: 6px 0; color: var(--graphite); white-space: nowrap; }
+.tabs button[aria-pressed="true"] { color: var(--ink); }
+.tabs button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
+.tabs button[aria-pressed="true"]::after, .tabs button:hover::after { transform: scaleX(1); transform-origin: left; }
+.abiti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.abito__media { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--mist); transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .8s var(--ease); }
+.abito__media.is-tilt { transition: transform .15s linear; }
+.abito__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.abito:hover .abito__media img { transform: scale(1.05); }
+.abito__media::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at var(--lx, 50%) var(--ly, 30%), rgba(255,255,255,.35), transparent 50%); opacity: 0; transition: opacity .5s; }
+.abito__media.is-tilt::after { opacity: 1; }
+.abito__chiedi { position: absolute; left: 10px; right: 10px; bottom: 10px; height: 44px; background: var(--paper); color: var(--ink); font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; transform: translateY(calc(100% + 12px)); transition: transform .6s var(--ease); }
+.abito:hover .abito__chiedi, .abito__chiedi:focus-visible { transform: none; }
+@media (hover: none) { .abito__chiedi { transform: none; } }
+@media (max-width: 760px) { .abito__chiedi { height: 38px; left: 8px; right: 8px; bottom: 8px; font-size: 11.5px; } .abito__chiedi .lungo { display: none; } }
+.abito__meta { display: flex; justify-content: space-between; gap: 12px; padding: 12px 2px 0; }
+.abito__meta h3 { margin: 0; font-weight: 400; font-size: 17px; }
+.abito__meta span { white-space: nowrap; }
+.abito__nota { margin: 4px 2px 0; color: var(--fog); font-size: 14.5px; }
+@media (max-width: 900px) { .abiti { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .abito__meta { flex-direction: column; gap: 0; } }
+
+/* Come funziona: percorso orizzontale che scorre con lo scroll */
+.percorso { position: relative; background: var(--bruno); color: var(--paper); overflow: clip; }
+.percorso__pin { height: 100vh; height: 100svh; display: flex; flex-direction: column; justify-content: center; gap: 40px; }
+.percorso__head { padding: 0 var(--gut); max-width: var(--max); margin: 0 auto; width: 100%; }
+.percorso__track { display: flex; gap: 24px; padding: 0 var(--gut); width: max-content; will-change: transform; }
+.tappa { width: min(520px, 78vw, calc((100svh - 330px) * .8)); flex-shrink: 0; }
+.tappa__foto { aspect-ratio: 4 / 5; overflow: hidden; }
+.tappa img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); transition: filter 1s var(--ease); }
+.fila-nav--percorso { display: none; }
+/* Su telefono e tablet il percorso non blocca la pagina: si scorre col dito o con le frecce, la tappa in primo piano prende colore */
+@media (max-width: 900px) {
+  .percorso__pin { height: auto; padding: 72px 0 64px; gap: 32px; }
+  .percorso__track { width: auto; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .percorso__track::-webkit-scrollbar { display: none; }
+  .tappa { width: 80vw; scroll-snap-align: start; }
+  .tappa.is-qui img { filter: none; }
+  .fila-nav--percorso { display: flex; margin-top: 0; }
+}
+.tappa h3 { margin: 20px 0 8px; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(26px, 2.2vw, 32px); }
+.tappa p { margin: 0; color: var(--crema); max-width: 38ch; font-size: 16.5px; }
+
+/* Prenotazione della prova */
+.prova { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 120px); align-items: start; }
+.prova__info p { margin-top: 20px; }
+.prova__contatti { margin-top: 32px; display: grid; gap: 14px; padding-top: 22px; border-top: 1px solid var(--hair); }
+.prova__contatti b { font-weight: 400; display: block; }
+.prova__contatti span { color: var(--graphite); }
+.prova__contatti .tel { user-select: all; color: var(--ink); }
+.form { display: grid; gap: 18px; }
+.form .riga { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.campo label { display: block; margin-bottom: 4px; color: var(--graphite); }
+.campo input, .campo select, .campo textarea { width: 100%; border: 0; border-bottom: 1px solid var(--hair); background: none; outline: none; height: 48px; font-size: 17px; border-radius: 0; }
+.campo textarea { height: 88px; resize: vertical; padding-top: 10px; }
+.campo input:focus, .campo select:focus, .campo textarea:focus { border-bottom-color: var(--ink); }
+.prova__chiama { margin-top: 28px; }
+.ok { padding: 24px; background: var(--mist); }
+.ok h3 { margin: 0 0 8px; font-weight: 400; font-size: 26px; }
+.ok p { margin: 0; color: var(--graphite); }
+@media (max-width: 900px) { .prova { grid-template-columns: 1fr; } .form .riga { grid-template-columns: 1fr; } }
+/* Le altre categorie dell'atelier (sposo, cerimonia, battesimo, comunione): foto vere del negozio, prova su appuntamento */
+.altri__griglia { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.altro { position: relative; scroll-margin-top: calc(var(--head) + 40px); }
+.altro__foto { aspect-ratio: 3 / 4; overflow: hidden; background: var(--mist); }
+.altro__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.altro:hover .altro__foto img { transform: scale(1.04); }
+.altro h3 { margin: 18px 0 6px; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(24px, 2vw, 30px); }
+.altro p { margin: 0 0 14px; color: var(--graphite); font-size: 15.5px; }
+.altro:target .altro__foto { box-shadow: 0 0 0 1px var(--ink); }
+@media (max-width: 900px) { .altri__griglia { grid-template-columns: 1fr 1fr; gap: 24px 10px; } }
+</style>
+</head>
+<body data-pagina="abiti">
+<div id="testata"></div>
+<main>
+  <section class="ab-hero" id="ab-hero" aria-labelledby="t-ab">
+    <div class="ab-hero__stick">
+      <div class="ab-hero__testo">
+        <h1 class="h-xl" id="t-ab" data-split>Abiti da sposa su misura</h1>
+        <p class="body-l">Non si comprano online. Li provi da Sposi &amp; Sposi, scegli con calma e la sartoria interna adatta l'abito a te, prova dopo prova.</p>
+        <div class="ab-hero__azioni"><a class="btn" href="#prova">Prenota la prova</a><a class="btn btn--line" href="#collezione">Guarda gli abiti</a></div>
+        <p class="ab-hero__tel label">Oppure chiama l'atelier <a href="tel:+39059819315">059 819315</a></p>
+      </div>
+      <div class="ventaglio" data-tilt-area>
+        <div class="ventaglio__in" id="ventaglio">
+          <img src="assets/abiti/sirena-pizzo.jpg" alt="Abito a sirena in pizzo" data-i="0">
+          <img src="assets/abiti/velo-cattedrale.jpg" alt="Abito con velo cattedrale" data-i="1">
+          <img src="assets/abiti/strascico-tulle.jpg" alt="Abito con strascico in tulle" data-i="2">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="collezione" aria-labelledby="t-coll">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h-l" id="t-coll" data-split>In atelier adesso</h2><span class="label fog" id="conta-abiti"></span></div>
+      <div class="ab-tools">
+        <div class="tabs label" id="linee" role="group" aria-label="Linea"></div>
+        <span class="label fog hide-s">Ogni abito si adatta su misura</span>
+      </div>
+      <div class="abiti" id="abiti"></div>
+      <p class="muted" style="margin-top:32px">Le foto sono di spose vere che hanno scelto da noi.</p>
+    </div>
+  </section>
+
+  <section class="sec altri" id="altri" aria-labelledby="t-altri">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h-l" id="t-altri" data-split>Non solo la sposa</h2><span class="label fog">Foto dei capi in arrivo dal negozio</span></div>
+      <div class="altri__griglia" id="altri-griglia"></div>
+    </div>
+  </section>
+
+  <section class="percorso" id="percorso" aria-labelledby="t-perc">
+    <div class="percorso__pin">
+      <div class="percorso__head"><h2 class="h-l" id="t-perc">Dalla prova al sì</h2></div>
+      <div class="percorso__track" id="traccia">
+        <article class="tappa"><div class="tappa__foto"><img src="assets/abiti/prova-specchio.jpg" alt="Una sposa si guarda allo specchio durante la prova" loading="lazy"></div><h3>Prenoti la prova</h3><p>Scegli un giorno qui sotto o chiama l'atelier. Ti dedichiamo il tempo che serve, senza fretta.</p></article>
+        <article class="tappa"><div class="tappa__foto"><img src="assets/abiti/prova-atelier.jpg" alt="Prova dell'abito in atelier" loading="lazy"></div><h3>Provi gli abiti</h3><p>Molte spose arrivano senza idee e se ne vanno decise. Ti aiutiamo a capire cosa ti sta bene.</p></article>
+        <article class="tappa"><div class="tappa__foto"><img src="assets/img/mani-lacci.webp" alt="Mani che stringono i lacci del corsetto" loading="lazy"></div><h3>La sartoria lo fa tuo</h3><p>Sara e Cinzia adattano l'abito alle tue misure, con le prove che servono fino al giorno del matrimonio.</p></article>
+        <article class="tappa"><div class="tappa__foto"><img src="assets/abiti/prova-sartoria.jpg" alt="La sarta sistema lo strascico" loading="lazy"></div><h3>Lo ritiri pronto</h3><p>All'ultima prova l'abito è come lo volevi. Lo porti a casa stirato e pronto.</p></article>
+      </div>
+      <div class="fila-nav fila-nav--chiara fila-nav--percorso">
+        <button type="button" class="fila-freccia" data-verso="-1" id="perc-prima" aria-label="Tappa precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="fila-barra" aria-hidden="true"><i id="perc-barra"></i></div>
+        <button type="button" class="fila-freccia" data-verso="1" id="perc-dopo" aria-label="Tappa successiva"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="prova" aria-labelledby="t-prova">
+    <div class="wrap prova">
+      <div class="prova__info">
+        <h2 class="h-l" id="t-prova" data-split>Prenota la prova</h2>
+        <p class="body-l">Il modo più veloce è una telefonata: fissiamo il giorno insieme. Se preferisci, lasciaci i tuoi dati e ti richiamiamo noi.</p>
+        <a class="btn prova__chiama" href="tel:+39059819315">Chiama 059 819315</a>
+        <div class="prova__contatti">
+          <div><b>Sposi &amp; Sposi</b><span>Via Carlo Testa 6/B, Bomporto (MO)</span></div>
+          <div><span class="label">Orari</span> <b>9:30–12:30 e 15:30–19:30, su appuntamento</b><span>Domenica su appuntamento</span></div>
+          <div><span class="label" id="stato-atelier"></span></div>
+        </div>
+      </div>
+      <form class="form" id="form-prova" novalidate>
+        <div class="riga">
+          <div class="campo"><label class="label" for="f-nome">Nome e cognome</label><input id="f-nome" required autocomplete="name"></div>
+          <div class="campo"><label class="label" for="f-tel">Telefono</label><input id="f-tel" type="tel" required autocomplete="tel"></div>
+        </div>
+        <div class="riga">
+          <div class="campo"><label class="label" for="f-email">Email</label><input id="f-email" type="email" autocomplete="email"></div>
+          <div class="campo"><label class="label" for="f-data">Data del matrimonio</label><input id="f-data" type="text" placeholder="Per esempio giugno 2027" autocomplete="off"></div>
+        </div>
+        <div class="campo"><label class="label" for="f-giorno">Giorno preferito per la prova</label><select id="f-giorno"></select></div>
+        <div class="campo"><label class="label" for="f-msg">Qualcosa da dirci</label><textarea id="f-msg" placeholder="Lo stile che ti piace, chi viene con te…"></textarea></div>
+        <button class="btn btn--full" type="submit">Invia la richiesta</button>
+        <div id="esito" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="piede"></div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/Flip.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/js/dati.js"></script>
+<script src="assets/js/negozio.js"></script>
+<script>
+(function () {
+  const { G, entrate } = Negozio;
+  const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const linea = id => G.linee.find(l => l.id === id);
+
+  /* Griglia degli abiti */
+  const griglia = document.getElementById('abiti');
+  griglia.innerHTML = G.abiti.map(a => `<article class="abito" data-id="${a.id}" data-linea="${a.linea}">
+      <div class="abito__media" data-tilt><img src="assets/abiti/${a.id}.jpg" alt="${a.nome}" loading="lazy"><button class="abito__chiedi" type="button" data-chiedi="${a.id}"><span class="lungo">Chiedi di </span>provarlo</button></div>
+      <div class="abito__meta"><h3>${a.nome}</h3><span class="label fog">${linea(a.linea).nome}</span></div>
+      <p class="abito__nota">${a.nota} · su misura</p>
+    </article>`).join('');
+  const carte = [...griglia.children];
+
+  /* Filtri per linea, anche da #sirena ecc. */
+  const tabs = document.getElementById('linee');
+  tabs.innerHTML = `<button aria-pressed="true" data-linea="">Tutti</button>` + G.linee.map(l => `<button aria-pressed="false" data-linea="${l.id}">${l.nome}</button>`).join('');
+  function filtra(id, anima) {
+    const stato = anima && window.Flip && !ridotto ? Flip.getState(carte) : null;
+    let n = 0;
+    carte.forEach(c => { c.hidden = !!id && c.dataset.linea !== id; if (!c.hidden) n++; });
+    tabs.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.linea === id)));
+    document.getElementById('conta-abiti').textContent = `${n} ${n === 1 ? 'abito' : 'abiti'}`;
+    if (stato) Flip.from(stato, { duration: .8, ease: 'power3.inOut', stagger: .03, absolute: true,
+      onEnter: el => gsap.fromTo(el, { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, duration: .7 }),
+      onLeave: el => gsap.to(el, { opacity: 0, scale: .94, duration: .4 }), onComplete: () => ScrollTrigger.refresh() });
+  }
+  tabs.addEventListener('click', e => { const b = e.target.closest('button'); if (b) filtra(b.dataset.linea, true); });
+  const iniziale = location.hash.slice(1);
+  filtra(G.linee.some(l => l.id === iniziale) ? iniziale : '', false);
+  if (G.linee.some(l => l.id === iniziale)) setTimeout(() => document.getElementById('collezione').scrollIntoView(), 50);
+  addEventListener('hashchange', () => { const h = location.hash.slice(1); if (G.linee.some(l => l.id === h)) { filtra(h, true); document.getElementById('collezione').scrollIntoView(); } });
+
+  /* Gli abiti entrano a tendina: la cornice si scopre dall'alto e la foto si assesta */
+  if (window.gsap && window.ScrollTrigger && !ridotto) {
+    gsap.registerPlugin(ScrollTrigger);
+    const visibili = carte.filter(c => !c.hidden);
+    const cornici = b => b.map(x => x.querySelector('.abito__media'));
+    gsap.set(cornici(visibili), { clipPath: 'inset(100% 0% 0% 0%)' });
+    ScrollTrigger.batch(visibili, { start: 'top 92%', once: true, onEnter: b => {
+      gsap.to(cornici(b), { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, stagger: .1, ease: 'expo.out', clearProps: 'clipPath' });
+      gsap.fromTo(b.map(x => x.querySelector('.abito__media img')), { scale: 1.25 }, { scale: 1, duration: 1.6, stagger: .1, ease: 'expo.out', clearProps: 'transform' });
+    } });
+  }
+
+  griglia.addEventListener('click', e => {
+    const b = e.target.closest('[data-chiedi]'); if (!b) return;
+    /* Il nome dell'abito finisce nel messaggio, così in atelier sanno già cosa preparare */
+    const msg = document.getElementById('f-msg'), nome = G.abiti.find(a => a.id === b.dataset.chiedi).nome;
+    if (!msg.value.includes(nome)) msg.value = (msg.value.trim() ? msg.value.trim() + '\n' : 'Vorrei provare: ') + nome;
+    const dest = document.getElementById('prova');
+    Negozio.lenis ? Negozio.lenis.scrollTo(dest, { offset: -40 }) : dest.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  /* Giorni di apertura nelle prossime due settimane */
+  const giorni = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+  const sel = document.getElementById('f-giorno');
+  const opzioni = [];
+  for (let k = 1; opzioni.length < 10 && k < 21; k++) {
+    const d = new Date(); d.setDate(d.getDate() + k);
+    const fasce = G.orariAbiti[d.getDay()] || [];
+    if (!fasce.length) continue;
+    const testo = `${giorni[d.getDay()]} ${d.getDate()} ${d.toLocaleDateString('it-IT', { month: 'long' })}`;
+    opzioni.push(`<option>${testo}, mattina</option>`);
+    if (fasce.length > 1) opzioni.push(`<option>${testo}, pomeriggio</option>`);
+  }
+  sel.innerHTML = '<option value="">Va bene qualsiasi giorno</option>' + opzioni.join('');
+  document.getElementById('stato-atelier').textContent = Negozio.stato(G.orariAbiti).testo;
+
+  document.getElementById('form-prova').addEventListener('submit', e => {
+    e.preventDefault();
+    const nome = document.getElementById('f-nome'), tel = document.getElementById('f-tel');
+    const esito = document.getElementById('esito');
+    if (!nome.value.trim() || !tel.value.trim()) {
+      esito.innerHTML = '<p class="muted">Servono almeno il nome e un telefono per richiamarti.</p>';
+      (nome.value.trim() ? tel : nome).focus();
+      return;
+    }
+    esito.innerHTML = `<div class="ok"><h3>Grazie, ${nome.value.trim().split(' ')[0]}.</h3><p>Nel sito vero la richiesta arriva a Sposi &amp; Sposi, che ti richiama al ${tel.value.trim()}. In questa anteprima del sito non viene ancora inviata.</p></div>`;
+  });
+
+  if (!window.gsap || ridotto) { entrate(); return; }
+  gsap.registerPlugin(ScrollTrigger, Flip);
+
+  /* Ventaglio: i tre abiti si aprono nello spazio scorrendo, e ruotano col mouse */
+  const fogli = [...document.querySelectorAll('#ventaglio img')];
+  const telefono = matchMedia('(max-width: 900px)').matches;
+  gsap.set(fogli[0], { rotateY: 0, z: 0, x: 0 });
+  gsap.set(fogli[1], { rotateY: 0, z: -40, x: 0 });
+  gsap.set(fogli[2], { rotateY: 0, z: -80, x: 0 });
+  const apri = gsap.timeline({ paused: telefono, defaults: { ease: 'power2.inOut', duration: 1 } })
+    .to(fogli[0], { x: telefono ? '-28%' : '-42%', rotateY: 24, z: 30 }, 0)
+    .to(fogli[1], { z: 90, rotateY: 0 }, 0)
+    .to(fogli[2], { x: telefono ? '28%' : '42%', rotateY: -24, z: 30 }, 0);
+  if (telefono) gsap.to(apri, { progress: 1, duration: 1.6, ease: 'power3.out', delay: .4 });
+  else ScrollTrigger.create({ trigger: '#ab-hero', start: 'top top', end: 'bottom bottom', scrub: 1, animation: apri });
+  gsap.from('#ventaglio', { opacity: 0, y: 60, duration: 1.4, ease: 'power4.out' });
+  if (matchMedia('(hover: hover)').matches) {
+    const rx = gsap.quickTo('#ventaglio', 'rotateX', { duration: .9, ease: 'power3.out' });
+    const ry = gsap.quickTo('#ventaglio', 'rotateY', { duration: .9, ease: 'power3.out' });
+    document.getElementById('ab-hero').addEventListener('pointermove', e => { ry((e.clientX / innerWidth - .5) * 18); rx(-(e.clientY / innerHeight - .5) * 12); });
+  }
+
+  /* Percorso: le tappe scorrono in orizzontale mentre la sezione resta ferma */
+  const traccia = document.getElementById('traccia');
+  const distanza = () => Math.max(0, traccia.scrollWidth - innerWidth);
+  if (telefono) Negozio.fila(traccia, { prima: document.getElementById('perc-prima'), dopo: document.getElementById('perc-dopo'), barra: document.getElementById('perc-barra') });
+  else if (distanza() > 0) {
+    gsap.to(traccia, { x: () => -distanza(), ease: 'none', scrollTrigger: { trigger: '#percorso', start: 'top top', end: () => '+=' + distanza(), pin: '.percorso__pin', scrub: 1, invalidateOnRefresh: true } });
+    gsap.utils.toArray('.tappa img').forEach(img => gsap.fromTo(img, { filter: 'grayscale(1)' }, { filter: 'grayscale(0)', scrollTrigger: { trigger: '#percorso', start: 'top top', end: () => '+=' + distanza(), scrub: true } }));
+  }
+  /* Le altre categorie dell'atelier */
+  document.getElementById('altri-griglia').innerHTML = window.GRAZIELLA.categorieAbiti.slice(1).map(c => `<article class="altro" id="${c.id}"><div class="altro__foto"><img src="${c.foto}" alt="" loading="lazy"></div><h3>${c.nome}</h3><p>${c.nota}</p><a class="link" href="#prova">Prenota la prova</a></article>`).join('');
+  entrate();
+})();
+</script>
+</body>
+</html>

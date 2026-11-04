@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/logo-graziella.png">
+<script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
+<title>Bomboniera · Graziella</title>
+<meta name="description" content="Bomboniera confezionata a mano nel negozio Graziella di Bomporto, con bigliettino personalizzato, ritiro in negozio o spedizione.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Cormorant+Garamond:wght@500&family=Great+Vibes&family=Noto+Serif+Display:wght@300;400&family=Josefin+Sans&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/negozio.css">
+<style>
+.pdp { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 72px); align-items: start; padding-bottom: 96px; }
+.gal { display: grid; grid-template-columns: 76px 1fr; gap: 10px; }
+@media (min-width: 901px) { .gal { position: sticky; top: calc(var(--head) + 64px); } }
+.gal__thumbs { display: grid; gap: 10px; align-content: start; }
+.gal__thumbs button { aspect-ratio: 4/5; background: var(--mist); position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px transparent; transition: box-shadow .3s; }
+.gal__thumbs button[aria-pressed="true"] { box-shadow: inset 0 0 0 1px var(--ink); }
+.gal__thumbs img { position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain; mix-blend-mode: multiply; }
+.gal__thumbs:not(.is-viste) button:nth-child(2) img { inset: -40%; width: 180%; height: 180%; }
+.gal__main { position: relative; aspect-ratio: 4/5; background: var(--mist); overflow: hidden; cursor: zoom-in; }
+.gal__main img { position: absolute; left: 50%; bottom: 14%; height: 62%; max-width: 72%; width: auto; object-fit: contain; transform: translateX(-50%); mix-blend-mode: multiply; transition: transform .7s var(--ease); }
+.gal__main::after { content: ''; position: absolute; left: 30%; right: 30%; bottom: 11.5%; height: 20px; border-radius: 50%; background: radial-gradient(closest-side, rgba(11,11,11,.15), transparent); transition: opacity .4s; }
+.gal__main.is-zoom::after { opacity: 0; }
+.gal__main.is-zoom img { transform: translateX(-50%) scale(2.1); }
+.gal__hint { position: absolute; right: 14px; bottom: 12px; color: var(--fog); }
+
+.buy { position: sticky; top: calc(var(--head) + 64px); }
+.buy h1 { margin: 0; }
+.buy__mat { margin: 8px 0 0; color: var(--graphite); }
+.buy__price { margin: 22px 0 0; font-size: 24px; }
+.buy__price small { font-size: 14.5px; color: var(--graphite); }
+.grp { margin-top: 30px; }
+.grp > .label { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.opts { border-top: 1px solid var(--hair); }
+.opt { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--hair); cursor: pointer; }
+.opt input { position: absolute; opacity: 0; }
+.opt span:first-of-type { display: flex; align-items: center; gap: 12px; }
+.opt span:last-of-type { white-space: nowrap; }
+.opt span:first-of-type::before { content: ''; width: 13px; height: 13px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--fog); transition: box-shadow .3s var(--ease); }
+.opt:has(input:checked) span:first-of-type::before { box-shadow: inset 0 0 0 4px var(--ink); }
+.opt:has(input:focus-visible) { outline: 1px solid var(--ink); outline-offset: 2px; }
+.pers__testa { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.pers__testa canvas { width: 96px; height: 96px; flex-shrink: 0; }
+.pers__testa button { text-decoration: underline; text-underline-offset: 3px; }
+.pers__campi { display: grid; gap: 6px; margin-top: 4px; }
+.pers__campi input { width: 100%; height: 46px; border: 0; border-bottom: 1px solid var(--hair); background: none; outline: none; font-size: 17px; border-radius: 0; }
+.pers__campi input:focus { border-bottom-color: var(--ink); }
+.pers__grp { margin-top: 18px; }
+.pers__lab { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.pers__scatole { display: grid; grid-template-columns: repeat(3, minmax(0, 92px)); gap: 8px; }
+.pers__scatole button { aspect-ratio: 1; padding: 10px; background: var(--mist); box-shadow: inset 0 0 0 1px transparent; transition: box-shadow .3s var(--ease); }
+.pers__scatole img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.pers__scatole button:hover { box-shadow: inset 0 0 0 1px var(--hair); }
+.pers__scatole button[aria-checked="true"] { box-shadow: inset 0 0 0 1px var(--ink); }
+.pers__swatch { display: flex; flex-wrap: wrap; gap: 8px; }
+.pers__swatch button { width: 30px; height: 30px; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px var(--hair); position: relative; transition: transform .4s var(--ease); }
+.pers__swatch button:hover { transform: scale(1.1); }
+.pers__swatch button[aria-checked="true"]::after { content: ''; position: absolute; inset: -4px; border-radius: 50%; box-shadow: 0 0 0 1px var(--ink); }
+.pers__seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.pers__seg button { height: 40px; padding: 0 16px; box-shadow: inset 0 0 0 1px var(--hair); font-size: 15.5px; transition: background .3s, color .3s; }
+.pers__seg button[aria-checked="true"] { background: var(--nero); color: var(--paper); box-shadow: none; }
+.gal__main canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: none; cursor: grab; touch-action: pan-y; }
+.gal__main.is-3d canvas { display: block; }
+/* Modello 3D girabile a 360° (Higgsfield, da 3 foto vere) */
+.gal__main model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; display: none; background: transparent; --poster-color: transparent; }
+.gal__main.is-modello model-viewer { display: block; }
+.gal__main.is-modello #foto { opacity: 0; }
+.gal__main.is-modello::after { opacity: 0; }
+.gal__thumbs button[data-vista="m"] { display: grid; place-items: center; font-size: 11px; letter-spacing: .12em; }
+.gal__main.is-3d img, .gal__main.is-3d::after { display: none; }
+.gal__main.is-3d { cursor: default; }
+.gal__thumbs button[data-vista="3d"] { display: grid; place-items: center; font-size: 11px; letter-spacing: .12em; }
+.riepilogo { display: flex; align-items: center; gap: 12px; margin-top: 30px; }
+.riepilogo .btn { flex: 1; height: 52px; white-space: nowrap; }
+@media (max-width: 420px) { .riepilogo .btn { padding: 0 16px; letter-spacing: .1em; } }
+.conferma { margin: 12px 0 0; min-height: 1.6em; color: var(--graphite); font-size: 15.5px; }
+.conferma button { text-decoration: underline; text-underline-offset: 3px; }
+.buy__tempi { margin-top: 18px; display: grid; gap: 4px; color: var(--graphite); font-size: 15.5px; }
+details { border-bottom: 1px solid var(--hair); }
+details:first-of-type { border-top: 1px solid var(--hair); margin-top: 30px; }
+summary { list-style: none; display: flex; justify-content: space-between; padding: 15px 0; cursor: pointer; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '+'; font-size: 16px; line-height: 1; transition: transform .4s var(--ease); }
+details[open] summary::after { transform: rotate(45deg); }
+details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-width: 52ch; }
+/* Per la stessa festa: una fila da trascinare (GSAP Draggable + Inertia), sul telefono si scorre col dito */
+.rail { overflow: hidden; cursor: grab; }
+.rail.is-presa { cursor: grabbing; }
+.rail__track { display: flex; gap: 10px; width: max-content; will-change: transform; }
+.rail__track .card { width: clamp(220px, 23vw, 330px); flex-shrink: 0; }
+.rail.is-presa a { pointer-events: none; }
+.rail__barra { position: relative; height: 1px; background: var(--hair); margin-top: 28px; overflow: hidden; }
+.rail__barra i { position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: var(--ink); transform-origin: 0 0; }
+@media (hover: none), (max-width: 760px) {
+  .rail { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: auto; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail__track .card { width: 62vw; scroll-snap-align: start; }
+  .rail__barra { display: none; }
+  .fila-nav--rail { display: flex; }
+}
+.fila-nav--rail { display: none; }
+.barra-m { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--paper); border-top: 1px solid var(--hair); padding: 10px var(--gut); display: none; gap: 12px; align-items: center; transform: translateY(100%); transition: transform .5s var(--ease); }
+.barra-m.is-on { transform: none; }
+@media (max-width: 900px) {
+  .pdp { grid-template-columns: minmax(0, 1fr); }
+  .gal { grid-template-columns: minmax(0, 1fr); }
+  .gal__thumbs { grid-template-columns: repeat(3, 64px); order: 2; }
+  .gal__thumbs.is-viste { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 64px; justify-content: start; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .gal__thumbs.is-viste::-webkit-scrollbar { display: none; }
+  .buy { position: static; }
+  .barra-m { display: flex; }
+}
+</style>
+</head>
+<body data-pagina="prodotto">
+<div id="testata"></div>
+<main>
+  <div class="wrap">
+    <nav class="crumbs label" aria-label="Percorso"><a href="index.html">Home</a><span>/</span><a href="catalogo.html">Bomboniere</a><span>/</span><a id="crumb-festa" href="catalogo.html"></a></nav>
+    <div class="pdp">
+      <div class="gal">
+        <div class="gal__thumbs" id="thumbs">
+          <button aria-pressed="true" data-vista="intero" aria-label="Vista intera"><img alt="" id="th1"></button>
+          <button aria-pressed="false" data-vista="dettaglio" aria-label="Dettaglio"><img alt="" id="th2"></button>
+          <button aria-pressed="false" data-vista="3d" aria-label="Il tuo bigliettino in 3D">3D</button>
+        </div>
+        <div class="gal__main" id="principale"><img id="foto" alt=""><canvas id="scena3d" aria-label="Anteprima 3D della scatolina con il tuo bigliettino"></canvas><model-viewer id="modello" camera-controls camera-orbit="0deg 76deg 135%" field-of-view="28deg" auto-rotate auto-rotate-delay="0" rotation-per-second="24deg" interaction-prompt="none" touch-action="pan-y" shadow-intensity="0.7" shadow-softness="0.9" exposure="1.05" environment-image="neutral" disable-zoom alt=""></model-viewer><span class="gal__hint label" id="hint-gal">Clic per ingrandire</span></div>
+      </div>
+
+      <div class="buy">
+        <h1 class="h-l" id="nome" data-split></h1>
+        <p class="buy__mat" id="materiale"></p>
+        <p class="buy__price" id="prezzo"></p>
+
+        <div class="grp">
+          <div class="label"><span>Confezione</span><span class="fog">prezzi indicativi</span></div>
+          <div class="opts" id="confezioni"></div>
+        </div>
+
+        <div class="grp">
+          <div class="pers__testa">
+            <div><div class="label">Personalizza la bomboniera</div><p class="muted" style="margin:4px 0 0;font-size:15.5px">Bigliettino, nastro, confetti e scatola. <button type="button" id="vedi-3d">Guardala in 3D</button></p></div>
+            <canvas id="anteprima-2d" width="192" height="192" aria-label="Anteprima del bigliettino"></canvas>
+          </div>
+          <div id="personalizza"></div>
+        </div>
+
+        <div class="riepilogo">
+          <div class="qty qty--l" id="qty"><button data-d="-5" aria-label="Meno cinque">−</button><input id="q" value="20" inputmode="numeric" aria-label="Quantità"><button data-d="5" aria-label="Più cinque">+</button></div>
+          <button class="btn" id="aggiungi">Aggiungi · <span id="totale"></span></button>
+        </div>
+        <p class="conferma" id="conferma" aria-live="polite"></p>
+        <div class="buy__tempi"><span id="tempi"></span><span>Ritiro gratuito a Bomporto, oppure spedizione: gratuita oltre 180 €.</span><span id="minimo"></span></div>
+
+        <details><summary class="label">Materiale e misure</summary><p id="det-mat"></p></details>
+        <details><summary class="label">Come la confezioniamo</summary><p>Al banco del negozio, a mano: oggetto, confetti, nastro e bigliettino col bollino. Prima di confezionare ti mandiamo una foto della prima bomboniera pronta.</p></details>
+        <details><summary class="label">Ritiro e spedizione</summary><p>Ritiro gratuito nel negozio di Bomporto (MO) negli orari di apertura. Spedizione in tutta Italia, gratuita per ordini oltre 180 €. Paghi con PayPal o con la carta (Stripe). <a class="link" href="spedizioni.html">Condizioni di trasporto</a></p></details>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec" style="padding-top:0" aria-labelledby="t-simili">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="h-l" id="t-simili" data-split>Per lo stesso evento</h2><a class="link" id="link-festa" href="catalogo.html">Vedi tutte</a></div>
+      <div class="rail" id="rail"><div class="rail__track" id="simili"></div></div>
+      <div class="rail__barra" aria-hidden="true"><i id="rail-barra"></i></div>
+      <div class="fila-nav fila-nav--rail">
+        <button type="button" class="fila-freccia" data-verso="-1" id="rail-prima" aria-label="Bomboniera precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="fila-barra" aria-hidden="true"><i id="rail-barra-m"></i></div>
+        <button type="button" class="fila-freccia" data-verso="1" id="rail-dopo" aria-label="Bomboniera successiva"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="barra-m" id="barra-m"><span id="m-tot" style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"></span><button class="btn" id="m-agg">Aggiungi alla borsa</button></div>
+<div id="piede"></div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/Draggable.min.js"></script>
+<script src="assets/vendor/InertiaPlugin.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/vendor/three.min.js"></script>
+<script src="assets/js/dati.js"></script>
+<script src="assets/js/bigliettino.js"></script>
+<script>
+  (function () {
+    const id = location.hash.slice(1) || new URLSearchParams(location.search).get('id');
+    const p = window.GRAZIELLA.prodotti.find(x => x.id === id) || window.GRAZIELLA.prodotti[0];
+    window.PRODOTTO = p;
+    document.body.dataset.festa = p.feste[0];
+  })();
+</script>
+<script src="assets/js/negozio.js"></script>
+<script>addEventListener('hashchange', () => location.reload());</script>
+<script>
+(function () {
+  const { G, euro, festa, card, aggiungi, volaInBorsa, entrate, CONFEZIONI, MINIMO } = Negozio;
+  const p = window.PRODOTTO;
+  const f = festa(p.feste[0]);
+  const src = `assets/prodotti/${p.id}.webp`;
+  document.title = `${p.nome} · Bomboniere ${f.nome.toLowerCase()} · Graziella`;
+  document.querySelector('meta[name=description]').content = `${p.nome}, ${p.materiale.toLowerCase()}: bomboniera per ${f.nome.toLowerCase()} confezionata a mano da Graziella a Bomporto, con bigliettino personalizzato.`;
+  document.getElementById('crumb-festa').textContent = f.nome;
+  document.getElementById('crumb-festa').href = document.getElementById('link-festa').href = `catalogo.html#${f.id}`;
+  document.getElementById('nome').textContent = p.nome;
+  document.getElementById('materiale').textContent = p.materiale;
+  document.getElementById('prezzo').innerHTML = `${p.prezzoPieno ? `<s class="fog" style="margin-right:8px">${euro(p.prezzoPieno)}</s>` : ''}${euro(p.prezzo)} <small>al pezzo</small>`;
+  ['foto', 'th1', 'th2'].forEach(k => { document.getElementById(k).src = src; });
+  /* Prodotti con più foto: una miniatura per ogni lato al posto di intero/dettaglio */
+  const VISTE = p.viste ? Array.from({ length: p.viste }, (_, k) => k ? `assets/prodotti/viste/${p.id}-${k}.webp` : src) : null;
+  if (VISTE) {
+    const pollici = document.getElementById('thumbs');
+    pollici.querySelectorAll('[data-vista="intero"], [data-vista="dettaglio"]').forEach(b => b.remove());
+    pollici.classList.add('is-viste');
+    pollici.insertAdjacentHTML('afterbegin', VISTE.map((u, k) => `<button aria-pressed="${k ? 'false' : 'true'}" data-vista="v${k}" aria-label="Vista ${k + 1} di ${VISTE.length}"><img alt="" src="${u}"></button>`).join(''));
+  }
+  /* Modello 3D: miniatura "360°"; lo script di model-viewer si carica solo quando serve */
+  const modello = document.getElementById('modello');
+  if (p.modello) {
+    const b3 = document.querySelector('#thumbs [data-vista="3d"]');
+    b3.insertAdjacentHTML('beforebegin', '<button aria-pressed="false" data-vista="m" aria-label="Il prodotto in 3D, da girare a 360 gradi">360°</button>');
+    modello.setAttribute('alt', `${p.nome} in 3D`);
+  }
+  let mvCaricato = false;
+  const caricaModello = () => {
+    if (mvCaricato) return; mvCaricato = true;
+    const s = document.createElement('script'); s.type = 'module'; s.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js'; document.head.appendChild(s);
+    modello.src = p.modello;
+  };
+  document.getElementById('foto').alt = `${p.nome}, ${p.materiale.toLowerCase()}`;
+  document.getElementById('tempi').textContent = `Pronte in ${p.giorni} giorni lavorativi dall'ordine.`;
+  const MIN = p.minimo || MINIMO;
+  document.getElementById('minimo').textContent = `Minimo ${MIN} pezzi, poi a gruppi di 5.`;
+  document.getElementById('det-mat').textContent = `${p.materiale}. Misure: ${p.misure || '[da chiedere a Graziella]'}.${p.codice ? ` Codice ${p.codice}.` : ''}${p.disponibili ? ` In negozio ne abbiamo ${p.disponibili}.` : ''} Ogni pezzo è controllato al banco prima di essere confezionato.`;
+
+  /* Confezioni */
+  const box = document.getElementById('confezioni');
+  box.innerHTML = CONFEZIONI.map((c, i) => `<label class="opt"><input type="radio" name="conf" value="${c.id}"${i === 1 ? ' checked' : ''}><span>${c.nome}</span><span class="fog">${c.extra ? '+ ' + euro(c.extra) : 'incluso'}</span></label>`).join('');
+
+  /* Totale */
+  const q = document.getElementById('q');
+  const conf = () => box.querySelector('input:checked').value;
+  if (p.minimo) q.value = p.minimo;
+  const qta = () => Math.max(MIN, parseInt(q.value, 10) || MIN);
+  function totale() {
+    const c = CONFEZIONI.find(x => x.id === conf());
+    const t = (p.prezzo + c.extra) * qta();
+    document.getElementById('totale').textContent = euro(t);
+    document.getElementById('m-tot').textContent = `${qta()} pezzi · ${euro(t)}`;
+  }
+  box.addEventListener('change', totale);
+  document.querySelectorAll('#qty button').forEach(b => b.addEventListener('click', () => { q.value = Math.max(MIN, qta() + +b.dataset.d); totale(); }));
+  q.addEventListener('change', () => { q.value = qta(); totale(); });
+  totale();
+
+  /* Aggiungi */
+  function metti() {
+    aggiungi(p.id, conf(), qta(), Bigliettino.descrizione());
+    volaInBorsa(document.querySelector('#principale.is-3d') ? document.getElementById('anteprima-2d') : document.getElementById('foto'));
+    const ok = document.getElementById('conferma');
+    ok.innerHTML = `Aggiunti ${qta()} pezzi. <button type="button">Vedi la borsa</button>`;
+    ok.querySelector('button').addEventListener('click', () => Negozio.toggleBorsa(true));
+  }
+  document.getElementById('aggiungi').addEventListener('click', metti);
+  document.getElementById('m-agg').addEventListener('click', metti);
+
+  /* Barra in basso sul telefono quando il bottone principale esce di vista */
+  const barra = document.getElementById('barra-m');
+  let sotto = false, piede = false;
+  const aggiornaBarra = () => barra.classList.toggle('is-on', sotto && !piede);
+  new IntersectionObserver(([e]) => { sotto = !e.isIntersecting && e.boundingClientRect.top < 0; aggiornaBarra(); }, { threshold: 0 }).observe(document.getElementById('aggiungi'));
+  const fondo = document.querySelector('footer');
+  if (fondo) new IntersectionObserver(([e]) => { piede = e.isIntersecting; aggiornaBarra(); }, { threshold: 0 }).observe(fondo);
+
+  /* Galleria: intero / dettaglio, ingrandimento che segue il mouse */
+  const main = document.getElementById('principale'), foto = document.getElementById('foto');
+  main.addEventListener('click', () => { if (trascinato) { trascinato = false; return; } if (!main.classList.contains('is-3d') && !main.classList.contains('is-modello')) main.classList.toggle('is-zoom'); });
+  /* Trascinando la foto in orizzontale il prodotto passa da un lato all'altro, come girarlo in mano */
+  if (VISTE) {
+    let x0 = null, passo = 0;
+    main.addEventListener('pointerdown', e => { if (main.classList.contains('is-3d') || main.classList.contains('is-modello')) return; x0 = e.clientX; passo = 0; trascinato = false; });
+    main.addEventListener('pointermove', e => {
+      if (x0 === null) return;
+      const d = Math.round((e.clientX - x0) / 70);
+      if (d !== passo) { trascinato = true; main.classList.remove('is-zoom'); vista('v' + ((lato + (d - passo) % VISTE.length + VISTE.length) % VISTE.length)); passo = d; }
+    });
+    addEventListener('pointerup', () => { x0 = null; });
+    main.style.touchAction = 'pan-y';
+    foto.draggable = false; foto.addEventListener('dragstart', e => e.preventDefault()); main.style.userSelect = 'none';
+  }
+  main.addEventListener('mousemove', e => {
+    const r = main.getBoundingClientRect();
+    foto.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`;
+  });
+  main.addEventListener('mouseleave', () => main.classList.remove('is-zoom'));
+  let pers = null;
+  let lato = 0, trascinato = false;
+  function vista(v) {
+    document.querySelectorAll('#thumbs button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.vista === v)));
+    if (VISTE && /^v\d+$/.test(v)) { lato = +v.slice(1); foto.src = VISTE[lato]; }
+    main.classList.toggle('is-modello', v === 'm');
+    if (v === 'm') caricaModello();
+    foto.style.transformOrigin = '50% 40%';
+    main.classList.toggle('is-zoom', v === 'dettaglio');
+    main.classList.toggle('is-3d', v === '3d');
+    document.getElementById('hint-gal').textContent = v === '3d' ? 'Trascina per girarla' : v === 'm' ? 'Trascina per girarla a 360°' : VISTE ? 'Trascina per girarla · clic per ingrandire' : 'Clic per ingrandire';
+    if (pers) pers.attiva3D(v === '3d');
+  }
+  document.getElementById('thumbs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) vista(b.dataset.vista); });
+  document.getElementById('vedi-3d').addEventListener('click', () => {
+    vista('3d');
+    if (innerWidth <= 900) (Negozio.lenis ? Negozio.lenis.scrollTo(main, { offset: -80 }) : main.scrollIntoView({ behavior: 'smooth' }));
+  });
+  /* La prima modifica al bigliettino porta la scatolina 3D in primo piano */
+  let gia3D = false;
+  Bigliettino.init({
+    contenitore: document.getElementById('personalizza'),
+    anteprima: document.getElementById('anteprima-2d'),
+    canvas3d: document.getElementById('scena3d'),
+    onCambio: () => { if (!gia3D && innerWidth > 900) { gia3D = true; vista('3d'); } }
+  }).then(r => { pers = r; if (!r.ha3D) document.querySelector('[data-vista="3d"]').hidden = true; });
+
+  /* Simili */
+  const simili = G.prodotti.filter(x => x.id !== p.id && x.feste.some(ff => p.feste.includes(ff))).slice(0, 10);
+  document.getElementById('simili').innerHTML = simili.map(card).join('');
+  /* La fila si trascina col mouse e prosegue per inerzia; la barretta sotto dice dove sei */
+  const rail = document.getElementById('rail'), track = document.getElementById('simili'), barraRail = document.getElementById('rail-barra');
+  const fineRail = () => Math.max(0, track.scrollWidth - rail.clientWidth);
+  const segnaRail = x => {
+    const max = fineRail();
+    barraRail.style.width = (max ? Math.max(12, rail.clientWidth / track.scrollWidth * 100) : 100) + '%';
+    barraRail.style.transform = `translateX(${max ? (-x / max) * (100 / parseFloat(barraRail.style.width) * 100 - 100) : 0}%)`;
+  };
+  segnaRail(0);
+  if (window.Draggable && matchMedia('(hover: hover) and (min-width: 761px)').matches) {
+    gsap.registerPlugin(Draggable, InertiaPlugin);
+    Draggable.create(track, {
+      type: 'x', inertia: true, edgeResistance: .85, dragClickables: true, minimumMovement: 6,
+      bounds: { minX: -fineRail(), maxX: 0 },
+      onPress() { this.applyBounds({ minX: -fineRail(), maxX: 0 }); },
+      onDragStart: () => rail.classList.add('is-presa'),
+      onRelease: () => setTimeout(() => rail.classList.remove('is-presa'), 0),
+      onDrag() { segnaRail(this.x); }, onThrowUpdate() { segnaRail(this.x); }
+    });
+  } else Negozio.fila(rail, { voci: track, prima: document.getElementById('rail-prima'), dopo: document.getElementById('rail-dopo'), barra: document.getElementById('rail-barra-m'), parallasse: 0 });
+
+  if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.from('#principale', { clipPath: 'inset(10% 10% 10% 10%)', duration: 1.3, ease: 'power4.out' });
+    gsap.from(foto, { opacity: 0, duration: 1.1, ease: 'power2.out', delay: .25 });
+    gsap.from('.buy > *:not(h1)', { y: 20, opacity: 0, duration: .9, stagger: .05, ease: 'power3.out', delay: .25 });
+  }
+  entrate();
+})();
+</script>
+</body>
+</html>
