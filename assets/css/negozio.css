@@ -24,7 +24,7 @@
   --bar: 34px;
   --head: 64px;
 }
-@media (max-width: 760px) { :root { --gut: 16px; --head: 56px; } }
+@media (max-width: 760px) { :root { --gut: 16px; --head: 56px; --testata: 101px; } }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -81,6 +81,7 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .bar {
   height: var(--bar); background: var(--nero); color: var(--paper);
   display: flex; align-items: center; justify-content: center; overflow: hidden;
+  position: relative; z-index: 51;
 }
 .bar p { margin: 0; white-space: nowrap; }
 @media (max-width: 760px) { .bar__lungo { display: none; } }
@@ -169,9 +170,10 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .head__cats a[aria-expanded="true"]::after { transform: scaleX(1); transform-origin: left; }
 .head__cats a:hover::after, .head__cats a[aria-current]::after { transform: scaleX(1); transform-origin: left; }
 @media (max-width: 900px) {
-  .head__cats { justify-content: flex-start; overflow-x: auto; scrollbar-width: none; gap: 22px; padding-right: var(--gut); -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent); }
-  .head__cats::-webkit-scrollbar { display: none; }
-  .head__cats a { white-space: nowrap; }
+  /* Telefono: tutte le voci si vedono in una riga, senza scorrere col dito (Andrea, 04/11) */
+  .head__cats { justify-content: space-between; gap: 0; height: 44px; }
+  .head__cats a { white-space: nowrap; letter-spacing: .06em; }
+  .head__cats .freccia, .head__cats .hide-s { display: none; }
   .hide-s { display: none !important; }
 }
 
@@ -223,15 +225,19 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .btn.is-vivo { --btn-fill: var(--paper); --btn-fill-ink: var(--ink); }
 .btn--light.is-vivo, .btn--line.is-vivo { --btn-fill: var(--nero); --btn-fill-ink: var(--paper); }
 .btn--vetro.is-vivo { --btn-fill: var(--paper); --btn-fill-ink: var(--ink); }
-.btn.is-vivo:hover, .btn--light.is-vivo:hover, .btn--line.is-vivo:hover, .btn--vetro.is-vivo:hover { background: none; }
-.btn.is-vivo:not(.btn--light):not(.btn--line):not(.btn--vetro):hover { background: var(--nero); }
-.btn--light.is-vivo:hover { background: var(--paper); }
 .btn__dot { position: absolute; left: 0; top: 0; width: 0; height: 100%; background: var(--btn-fill); pointer-events: none;
   transition: left .5s var(--ease), top .5s var(--ease), width .5s var(--ease), height .5s var(--ease), margin .5s var(--ease), transform .5s var(--ease), border-radius .5s var(--ease); }
 .btn__riposo { position: relative; z-index: 1; display: inline-block; white-space: nowrap; transition: transform .5s var(--ease), opacity .4s var(--ease); }
 .btn__cambio { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 10px; white-space: nowrap; color: var(--btn-fill-ink); opacity: 0; transform: translateX(44px); transition: transform .5s var(--ease), opacity .4s var(--ease); pointer-events: none; }
 .btn__cambio svg { width: 14px; height: 14px; flex: none; }
+/* Solo dove c'è un mouse: su iPhone il tocco lasciava il passaggio attivo e il bottone restava bianco e vuoto */
+@media (hover: hover) and (pointer: fine) {
+.btn.is-vivo:hover, .btn--light.is-vivo:hover, .btn--line.is-vivo:hover, .btn--vetro.is-vivo:hover { background: none; }
+.btn.is-vivo:not(.btn--light):not(.btn--line):not(.btn--vetro):hover { background: var(--nero); }
+.btn--light.is-vivo:hover { background: var(--paper); }
 .btn.is-vivo:hover .btn__dot, .btn.is-vivo:focus-visible .btn__dot, a:hover .btn.is-vivo .btn__dot { width: 100%; }
+}
+.btn:active { opacity: .82; }
 .btn.is-vivo:hover .btn__riposo, .btn.is-vivo:focus-visible .btn__riposo, a:hover .btn.is-vivo .btn__riposo { opacity: 0; transform: translateX(44px); }
 .btn.is-vivo:hover .btn__cambio, .btn.is-vivo:focus-visible .btn__cambio, a:hover .btn.is-vivo .btn__cambio { opacity: 1; transform: none; }
 .btn.is-vivo:not(.btn--light):not(.btn--line):not(.btn--vetro):hover::after { content: ''; position: absolute; inset: 0; z-index: 3; box-shadow: inset 0 0 0 1px var(--ink); pointer-events: none; }
@@ -350,32 +356,9 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 }
 
 /* Piede */
-.foot { background: var(--bruno-scuro); color: var(--paper); padding: 72px 0 28px; margin-top: 0; }
-.foot__top { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.3fr; gap: 32px; }
-.foot h4 { margin: 0 0 16px; font-weight: 400; color: var(--fog); }
-.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.foot ul a { color: var(--crema); transition: color .3s; }
-.foot ul a:hover { color: var(--paper); }
-.foot__status { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; }
-.foot__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--paper); }
-.foot__dot.is-closed { background: transparent; box-shadow: inset 0 0 0 1px var(--fog); }
-.foot__news { display: flex; border-bottom: 1px solid var(--hair-inv); margin-top: 6px; }
-.foot__news input { flex: 1; background: none; border: 0; outline: none; height: 46px; color: var(--paper); }
-.foot__news input::placeholder { color: var(--fog); }
-.foot__logo { width: 190px; height: auto; }
-.foot__contatti > div { display: grid; gap: 2px; margin-bottom: 16px; color: var(--crema); font-size: 15.5px; }
-.foot__contatti b { font-weight: 400; color: var(--paper); }
-.foot__tel { user-select: all; letter-spacing: .04em; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.foot__bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--hair-inv); color: var(--fog); }
-@media (max-width: 900px) { .foot__top { grid-template-columns: 1fr 1fr; } .foot__top > div:first-child, .foot__contatti { grid-column: 1 / -1; } }
 
-/* Il piede si scopre sotto la pagina: la pagina ha l'orlo curvo che si distende */
 main.pagina { position: relative; z-index: 2; background: var(--paper); }
-.orlo { position: absolute; left: 0; top: 100%; width: 100%; height: clamp(60px, 12vh, 140px); display: block; pointer-events: none; }
-.orlo path { fill: var(--paper); }
-.foot { position: relative; z-index: 1; overflow: hidden; }
-@media (min-width: 901px) and (min-height: 640px) { .foot { position: sticky; bottom: 0; } }
 
 /* Passaggio tra le pagine: il sipario nero col logo */
 .passaggio { position: fixed; inset: 0; z-index: 400; pointer-events: none; visibility: hidden; }
@@ -448,14 +431,54 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 .spedizione__barra i { display: block; height: 100%; background: var(--nero); transform-origin: 0 50%; transition: transform .8s var(--ease); }
 .pagamenti { display: flex; flex-wrap: wrap; gap: 6px; }
 .pagamenti span { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--hair); font-size: 12px; letter-spacing: .04em; color: var(--graphite); }
-.foot .pagamenti span { border-color: var(--hair-inv); color: var(--crema); }
 
-/* Piede: orari, premio di Matrimonio.com, pagamenti */
-.foot__orari { color: var(--crema); opacity: .8; font-size: 14.5px; margin: 0; }
-.foot__tel:hover { color: var(--paper); }
-.premio { display: inline-grid; gap: 2px; margin-top: 28px; padding: 14px 18px; border: 1px solid var(--hair-inv); transition: border-color .4s var(--ease), background .4s var(--ease); }
-.premio:hover { border-color: var(--crema); background: rgba(255,255,255,.04); }
-.premio__fonte { color: var(--crema); opacity: .8; font-size: 11.5px; }
-.premio__tit { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: 24px; line-height: 1.15; }
-.premio__sotto { color: var(--crema); font-size: 14px; }
-.foot__pagamenti { margin-top: 48px; }
+/* Telefono: la riga delle voci entra tutta, il testo si adatta alla larghezza */
+@media (max-width: 760px) { .head__cats.label { font-size: clamp(10.5px, 3.05vw, 13px); } }
+
+/* Piede: le due porte dell'hero tornano come i due negozi veri (pannello foto del piede ORRIS, MotionSites), sotto colonne quiete su carta (Lemaire). Niente onda, niente scritta enorme. */
+.foot { position: relative; background: var(--paper); color: var(--ink); }
+.foot__porte { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.foot__porta { position: relative; overflow: hidden; height: clamp(440px, 72vh, 700px); color: var(--paper); background: var(--bruno-scuro); }
+.foot__porta > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.foot__porta::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,25,23,.9), rgba(28,25,23,.72) 34%, rgba(28,25,23,.34) 62%, rgba(28,25,23,0) 86%); pointer-events: none; }
+.foot__porta-testo { position: absolute; left: clamp(20px, 3.4vw, 56px); right: clamp(20px, 3.4vw, 56px); bottom: clamp(24px, 4vw, 52px); z-index: 1; }
+.foot__stato { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; }
+.foot__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--paper); }
+.foot__dot.is-closed { background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,.8); }
+.foot__nome { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(38px, 4.4vw, 72px); line-height: 1; letter-spacing: -.01em; }
+.foot__dove { margin: 14px 0 22px; font-style: normal; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: rgba(255,255,255,.9); }
+.foot__azioni { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 24px; }
+.foot__azioni .btn { min-width: 176px; }
+.foot__rotta { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.65); transition: border-color .3s; }
+.foot__rotta:hover { border-color: var(--paper); }
+.foot__corpo { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)) minmax(0, 3.4fr); gap: clamp(28px, 3.2vw, 56px); padding-top: clamp(56px, 7vw, 104px); padding-bottom: clamp(48px, 6vw, 88px); }
+.foot__logo { width: 168px; height: auto; display: block; }
+.foot__frase { margin: 26px 0 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(30px, 2.5vw, 42px); line-height: 1.08; max-width: 13ch; }
+.foot h4 { margin: 0 0 18px; font-weight: 400; color: var(--graphite); }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.foot ul a { display: inline-block; position: relative; transition: color .3s; }
+.foot ul a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
+@media (hover: hover) and (pointer: fine) { .foot ul a:hover::after { transform: scaleX(1); transform-origin: left; } }
+.foot__lettera p { margin: 0 0 16px; color: var(--graphite); max-width: 30ch; }
+.foot__news { display: flex; align-items: center; border-bottom: 1px solid var(--ink); }
+.foot__news input { flex: 1; min-width: 0; background: none; border: 0; outline: none; height: 48px; color: var(--ink); font-size: 16px; }
+.foot__news input::placeholder { color: var(--graphite); }
+.foot__premio { display: inline-block; margin-top: 26px; color: var(--graphite); }
+.foot__premio b { font-weight: 400; color: var(--ink); }
+.foot__bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px 24px; flex-wrap: wrap; padding-top: 20px; padding-bottom: 24px; border-top: 1px solid var(--hair); color: var(--graphite); }
+.foot .pagamenti { gap: 0 14px; }
+.foot .pagamenti span { height: auto; padding: 0; border: 0; color: inherit; font-size: inherit; letter-spacing: inherit; }
+@media (max-width: 1100px) { .foot__corpo { grid-template-columns: repeat(3, minmax(0, 1fr)); } .foot__intro, .foot__lettera { grid-column: 1 / -1; } }
+@media (max-width: 760px) {
+  .foot__porte { grid-template-columns: 1fr; }
+  .foot__porta { height: min(112vw, 72svh); }
+  .foot__azioni .btn { flex: 1 1 0; min-width: 0; padding: 0 16px; }
+  .foot__negozio { grid-column: 1 / -1; }
+  .foot__negozio ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  .foot__lettera { grid-column: 1 / -1; }
+  .foot__corpo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; padding-top: 48px; padding-bottom: 40px; }
+  .foot__frase { max-width: none; }
+  .foot ul { gap: 2px; }
+  .foot ul a { padding: 6px 0; }
+  .foot__bottom { flex-direction: column; align-items: flex-start; }
+}

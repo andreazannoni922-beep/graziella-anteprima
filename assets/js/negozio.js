@@ -81,7 +81,7 @@
         <a href="abiti.html" data-mega="abiti" aria-haspopup="true" aria-expanded="false"${pagina === 'abiti' ? ' aria-current="page"' : ''}>Abiti<i class="freccia" aria-hidden="true"></i></a>
         <a href="catalogo.html#offerte">Offerte</a>
         <a href="index.html#chi-siamo">Chi siamo</a>
-        <a href="abiti.html#prova">Prenota la prova</a>
+        <a href="abiti.html#prova">Prenota<span class="hide-s"> la prova</span></a>
       </nav>
       <div class="mega" data-pannello="bomboniere">
         <div class="mega__in">
@@ -502,41 +502,55 @@
   const st = stato();
   document.getElementById('stato-menu').textContent = st.testo;
   const piede = document.getElementById('piede');
+  const stAbiti = stato(G.orariAbiti);
+  const statoRiga = x => `<p class="foot__stato label"><span class="foot__dot${x.aperto ? '' : ' is-closed'}"></span>${x.testo}</p>`;
   if (piede) piede.outerHTML = `
     <footer class="foot">
-      <div class="wrap">
-        <div class="foot__top">
-          <div>
-            <img class="foot__logo" src="assets/img/logo-graziella.png" alt="Graziella Centro Sposi">
-            <p class="h-m" style="max-width:16ch;margin-top:28px">Vieni a vederle dal vivo, prima di scegliere.</p>
-            <p class="foot__status label"><span class="foot__dot${st.aperto ? '' : ' is-closed'}"></span>${st.testo}</p>
-            <a class="premio" href="${G.premi.url}" target="_blank" rel="noopener"><span class="premio__fonte label">Matrimonio.com</span><span class="premio__tit">${G.premi.awards} Wedding Awards</span><span class="premio__sotto">dal ${G.premi.dal} · voto ${G.premi.voto} su 5</span></a>
+      <div class="foot__porte">
+        <article class="foot__porta">
+          <img src="assets/img/showroom-travi.webp" alt="Il negozio di bomboniere Graziella a Bomporto" loading="lazy">
+          <div class="foot__porta-testo">
+            ${statoRiga(st)}
+            <h3 class="foot__nome">Bomboniere Graziella</h3>
+            <address class="foot__dove">Via Carlo Testa 4, Bomporto (MO)<br>${G.orariTesto.bomboniere}<br>${G.orariTesto.domenica}</address>
+            <div class="foot__azioni"><a class="btn btn--light" href="tel:+39059909858">059 909858</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Bomboniere+Graziella/data=!4m2!3m1!1s0x477feae1bc9b29a5:0x9061f3459a235cc" target="_blank" rel="noopener">Indicazioni</a></div>
           </div>
-          <div><h4 class="label">Bomboniere</h4><ul>${G.feste.map(f => `<li><a href="catalogo.html#${f.id}">${f.nome}</a></li>`).join('')}</ul></div>
-          <div><h4 class="label">Abiti</h4><ul>
-            ${G.categorieAbiti.map(c => `<li><a href="${c.href}">${c.nome}</a></li>`).join('')}
-            <li><a href="abiti.html#prova">Prenota la prova</a></li></ul></div>
-          <div class="foot__contatti"><h4 class="label">I due negozi</h4>
-            <div><b>Bomboniere Graziella</b><span>Via Carlo Testa 4, Bomporto (MO)</span><a class="foot__tel" href="tel:+39059909858">059 909858</a><span class="foot__orari">${G.orariTesto.bomboniere}</span></div>
-            <div><b>Sposi &amp; Sposi</b><span>Via Carlo Testa 6/B, Bomporto (MO)</span><a class="foot__tel" href="tel:+39059819315">059 819315</a><span class="foot__orari">${G.orariTesto.abiti}</span></div>
-            <p class="foot__orari">${G.orariTesto.domenica}</p>
-            <form class="foot__news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie'"><input type="email" placeholder="Email per le novità" aria-label="Email" required><button class="label">Iscriviti</button></form>
+        </article>
+        <article class="foot__porta">
+          <img src="assets/img/sposa-facciata.webp" alt="Una sposa davanti alla facciata di Sposi &amp; Sposi" loading="lazy">
+          <div class="foot__porta-testo">
+            ${statoRiga(stAbiti)}
+            <h3 class="foot__nome">Sposi &amp; Sposi</h3>
+            <address class="foot__dove">Via Carlo Testa 6/B, Bomporto (MO)<br>${G.orariTesto.abiti}</address>
+            <div class="foot__azioni"><a class="btn btn--light" href="tel:+39059819315">059 819315</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Sposi+%26+Sposi/data=!4m2!3m1!1s0x477feb186c6f2935:0xec0568c6a1cd542b" target="_blank" rel="noopener">Indicazioni</a></div>
           </div>
-        </div>
-        <div class="foot__pagamenti">${PAGAMENTI}</div>
-        <div class="foot__bottom label"><span>© Graziella Centro Sposi</span><a href="spedizioni.html">Condizioni di trasporto</a><span>Anteprima del nuovo sito · novembre 2026</span></div>
+        </article>
       </div>
+      <div class="wrap foot__corpo">
+        <div class="foot__intro">
+          <img class="foot__logo" src="assets/img/logo-graziella.png" alt="Graziella Centro Sposi">
+          <p class="foot__frase">Vieni a vederle dal vivo, prima di scegliere.</p>
+          <a class="foot__premio" href="${G.premi.url}" target="_blank" rel="noopener"><b>${G.premi.awards} Wedding Awards</b> di Matrimonio.com, dal ${G.premi.dal}</a>
+        </div>
+        <div><h4 class="label">Bomboniere</h4><ul>${G.feste.map(f => `<li><a href="catalogo.html#${f.id}">${f.corto || f.nome}</a></li>`).join('')}</ul></div>
+        <div><h4 class="label">Abiti</h4><ul>
+          ${G.categorieAbiti.map(c => `<li><a href="${c.href}">${c.nome}</a></li>`).join('')}
+          <li><a href="abiti.html#prova">Prenota la prova</a></li></ul></div>
+        <div class="foot__negozio"><h4 class="label">Il negozio</h4><ul>
+          <li><a href="index.html#chi-siamo">Chi siamo</a></li>
+          <li><a href="spedizioni.html">Condizioni di trasporto</a></li>
+          <li><a href="https://www.instagram.com/centrosposigraziella/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="${G.premi.url}" target="_blank" rel="noopener">Matrimonio.com</a></li></ul></div>
+        <div class="foot__lettera"><h4 class="label">Novità</h4>
+          <p>Quello che arriva in negozio, ogni tanto, per email.</p>
+          <form class="foot__news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie'"><input type="email" placeholder="La tua email" aria-label="Email" required><button class="label">Iscriviti</button></form>
+        </div>
+      </div>
+      <div class="wrap foot__bottom label"><span>© Graziella Centro Sposi</span>${PAGAMENTI}<span>Anteprima del nuovo sito · novembre 2026</span></div>
     </footer>`;
 
-  /* ---------- Il piede si scopre: la pagina sale come un sipario con l'orlo curvo e lascia vedere il piede fermo sotto ---------- */
-  const piedeEl = document.querySelector('.foot');
   const mainEl = document.querySelector('main');
-  let orlo = null;
-  if (piedeEl && mainEl) {
-    mainEl.classList.add('pagina');
-    mainEl.insertAdjacentHTML('beforeend', '<svg class="orlo" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M0,0 C250,100 750,100 1000,0 Z"/></svg>');
-    orlo = mainEl.querySelector('.orlo path');
-  }
+  if (piede && mainEl) mainEl.classList.add('pagina');
 
   /* ---------- Passaggio tra le pagine: lo stesso sipario del menu scende, la pagina nuova lo vede risalire ---------- */
   document.body.insertAdjacentHTML('beforeend', `<div class="passaggio" id="passaggio" aria-hidden="true">
@@ -735,15 +749,13 @@
 
   bottoni();
   arrivo();
-  /* L'orlo curvo della pagina si distende mentre il piede si scopre; su PC il piede è fermo sotto e sale appena */
-  if (orlo && window.gsap && window.ScrollTrigger && !ridotto) {
+  /* Le due foto del piede si aprono come tendine, lo stesso gesto delle vetrine */
+  if (window.gsap && window.ScrollTrigger && !ridotto) {
     gsap.registerPlugin(ScrollTrigger);
-    const fermo = matchMedia('(min-width: 901px) and (min-height: 640px)').matches;
-    /* refreshPriority bassa: l'orlo si misura dopo le sezioni bloccate delle pagine (es. il percorso degli abiti), che allungano la pagina */
-    const corsa = () => ({ trigger: mainEl, start: 'bottom bottom', end: () => `bottom ${Math.round(fermo ? innerHeight - piedeEl.offsetHeight + 4 : innerHeight * .45)}px`, scrub: true, invalidateOnRefresh: true, refreshPriority: -10 });
-    const k = { v: 1 };
-    gsap.to(k, { v: 0, ease: 'none', scrollTrigger: corsa(), onUpdate: () => { const c = (k.v * 120).toFixed(1); orlo.setAttribute('d', `M0,0 C250,${c} 750,${c} 1000,0 Z`); } });
-    if (fermo) gsap.fromTo(piedeEl.querySelector('.wrap'), { yPercent: -14 }, { yPercent: 0, ease: 'none', scrollTrigger: corsa() });
+    gsap.utils.toArray('.foot__porta').forEach((p, i) => {
+      gsap.from(p, { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.2, delay: i * .08, ease: 'expo.out', clearProps: 'clipPath', scrollTrigger: { trigger: p, start: 'top 92%', once: true } });
+      gsap.fromTo(p.querySelector('img'), { yPercent: 0, scale: 1.08 }, { yPercent: 6, scale: 1.08, transformOrigin: '50% 0%', ease: 'none', scrollTrigger: { trigger: p, start: 'top bottom', end: 'bottom top', scrub: true } });
+    });
   }
   /* ---------- File orizzontali (telefono e tablet): si scorrono col dito o con le frecce e la pagina non si blocca mai.
      Le frecce fanno scivolare la fila con una curva morbida, la foto dentro ogni scheda si sposta appena (parallasse),

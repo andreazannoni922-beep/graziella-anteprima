@@ -8,6 +8,7 @@
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
 <title>Graziella · Bomboniere per ogni evento</title>
 <meta name="description" content="Bomboniere per matrimonio, battesimo, comunione, cresima, laurea e anniversari, confezionate a mano nel negozio Graziella di Bomporto.">
+<script>try{if(sessionStorage.getItem("graziella-apertura")!=="1"&&!matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.classList.add("in-apertura");setTimeout(function(){document.documentElement.classList.remove("in-apertura")},3000)}}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/vendor/lenis.css">
@@ -50,42 +51,50 @@
 .frase__piede { position: absolute; left: var(--gut); right: var(--gut); bottom: 34px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; color: #5b5b58; }
 /* Apertura: la bomboniera dei due sposi si scopre dal centro, la frase sale lettera per lettera, un filo si riempie;
    poi una cucitura scende al centro e la scena si apre in due come le porte della hero, che sono già lì sotto */
+/* Fino a quando il preloader non è pronto la pagina resta bianca: niente lampo dell'hero */
+html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index: 199; background: var(--paper); }
 .apertura { position: fixed; inset: 0; z-index: 200; cursor: pointer; }
-.apertura__meta { position: absolute; inset: 0; background: var(--mist); overflow: hidden; will-change: transform; }
+.apertura__meta { position: absolute; inset: 0; background: var(--paper); overflow: hidden; will-change: transform; }
 .apertura__meta--a { clip-path: inset(0 50% 0 0); }
 .apertura__meta--b { clip-path: inset(0 0 0 50%); }
-.apertura__scena { position: absolute; inset: 0; display: grid; justify-items: center; align-content: center; gap: 22px; padding: 0 var(--gut); text-align: center; }
-.apertura__oggetto { position: relative; height: min(42vh, 380px); aspect-ratio: 3 / 4; }
-.apertura__oggetto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; mix-blend-mode: multiply; }
-.apertura__ombra { position: absolute; left: 18%; right: 18%; bottom: -2%; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 11, 11, .2), transparent); }
-.apertura__scritta { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(34px, 4.4vw, 64px); line-height: 1.08; letter-spacing: -.01em; }
-.apertura__filo { position: relative; width: min(280px, 56vw); height: 1px; background: var(--hair); overflow: hidden; }
-.apertura__filo i { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); }
-.apertura__logo { width: min(120px, 32vw); height: auto; margin-top: 6px; }
-.apertura__cucitura { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; margin-left: -.5px; background: var(--ink); transform: scaleY(0); z-index: 2; }
+.apertura__scena { position: absolute; inset: 0; display: grid; justify-items: center; align-content: center; gap: clamp(26px, 4vh, 40px); padding: 0 var(--gut); text-align: center; }
+.apertura__logo { width: min(190px, 46vw); height: auto; }
+/* Word Carousel Loader di HorizonX: gli eventi veri salgono in una finestra con i bordi sfumati */
+.apertura__parole { position: relative; height: 1.2em; overflow: hidden; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(38px, 5vw, 72px); line-height: 1.2; letter-spacing: -.01em;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent); mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent); }
+.apertura__parole span { display: block; height: 1.2em; white-space: nowrap; }
+.apertura__filo { position: relative; width: min(220px, 50vw); height: 1px; background: var(--hair); overflow: hidden; }
+.apertura__filo i { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; }
 @media (max-width: 760px) {
-  .apertura__meta--a { clip-path: inset(0 0 50% 0); }
-  .apertura__meta--b { clip-path: inset(50% 0 0 0); }
-  .apertura__cucitura { left: 0; right: 0; top: 50%; bottom: auto; width: auto; height: 1px; margin: -.5px 0 0; transform: scaleX(0); }
-  .apertura__oggetto { height: min(36vh, 300px); }
-  .apertura__scritta { font-size: 34px; }
+  /* Il taglio cade esattamente sulla fessura tra le due porte */
+  .apertura { --taglio: calc(var(--testata) + (100svh - var(--testata)) / 2); }
+  .apertura__meta--a { clip-path: inset(0 0 calc(100% - var(--taglio)) 0); }
+  .apertura__meta--b { clip-path: inset(var(--taglio) 0 0 0); }
 }
 @media (max-width: 760px) {
-  .sipario { height: 280vh; }
-  .porte { flex-direction: column; }
+  /* Telefono: niente barra annunci sulla home e le porte partono sotto la testata, così sono alte uguali e riempiono tutto lo schermo (Andrea, 04/11) */
+  body[data-pagina="home"] .bar { display: none; }
+  .sipario { height: 280vh; margin-top: calc(-1 * var(--testata)); }
+  .porte { flex-direction: column; top: var(--testata); }
   .porta__media { filter: none; }
   .porta__colore { display: none; }
-  .porta__titolo { font-size: 40px; }
-  .porta::after { background: linear-gradient(to top, rgba(34,23,17,.86), rgba(34,23,17,.4) 40%, rgba(34,23,17,0) 70%); }
+  .porta__titolo { font-size: 44px; }
+  .porta::before { display: none; }
+  .porta::after { background: linear-gradient(to top, rgba(34,23,17,.82), rgba(34,23,17,.34) 42%, rgba(34,23,17,0) 72%); }
   .a-capo { display: none; }
   .porta__testo p:not(.porta__titolo) { display: none; }
   .porta__testo { bottom: 22px; }
   .porta__azioni { margin-top: 18px; }
   /* Porte una sopra l'altra: niente margine laterale, la foto in alto parte sotto l'intestazione, i volti restano nell'inquadratura */
   .porta__media, .porta__colore { inset: 0; }
-  .porta--sx .porta__media { top: calc(var(--bar) + var(--head) + 42px); }
   .porta__media img, .porta__media video { object-position: 50% 26%; }
-  .porta--sx .porta__media video { object-position: 50% 58%; }
+  .porta--sx .porta__media video { object-position: 50% 42%; }
+  /* Bottoni delle porte: bianchi pieni, stessa larghezza, freccia sempre visibile al tocco */
+  .porta__azioni .btn { min-width: 212px; justify-content: space-between; padding: 0 20px; }
+  .porta__azioni .btn__riposo { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 14px; }
+  .porta__azioni .btn__riposo::after { content: ''; flex: none; width: 16px; height: 10px; background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M0 5h14M10 1l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10'%3E%3Cpath d='M0 5h14M10 1l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.2'/%3E%3C/svg%3E") center / contain no-repeat; }
   .slide-ctrl { top: auto; bottom: 26px; }
   .frase p { font-size: 32px; }
   .frase__piede { bottom: 24px; gap: 6px 16px; }
@@ -675,28 +684,25 @@
   try { giaVisto = sessionStorage.getItem('graziella-apertura') === '1'; sessionStorage.setItem('graziella-apertura', '1'); } catch (e) {}
   const intro = gsap.timeline({ delay: giaVisto ? 0 : .05 });
   if (!giaVisto) {
-    const scena = '<div class="apertura__scena"><div class="apertura__oggetto"><span class="apertura__ombra"></span><img src="assets/prodotti/bacio.webp" alt=""></div><p class="apertura__scritta">Ogni evento comincia da qui</p><span class="apertura__filo"><i></i></span><img class="apertura__logo" src="assets/img/logo-graziella.png" alt=""></div>';
+    const EVENTI = ['Matrimonio', 'Battesimo', 'Comunione', 'Cresima', 'Laurea', 'Abiti da sposa'];
+    const scena = `<div class="apertura__scena"><img class="apertura__logo" src="assets/img/logo-graziella.png" alt=""><div class="apertura__parole"><div class="apertura__rullo">${EVENTI.map(p => `<span>${p}</span>`).join('')}</div></div><span class="apertura__filo"><i></i></span></div>`;
     const ap = document.createElement('div');
     ap.className = 'apertura';
     ap.setAttribute('aria-hidden', 'true');
-    ap.innerHTML = `<div class="apertura__meta apertura__meta--a">${scena}</div><div class="apertura__meta apertura__meta--b">${scena}</div><i class="apertura__cucitura"></i>`;
+    ap.innerHTML = `<div class="apertura__meta apertura__meta--a">${scena}</div><div class="apertura__meta apertura__meta--b">${scena}</div>`;
     document.body.appendChild(ap);
+    document.documentElement.classList.remove('in-apertura');
     const lenisAp = Negozio.lenis;
     if (lenisAp) lenisAp.stop();
     const q = sel => ap.querySelectorAll(sel);
-    const lettere = [...q('.apertura__scritta')].flatMap(t => SplitText.create(t, { type: 'chars', mask: 'chars' }).chars);
     const verticale = telefono;
+    const passi = EVENTI.length - 1, tempo = 1.25 / passi;
     intro.addLabel('scena', 0)
-      .fromTo(q('.apertura__oggetto'), { clipPath: 'inset(0% 50% 0% 50%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.05, ease: 'expo.out' }, 'scena')
-      .fromTo(q('.apertura__oggetto img'), { scale: 1.14, yPercent: 4 }, { scale: 1, yPercent: 0, duration: 1.4, ease: 'expo.out' }, 'scena')
-      .from(q('.apertura__ombra'), { opacity: 0, scaleX: .4, duration: 1, ease: 'power3.out' }, 'scena+=.3')
-      .from(lettere, { yPercent: 105, duration: .7, stagger: .018, ease: 'power4.out' }, 'scena+=.25')
-      .to(q('.apertura__filo i'), { scaleX: 1, duration: 1.2, ease: 'power2.inOut' }, 'scena+=.2')
-      .from(q('.apertura__logo'), { opacity: 0, y: 8, duration: .5, ease: 'power2.out' }, 'scena+=.6')
-      .addLabel('cucitura', 1.45)
-      .fromTo(ap.querySelector('.apertura__cucitura'), verticale ? { scaleX: 0 } : { scaleY: 0 }, verticale ? { scaleX: 1, duration: .3, ease: 'power3.in' } : { scaleY: 1, duration: .3, ease: 'power3.in' }, 'cucitura')
-      .addLabel('apri', 1.7)
-      .to(ap.querySelector('.apertura__cucitura'), { opacity: 0, duration: .2 }, 'apri')
+      .from(q('.apertura__logo'), { opacity: 0, y: 8, duration: .5, ease: 'power2.out' }, 'scena')
+      .to(q('.apertura__filo i'), { scaleX: 1, duration: 1.45, ease: 'power1.inOut' }, 'scena');
+    /* Ogni parola entra dal basso con un piccolo arrivo, poi si ferma un attimo */
+    for (let i = 1; i <= passi; i++) intro.to(q('.apertura__rullo'), { y: () => -i * q('.apertura__parole')[0].offsetHeight, duration: tempo * .62, ease: 'power3.inOut' }, 'scena+=' + (.12 + (i - 1) * tempo));
+    intro.addLabel('apri', 1.5)
       .to(q('.apertura__meta--a'), verticale ? { yPercent: -100, duration: .8, ease: 'expo.inOut' } : { xPercent: -100, duration: .8, ease: 'expo.inOut' }, 'apri')
       .to(q('.apertura__meta--b'), verticale ? { yPercent: 100, duration: .8, ease: 'expo.inOut' } : { xPercent: 100, duration: .8, ease: 'expo.inOut' }, 'apri')
       .add(() => { ap.remove(); if (lenisAp) lenisAp.start(); }, 'apri+=.8');
