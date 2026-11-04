@@ -16,8 +16,8 @@
   ];
   const MINIMO = 10;
   const SOGLIA_GRATIS = 180;
-  /* Metodi di pagamento detti dal cliente: PayPal, carte (via Stripe) */
-  const PAGAMENTI = '<div class="pagamenti" aria-label="Pagamenti accettati"><span>PayPal</span><span>Carte di credito e debito</span><span>Stripe</span></div>';
+  /* Metodi di pagamento detti dal cliente: PayPal, carte (via Stripe), bonifico (IBAN mandato il 04/11: va mostrato solo nel negozio online vero, mai in questa anteprima pubblica) */
+  const PAGAMENTI = '<div class="pagamenti" aria-label="Pagamenti accettati"><span>PayPal</span><span>Carte di credito e debito</span><span>Stripe</span><span>Bonifico bancario</span></div>';
 
   /* ---------- Borsa ---------- */
   const CHIAVE = 'graziella-borsa';

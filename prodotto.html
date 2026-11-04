@@ -236,7 +236,7 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   document.getElementById('foto').alt = `${p.nome}, ${p.materiale.toLowerCase()}`;
   document.getElementById('tempi').textContent = `Pronte in ${p.giorni} giorni lavorativi dall'ordine.`;
   const MIN = p.minimo || MINIMO;
-  document.getElementById('minimo').textContent = `Minimo ${MIN} pezzi, poi a gruppi di 5.`;
+  document.getElementById('minimo').textContent = p.minimo ? `Minimo ${MIN} pezzi.` : `Minimo ${MIN} pezzi, poi a gruppi di 5.`;
   document.getElementById('det-mat').textContent = `${p.materiale}. Misure: ${p.misure || '[da chiedere a Graziella]'}.${p.codice ? ` Codice ${p.codice}.` : ''}${p.disponibili ? ` In negozio ne abbiamo ${p.disponibili}.` : ''} Ogni pezzo è controllato al banco prima di essere confezionato.`;
 
   /* Confezioni */
