@@ -222,7 +222,7 @@
     { nome: 'Abiti da sposa', href: 'abiti.html', foto: 'assets/abiti/velo-cattedrale.jpg', nota: 'Su misura, in atelier' },
     { nome: 'Prenota la prova', href: 'abiti.html#prova', foto: 'assets/abiti/prova-specchio.jpg', nota: 'Sposi & Sposi' },
     { nome: 'Offerte', href: 'catalogo.html#offerte', foto: 'assets/img/vetrina-cristallo.webp', nota: `${G.prodotti.filter(p => p.prezzoPieno).length} bomboniere in offerta` },
-    { nome: 'Il negozio', href: 'index.html#negozio', foto: 'assets/img/showroom-travi.webp', nota: 'Via Carlo Testa, Bomporto' }
+    { nome: 'Il negozio', href: 'index.html#negozio', foto: 'assets/img/showroom-travi.webp', nota: 'Via Carlo Testa 4, Bomporto' }
   ];
   document.body.insertAdjacentHTML('beforeend', `
     <div class="menu" id="menu" aria-hidden="true">

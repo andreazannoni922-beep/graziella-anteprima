@@ -13,39 +13,98 @@
 <link rel="stylesheet" href="assets/vendor/lenis.css">
 <link rel="stylesheet" href="assets/css/negozio.css">
 <style>
-/* Cambiando festa le card scorrono sotto il titolo, mai sopra */
-.cat-head { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; padding: 8px 0 36px; position: relative; z-index: 3; background: var(--paper); }
+.cat-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 32px; align-items: end; padding: 8px 0 32px; }
 .cat-head__foto { width: clamp(140px, 16vw, 230px); aspect-ratio: 4/5; overflow: hidden; }
-.cat-head__foto img { width: 100%; height: 100%; object-fit: contain; filter: grayscale(1); }
-.cat-head__foto video { width: 100%; height: 100%; object-fit: contain; }
-.cat-head__foto [hidden] { display: none; }
-.cat-head__foto.is-video { width: clamp(180px, 20vw, 300px); }
+.cat-head__foto img { width: 100%; height: 100%; object-fit: contain; }
 .cat-head p { margin-top: 18px; }
+
+/* Eventi: tutti in vista in una griglia, si vede subito dove si è */
+.eventi { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-bottom: 32px; }
+.eventi a { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 4px; background: var(--paper); color: var(--graphite); font-size: 12px; letter-spacing: .08em; text-align: center; transition: background .3s var(--ease), color .3s var(--ease); }
+.eventi a[aria-current] { background: var(--nero); color: var(--paper); }
+@media (hover: hover) and (pointer: fine) { .eventi a:not([aria-current]):hover { background: var(--mist); color: var(--ink); } }
+
+/* Barra sempre in vista: quante sono e come sono ordinate; sul telefono anche il bottone dei filtri */
 .tools { position: sticky; top: calc(var(--head) + 41px); z-index: 20; background: var(--paper); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); margin-bottom: 24px; transition: top .5s var(--ease); }
 .head.is-hidden ~ main .tools { top: 0; }
-.tools__in { display: flex; justify-content: space-between; align-items: center; gap: 24px; height: 52px; }
-.tabs { display: flex; gap: 22px; overflow-x: auto; scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
-.tabs button { position: relative; padding: 6px 0; color: var(--graphite); white-space: nowrap; }
-.tabs button[aria-pressed="true"] { color: var(--ink); }
-.tabs button::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
-.tabs button[aria-pressed="true"]::after, .tabs button:hover::after { transform: scaleX(1); transform-origin: left; }
-.tools__right { display: flex; align-items: center; gap: 22px; flex-shrink: 0; }
-.tools select { border: 0; background: none; outline: none; cursor: pointer; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; }
-.feste-tab { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 28px; }
-.feste-tab a { position: relative; padding: 6px 0; color: var(--graphite); }
-.feste-tab a[aria-current] { color: var(--ink); }
-.feste-tab a::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
-.feste-tab a[aria-current]::after, .feste-tab a:hover::after { transform: scaleX(1); transform-origin: left; }
-.vuoto { padding: 96px 0; text-align: center; color: var(--graphite); }
-@media (max-width: 760px) {
-  .cat-head { grid-template-columns: 1fr; }
+.tools__in { display: flex; justify-content: space-between; align-items: center; gap: 24px; height: 56px; }
+.tools__filtri { display: none; }
+.ordina { position: relative; display: inline-flex; align-items: center; gap: 10px; }
+.ordina select { appearance: none; -webkit-appearance: none; border: 0; background: none; outline: none; cursor: pointer; padding-right: 20px; color: var(--ink); font: inherit; letter-spacing: inherit; text-transform: inherit; }
+.ordina::after { content: ''; position: absolute; right: 3px; top: 50%; width: 7px; height: 7px; margin-top: -6px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg); pointer-events: none; }
+
+.cat-corpo { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: clamp(28px, 3.4vw, 56px); align-items: start; padding-bottom: 96px; }
+#griglia { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vuoto { padding: 80px 0; text-align: center; color: var(--graphite); }
+.vuoto .link { display: inline-block; margin-top: 18px; }
+
+/* Filtri attivi: si tolgono uno per uno */
+.attivi { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
+.attivi:empty { display: none; }
+.conta-tel { display: none; }
+.attivo { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; box-shadow: inset 0 0 0 1px var(--hair); font-size: 14.5px; }
+.attivo svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1.4; }
+.attivi__azzera { margin-left: 6px; }
+
+/* Pannello: colonna fissa su PC, foglio dal basso sul telefono */
+.filtri { position: sticky; top: calc(var(--head) + 41px + 56px + 24px); max-height: calc(100vh - var(--head) - 41px - 56px - 48px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; background: var(--paper); transition: top .5s var(--ease), max-height .5s var(--ease); }
+.head.is-hidden ~ main .filtri { top: calc(56px + 24px); max-height: calc(100vh - 56px - 48px); }
+.filtri__testa, .filtri__piede, .filtri-velo { display: none; }
+.fgr { border-bottom: 1px solid var(--hair); }
+.fgr:first-child { border-top: 1px solid var(--hair); }
+.fgr summary { display: flex; align-items: center; gap: 12px; min-height: 50px; cursor: pointer; list-style: none; font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; }
+.fgr summary::-webkit-details-marker { display: none; }
+.fgr summary::after { content: ''; flex: none; width: 11px; height: 11px; margin-left: auto; background: linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat, linear-gradient(currentColor, currentColor) center / 1px 100% no-repeat; transition: transform .4s var(--ease); }
+.fgr[open] summary::after { background: linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat; }
+.fgr__scelte { color: var(--fog); letter-spacing: 0; text-transform: none; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fgr__voci { display: grid; padding: 0 0 14px; }
+.fv { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 36px; text-align: left; font-size: 15.5px; color: var(--ink); transition: opacity .3s; }
+.fv small { margin-left: auto; color: var(--fog); font-size: 13.5px; }
+.fv__box { flex: none; position: relative; width: 18px; height: 18px; box-shadow: inset 0 0 0 1px rgba(11, 11, 11, .36); transition: background .25s; }
+.fv[aria-pressed="true"] .fv__box { background: var(--nero); box-shadow: none; }
+.fv[aria-pressed="true"] .fv__box::after { content: ''; position: absolute; left: 6px; top: 2.5px; width: 5px; height: 10px; border-right: 1.4px solid var(--paper); border-bottom: 1.4px solid var(--paper); transform: rotate(40deg); }
+.fv__tinta { flex: none; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(11, 11, 11, .2); }
+.fv[aria-pressed="true"] .fv__tinta { outline: 1px solid var(--ink); outline-offset: 2px; }
+.fv:disabled { opacity: .32; cursor: default; }
+@media (hover: hover) and (pointer: fine) { .fv:not(:disabled):hover .fv__box { box-shadow: inset 0 0 0 1px var(--ink); } }
+
+@media (max-width: 1000px) { .eventi { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+  .cat-head { grid-template-columns: minmax(0, 1fr); padding-bottom: 24px; }
   .cat-head__foto { display: none; }
-  .cat-head__foto.is-video { display: block; width: 100%; aspect-ratio: 16 / 10; }
-  .tools { top: var(--head); }
-  .tools__in { flex-direction: column; align-items: stretch; height: auto; padding: 10px 0; gap: 8px; }
-  .tools__right { justify-content: space-between; }
+  .eventi { margin-bottom: 24px; }
+  .eventi a { min-height: 46px; font-size: clamp(11px, 3vw, 12.5px); letter-spacing: .06em; }
+  /* Due bottoni grandi, metà schermo ciascuno; 16 px perché iPhone non ingrandisca la pagina */
+  .tools { top: calc(var(--head) + 45px); margin-bottom: 16px; }
+  .tools__in { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; height: 52px; padding: 0; }
+  .tools__conta { display: none; }
+  .conta-tel { display: block; margin: 0 0 12px; }
+  .tools__filtri { display: flex; align-items: center; justify-content: center; gap: 10px; height: 100%; border-right: 1px solid var(--hair); font-size: 16px; }
+  .tools__filtri svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .ordina { justify-content: center; height: 100%; font-size: 16px; letter-spacing: 0; text-transform: none; }
+  .ordina__nome { display: none; }
+  .ordina select { max-width: 150px; text-overflow: ellipsis; font-size: 16px; text-align: center; text-align-last: center; }
+  .ordina::after { right: calc(50% - 86px); }
+  .cat-corpo { display: block; padding-bottom: 72px; }
+  .filtri-velo { display: block; position: fixed; inset: 0; z-index: 95; background: rgba(11, 11, 11, .32); opacity: 0; pointer-events: none; transition: opacity .45s var(--ease); }
+  .filtri-velo.is-on { opacity: 1; pointer-events: auto; }
+  .filtri, .head.is-hidden ~ main .filtri { position: fixed; left: 0; right: 0; top: auto; bottom: 0; z-index: 96; height: 88vh; height: 88dvh; max-height: none; display: flex; flex-direction: column; overflow: hidden; transform: translateY(100%); visibility: hidden; transition: transform .55s var(--ease), visibility 0s .55s; }
+  .filtri.is-on { transform: none; visibility: visible; transition: transform .55s var(--ease), visibility 0s; }
+  .filtri__testa { display: flex; justify-content: space-between; align-items: center; flex: none; height: 58px; padding: 0 var(--gut); border-bottom: 1px solid var(--hair); }
+  .filtri__testa h2 { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: 26px; }
+  .filtri__chiudi { display: grid; place-items: center; width: 44px; height: 44px; margin-right: -12px; }
+  .filtri__chiudi svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+  .filtri__corpo { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 0 var(--gut); }
+  .fgr:first-child { border-top: 0; }
+  .fgr summary { min-height: 58px; font-size: 13px; }
+  .fgr__voci { padding-bottom: 16px; }
+  .fv { min-height: 46px; font-size: 16.5px; }
+  .fgr--colori .fgr__voci { grid-template-columns: minmax(0, 1fr); }
+  .filtri__piede { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px; flex: none; padding: 12px var(--gut) calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--hair); background: var(--paper); }
+  .filtri__piede .btn { padding: 0 10px; letter-spacing: .08em; }
+  #griglia { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+@media (max-width: 760px) { #griglia { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>
 </head>
 <body data-pagina="catalogo">
@@ -57,35 +116,45 @@
       <div>
         <h1 class="h-xl" id="titolo">Tutte le bomboniere</h1>
         <p class="body-l" id="descrizione"></p>
-        <nav class="feste-tab label" id="feste-tab" aria-label="Eventi"><a href="catalogo.html">Tutte</a></nav>
       </div>
-      <div class="cat-head__foto"><img id="foto-festa" alt=""><video id="video-festa" muted loop playsinline preload="metadata" aria-label="Bomboniere per un matrimonio confezionate nel negozio Graziella" hidden></video></div>
+      <div class="cat-head__foto"><img id="foto-festa" alt=""></div>
     </header>
+    <nav class="eventi label" id="eventi" aria-label="Eventi"><a href="catalogo.html">Tutte</a></nav>
   </div>
   <div class="tools">
     <div class="wrap tools__in">
-      <div class="tabs label" id="stili" role="group" aria-label="Stile">
-        <button aria-pressed="true" data-stile="">Tutti gli stili</button>
-        <button aria-pressed="false" data-stile="classico">Classico</button>
-        <button aria-pressed="false" data-stile="moderno">Moderno</button>
-        <button aria-pressed="false" data-stile="spiritoso">Spiritoso</button>
-      </div>
-      <div class="tools__right">
-        <span class="label fog" id="conta"></span>
-        <label class="label"><span class="sr">Ordina</span>
-          <select id="ordina">
-            <option value="">Consigliati</option>
-            <option value="su">Prezzo crescente</option>
-            <option value="giu">Prezzo decrescente</option>
-            <option value="veloci">Pronte prima</option>
-          </select>
-        </label>
-      </div>
+      <button type="button" class="tools__filtri" id="apri-filtri" aria-haspopup="dialog" aria-expanded="false" aria-controls="filtri">
+        <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M1 5h9M14 5h3M1 13h3M8 13h9"/><circle cx="12" cy="5" r="2"/><circle cx="6" cy="13" r="2"/></svg>
+        <span>Filtri<span id="n-filtri"></span></span>
+      </button>
+      <span class="label fog tools__conta js-conta" aria-live="polite"></span>
+      <label class="ordina label"><span class="ordina__nome">Ordina per</span>
+        <select id="ordina" aria-label="Ordina per">
+          <option value="">Consigliati</option>
+          <option value="su">Prezzo crescente</option>
+          <option value="giu">Prezzo decrescente</option>
+          <option value="veloci">Pronte prima</option>
+          <option value="nome">Nome, dalla A alla Z</option>
+        </select>
+      </label>
     </div>
   </div>
-  <div class="wrap" style="padding-bottom:96px">
-    <div class="grid" id="griglia"></div>
-    <p class="vuoto" id="vuoto" hidden>Nessun pezzo con questo stile per questo evento. In negozio ce ne sono molti di più: scrivici.</p>
+  <div class="wrap cat-corpo" id="corpo">
+    <div class="filtri-velo" id="filtri-velo"></div>
+    <aside class="filtri" id="filtri" aria-label="Filtri" data-lenis-prevent>
+      <div class="filtri__testa"><h2>Filtri</h2><button type="button" class="filtri__chiudi" id="chiudi-filtri" aria-label="Chiudi i filtri"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14"/></svg></button></div>
+      <div class="filtri__corpo" id="filtri-corpo" data-lenis-prevent></div>
+      <div class="filtri__piede">
+        <button type="button" class="btn btn--line" id="filtri-azzera"><span>Azzera</span></button>
+        <button type="button" class="btn" id="filtri-mostra"><span id="filtri-mostra-testo"></span></button>
+      </div>
+    </aside>
+    <div>
+      <p class="conta-tel label fog js-conta"></p>
+      <div class="attivi" id="attivi"></div>
+      <div class="grid" id="griglia"></div>
+      <div class="vuoto" id="vuoto" hidden>Nessuna bomboniera con questi filtri. In negozio ce ne sono molte di più: scrivici.<br><button type="button" class="link" id="vuoto-azzera">Azzera i filtri</button></div>
+    </div>
   </div>
 </main>
 <div id="piede"></div>
@@ -93,7 +162,6 @@
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/SplitText.min.js"></script>
-<script src="assets/vendor/Flip.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/js/dati.js"></script>
 <script>document.body.dataset.festa = location.hash.slice(1) || new URLSearchParams(location.search).get('festa') || '';</script>
@@ -103,6 +171,8 @@
 (function () {
   const { G, card, festa, entrate } = Negozio;
   const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const foglio = matchMedia('(max-width: 900px)');
+  const $ = id => document.getElementById(id);
   const TESTI = {
     '': 'Una parte delle circa 1.300 bomboniere del negozio. Scegli l’evento per vedere solo quelle adatte.',
     matrimonio: 'Porcellane, cristalli e qualche pezzo spiritoso per il giorno del sì.',
@@ -114,87 +184,153 @@
     compleanno: 'Pezzi allegri, dai calciatori alla ceramica, per ogni età.',
     offerte: 'Pezzi ribassati, finché ci sono in negozio.'
   };
-  const stato = { festa: document.body.dataset.festa, stile: '', ordina: '' };
-  document.getElementById('feste-tab').insertAdjacentHTML('beforeend', G.feste.map(f => `<a href="catalogo.html#${f.id}">${f.corto || f.nome}</a>`).join(''));
-  const griglia = document.getElementById('griglia');
+
+  /* I gruppi del pannello. Dentro un gruppo le scelte si sommano, tra gruppi diversi si restringe */
+  const F = G.filtri;
+  const GRUPPI = [
+    { id: 'tipo', nome: 'Categoria', voci: F.tipi, vale: (p, v) => p.tipo === v },
+    { id: 'prezzo', nome: 'Prezzo', voci: F.prezzi, vale: (p, v) => { const b = F.prezzi.find(x => x[0] === v); return p.prezzo > b[2] && p.prezzo <= b[3]; } },
+    { id: 'colore', nome: 'Colore', voci: F.colori, tinta: true, vale: (p, v) => p.colori.includes(v) },
+    { id: 'materia', nome: 'Materiale', voci: F.materie, vale: (p, v) => F.materie.find(x => x[0] === v)[2].test(p.materiale) },
+    { id: 'stile', nome: 'Stile', voci: F.stili, vale: (p, v) => p.stile === v }
+  ];
+  const stato = { festa: document.body.dataset.festa, ordina: '', scelte: Object.fromEntries(GRUPPI.map(g => [g.id, new Set()])) };
+  /* Tornando indietro da una scheda i filtri restano com'erano */
+  try {
+    const nav = performance.getEntriesByType('navigation')[0];
+    const salvato = JSON.parse(sessionStorage.getItem('graziella-filtri') || 'null');
+    if (nav && nav.type === 'back_forward' && salvato && salvato.festa === stato.festa) {
+      stato.ordina = salvato.ordina || '';
+      GRUPPI.forEach(g => { stato.scelte[g.id] = new Set(salvato.scelte[g.id] || []); });
+    }
+  } catch (e) {}
+  const salva = () => { try { sessionStorage.setItem('graziella-filtri', JSON.stringify({ festa: stato.festa, ordina: stato.ordina, scelte: Object.fromEntries(GRUPPI.map(g => [g.id, [...stato.scelte[g.id]]])) })); } catch (e) {} };
+
+  $('eventi').insertAdjacentHTML('beforeend', G.feste.map(f => `<a href="catalogo.html#${f.id}">${f.corto || f.nome}</a>`).join(''));
+  const griglia = $('griglia');
   griglia.innerHTML = G.prodotti.map(card).join('');
   const cards = [...griglia.children];
+  $('ordina').value = stato.ordina;
 
-  let divisione = null;
+  $('filtri-corpo').innerHTML = GRUPPI.map(g => `<details class="fgr${g.tinta ? ' fgr--colori' : ''}" data-gruppo="${g.id}" open>
+      <summary><span>${g.nome}</span><span class="fgr__scelte"></span></summary>
+      <div class="fgr__voci">${g.voci.map(v => `<button type="button" class="fv" aria-pressed="false" data-g="${g.id}" data-v="${v[0]}">${g.tinta ? `<span class="fv__tinta" style="background:${v[2]}"></span>` : '<span class="fv__box"></span>'}<span>${v[1]}</span><small></small></button>`).join('')}</div>
+    </details>`).join('');
+  /* Nel foglio del telefono restano aperti solo i primi tre gruppi: gli altri si vedono dal titolo */
+  if (foglio.matches) document.querySelectorAll('.fgr').forEach((d, i) => { if (i > 2) d.open = false; });
+
+  const nomeVoce = (g, v) => g.voci.find(x => x[0] === v)[1];
+  const passaFesta = p => !stato.festa || p.feste.includes(stato.festa);
+  const passaGruppo = (p, g) => { const s = stato.scelte[g.id]; return !s.size || [...s].some(v => g.vale(p, v)); };
+  const passa = (p, salta) => passaFesta(p) && GRUPPI.every(g => g === salta || passaGruppo(p, g));
+  const quanteScelte = () => GRUPPI.reduce((n, g) => n + stato.scelte[g.id].size, 0);
+  const parola = n => n === 1 ? '1 bomboniera' : `${n} bomboniere`;
+
   function intestazione(anima) {
     const f = festa(stato.festa);
-    const titolo = document.getElementById('titolo');
-    if (divisione) { divisione.revert(); divisione = null; }
+    const titolo = $('titolo');
     titolo.textContent = f ? f.nome : 'Tutte le bomboniere';
-    if (anima && window.gsap && window.SplitText && !ridotto) {
-      divisione = SplitText.create(titolo, { type: 'lines', mask: 'lines' });
-      gsap.from(divisione.lines, { yPercent: 105, duration: 1, stagger: .08, ease: 'power4.out', delay: .05 });
-    }
-    document.getElementById('descrizione').textContent = TESTI[stato.festa] || TESTI[''];
-    document.getElementById('crumb-festa').innerHTML = f ? `<span>/</span> <span style="color:var(--ink)">${f.nome}</span>` : '';
-    const img = document.getElementById('foto-festa'), video = document.getElementById('video-festa');
+    $('descrizione').textContent = TESTI[stato.festa] || TESTI[''];
+    $('crumb-festa').innerHTML = f ? `<span>/</span> <span style="color:var(--ink)">${f.nome}</span>` : '';
+    const img = $('foto-festa');
     img.src = `assets/img/${f ? f.foto : 'vetrina-cristallo'}.webp`;
-    const conVideo = !!(f && f.video);
-    img.hidden = conVideo; video.hidden = !conVideo;
-    img.parentElement.classList.toggle('is-video', conVideo);
-    if (conVideo) { if (!video.src.endsWith(f.video + '.mp4')) { video.poster = `assets/video/${f.video}-poster.jpg`; video.src = `assets/video/${f.video}.mp4`; } if (!ridotto) video.play().catch(() => {}); } else video.pause();
-    const foto = conVideo ? video : img;
-    /* La foto della festa entra a tendina, come le vetrine */
     if (anima && window.gsap && !ridotto) {
-      gsap.fromTo(foto.parentElement, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.2, ease: 'expo.out' });
-      gsap.fromTo(foto, { yPercent: 30, scale: 1.15 }, { yPercent: 0, scale: 1, duration: 1.5, ease: 'expo.out' });
+      gsap.fromTo(titolo, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .8, ease: 'power3.out' });
+      gsap.fromTo(img.parentElement, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'expo.out', clearProps: 'clipPath' });
     }
     document.title = (f ? 'Bomboniere ' + f.nome.toLowerCase() : 'Bomboniere') + ' · Graziella';
-    document.querySelectorAll('#feste-tab a').forEach(a => {
-      const id = new URL(a.href).hash.slice(1);
-      a.toggleAttribute('aria-current', id === stato.festa);
+    document.querySelectorAll('#eventi a').forEach(a => a.toggleAttribute('aria-current', new URL(a.href).hash.slice(1) === stato.festa));
+  }
+
+  function aggiornaPannello(n) {
+    GRUPPI.forEach(g => {
+      /* Accanto a ogni voce quante ne restano sceglierla; se non ne resta nessuna la voce si spegne */
+      document.querySelectorAll(`.fv[data-g="${g.id}"]`).forEach(b => {
+        const v = b.dataset.v, su = stato.scelte[g.id].has(v);
+        const conta = G.prodotti.filter(p => passa(p, g) && g.vale(p, v)).length;
+        b.setAttribute('aria-pressed', String(su));
+        b.disabled = !conta && !su;
+        b.querySelector('small').textContent = conta;
+      });
+      document.querySelector(`.fgr[data-gruppo="${g.id}"] .fgr__scelte`).textContent = [...stato.scelte[g.id]].map(v => nomeVoce(g, v)).join(', ');
     });
+    const scelte = quanteScelte();
+    $('n-filtri').textContent = scelte ? ` (${scelte})` : '';
+    $('filtri-mostra-testo').textContent = n ? `Mostra ${parola(n)}` : 'Nessun risultato';
+    $('filtri-azzera').disabled = !scelte;
+    const X = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8M9 1L1 9"/></svg>';
+    $('attivi').innerHTML = GRUPPI.flatMap(g => [...stato.scelte[g.id]].map(v => `<button type="button" class="attivo" data-g="${g.id}" data-v="${v}" aria-label="Togli il filtro ${nomeVoce(g, v)}">${nomeVoce(g, v)}${X}</button>`)).join('')
+      + (scelte ? '<button type="button" class="link attivi__azzera" data-azzera>Azzera tutto</button>' : '');
   }
 
   function applica(anima) {
-    const flip = anima && window.Flip && !ridotto ? Flip.getState(cards) : null;
-    const visibili = cards.filter(c => {
-      const p = Negozio.prodotto(c.dataset.id);
-      return (!stato.festa || p.feste.includes(stato.festa)) && (!stato.stile || p.stile === stato.stile);
-    });
-    const ord = [...visibili].sort((a, b) => {
+    const visibili = cards.filter(c => passa(Negozio.prodotto(c.dataset.id)));
+    const ordinati = [...visibili].sort((a, b) => {
       const pa = Negozio.prodotto(a.dataset.id), pb = Negozio.prodotto(b.dataset.id);
       if (stato.ordina === 'su') return pa.prezzo - pb.prezzo;
       if (stato.ordina === 'giu') return pb.prezzo - pa.prezzo;
       if (stato.ordina === 'veloci') return pa.giorni - pb.giorni;
+      if (stato.ordina === 'nome') return pa.nome.localeCompare(pb.nome, 'it');
       return 0;
     });
     cards.forEach(c => { c.hidden = !visibili.includes(c); });
-    ord.forEach(c => griglia.appendChild(c));
+    ordinati.forEach(c => griglia.appendChild(c));
     cards.filter(c => c.hidden).forEach(c => griglia.appendChild(c));
-    document.getElementById('conta').textContent = `${visibili.length} ${visibili.length === 1 ? 'pezzo' : 'pezzi'}`;
-    document.getElementById('vuoto').hidden = visibili.length > 0;
-    if (flip) {
-      Flip.from(flip, {
-        duration: .8, ease: 'power3.inOut', stagger: .02, absolute: true, prune: true,
-        onEnter: el => gsap.fromTo(el, { opacity: 0, scale: .94 }, { opacity: 1, scale: 1, y: 0, duration: .7, ease: 'power3.out' }),
-        onLeave: el => gsap.to(el, { opacity: 0, scale: .94, duration: .4 }),
-        onComplete: () => ScrollTrigger.refresh()
-      });
-    }
+    document.querySelectorAll('.js-conta').forEach(el => { el.textContent = parola(visibili.length); });
+    $('vuoto').hidden = visibili.length > 0;
+    aggiornaPannello(visibili.length);
+    salva();
+    if (window.ScrollTrigger) ScrollTrigger.refresh();
+    if (anima && window.gsap && !ridotto) gsap.fromTo(griglia, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .5, ease: 'power3.out', clearProps: 'opacity,transform' });
+    if (anima && !foglio.matches) inCima();
+  }
+  /* Se si è già scesi nella lista, si torna all'inizio dei risultati */
+  function inCima() {
+    const corpo = $('corpo'), y = corpo.getBoundingClientRect().top;
+    if (y >= 0) return;
+    /* Risalendo torna la testata: i risultati devono restare sotto testata e barra */
+    const alto = scrollY + y - (foglio.matches ? 170 : 190);
+    if (Negozio.lenis) Negozio.lenis.scrollTo(alto, { duration: .7 }); else scrollTo(0, alto);
   }
 
-  /* Cambiare festa dalla testata filtra sul posto, senza ricaricare */
-  document.querySelectorAll('#feste-tab a').forEach(a => a.addEventListener('click', e => {
+  function azzera() { GRUPPI.forEach(g => stato.scelte[g.id].clear()); applica(true); }
+
+  document.querySelectorAll('#eventi a').forEach(a => a.addEventListener('click', e => {
     e.preventDefault();
     stato.festa = new URL(a.href).hash.slice(1);
     history.replaceState(null, '', stato.festa ? `#${stato.festa}` : 'catalogo.html');
     intestazione(true); applica(true);
   }));
-  document.getElementById('stili').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b) return;
-    stato.stile = b.dataset.stile;
-    document.querySelectorAll('#stili button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-    applica(true);
+  const cambia = (g, v) => { const s = stato.scelte[g]; s.has(v) ? s.delete(v) : s.add(v); applica(true); };
+  $('filtri-corpo').addEventListener('click', e => { const b = e.target.closest('.fv'); if (b && !b.disabled) cambia(b.dataset.g, b.dataset.v); });
+  $('attivi').addEventListener('click', e => {
+    if (e.target.closest('[data-azzera]')) return azzera();
+    const b = e.target.closest('.attivo'); if (b) cambia(b.dataset.g, b.dataset.v);
   });
-  document.getElementById('ordina').addEventListener('change', e => { stato.ordina = e.target.value; applica(true); });
+  $('vuoto-azzera').addEventListener('click', azzera);
+  $('filtri-azzera').addEventListener('click', azzera);
+  $('ordina').addEventListener('change', e => { stato.ordina = e.target.value; applica(true); });
 
-  if (window.gsap) gsap.registerPlugin(Flip);
+  /* Foglio dei filtri sul telefono: la pagina sotto resta ferma */
+  const pannello = $('filtri'), velo = $('filtri-velo'), apri = $('apri-filtri');
+  /* Il foglio sta sopra testata e borsa: sul telefono vive direttamente nel body, su PC torna nella colonna */
+  const colloca = () => { if (foglio.matches) document.body.append(velo, pannello); else $('corpo').prepend(velo, pannello); };
+  colloca();
+  function foglioAperto(si) {
+    pannello.classList.toggle('is-on', si); velo.classList.toggle('is-on', si);
+    apri.setAttribute('aria-expanded', String(si));
+    if (si) { pannello.setAttribute('role', 'dialog'); pannello.setAttribute('aria-modal', 'true'); } else { pannello.removeAttribute('role'); pannello.removeAttribute('aria-modal'); }
+    document.documentElement.style.overflow = si ? 'hidden' : '';
+    if (Negozio.lenis) si ? Negozio.lenis.stop() : Negozio.lenis.start();
+    if (si) $('chiudi-filtri').focus({ preventScroll: true }); else if (document.activeElement && pannello.contains(document.activeElement)) apri.focus({ preventScroll: true });
+  }
+  apri.addEventListener('click', () => foglioAperto(true));
+  $('chiudi-filtri').addEventListener('click', () => foglioAperto(false));
+  velo.addEventListener('click', () => foglioAperto(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && pannello.classList.contains('is-on')) foglioAperto(false); });
+  $('filtri-mostra').addEventListener('click', () => { foglioAperto(false); inCima(); });
+  foglio.addEventListener('change', () => { if (!foglio.matches) foglioAperto(false); colloca(); });
+
   intestazione(true); applica(false);
   entrate();
 })();

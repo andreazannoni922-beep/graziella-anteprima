@@ -64,11 +64,14 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
   transition: background .3s var(--ease), color .3s var(--ease);
   position: relative; overflow: hidden;
 }
-.btn:hover { background: var(--nero-chiaro); }
 .btn--light { background: var(--paper); color: var(--ink); }
-.btn--light:hover { background: var(--mist); }
 .btn--line { background: transparent; color: var(--nero); box-shadow: inset 0 0 0 1px var(--nero); }
-.btn--line:hover { background: var(--nero); color: var(--paper); }
+/* Mai sul tocco: iPhone tiene acceso il passaggio dopo il dito e il bottone resta vuoto (Andrea, 05/11) */
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { background: var(--nero-chiaro); }
+  .btn--light:hover { background: var(--mist); }
+  .btn--line:hover { background: var(--nero); color: var(--paper); }
+}
 .btn--full { width: 100%; }
 .link {
   font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase;
@@ -176,6 +179,7 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
   .head__cats .freccia, .head__cats .hide-s { display: none; }
   .hide-s { display: none !important; }
 }
+@media (max-width: 345px) { .head__cats.label { font-size: 9.5px; } .head__cats a { letter-spacing: .02em; } }
 
 /* Menu a sipario (Curtain Menu di HorizonX): il nero scende con il bordo curvo, le voci salgono dalle righe, la carta inclinata mostra la foto della voce */
 .menu { position: fixed; inset: 0; z-index: 90; pointer-events: none; visibility: hidden; color: var(--paper); }
@@ -236,11 +240,11 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .btn.is-vivo:not(.btn--light):not(.btn--line):not(.btn--vetro):hover { background: var(--nero); }
 .btn--light.is-vivo:hover { background: var(--paper); }
 .btn.is-vivo:hover .btn__dot, .btn.is-vivo:focus-visible .btn__dot, a:hover .btn.is-vivo .btn__dot { width: 100%; }
-}
-.btn:active { opacity: .82; }
 .btn.is-vivo:hover .btn__riposo, .btn.is-vivo:focus-visible .btn__riposo, a:hover .btn.is-vivo .btn__riposo { opacity: 0; transform: translateX(44px); }
 .btn.is-vivo:hover .btn__cambio, .btn.is-vivo:focus-visible .btn__cambio, a:hover .btn.is-vivo .btn__cambio { opacity: 1; transform: none; }
 .btn.is-vivo:not(.btn--light):not(.btn--line):not(.btn--vetro):hover::after { content: ''; position: absolute; inset: 0; z-index: 3; box-shadow: inset 0 0 0 1px var(--ink); pointer-events: none; }
+}
+.btn:active { opacity: .82; }
 @media (hover: none) { .btn__dot { display: none; } .btn__riposo { transform: none; } }
 
 /* Borsa (pannello laterale) */
