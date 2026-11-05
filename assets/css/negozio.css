@@ -148,16 +148,16 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .mega__campo img { position: absolute; left: 0; right: 0; bottom: 12%; height: 66%; width: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .9s var(--ease); }
 .mega__campo::after { content: ''; position: absolute; left: 32%; right: 32%; bottom: 10.5%; height: 12px; border-radius: 50%; background: radial-gradient(closest-side, rgba(11, 11, 11, .16), transparent); }
 .mega__pezzo:hover .mega__campo img { transform: translateY(-5%) scale(1.03); }
-.mega__pezzi--abiti .mega__campo img { inset: 0; height: 100%; object-fit: cover; mix-blend-mode: normal; }
+.mega__pezzi--abiti .mega__campo img { inset: 0; height: 100%; object-fit: contain; mix-blend-mode: normal; }
 .mega__pezzi--abiti .mega__campo::after { display: none; }
-.mega__pezzi--abiti .mega__pezzo:hover .mega__campo img { transform: scale(1.04); }
+.mega__pezzi--abiti .mega__pezzo:hover .mega__campo img { transform: none; }
 .mega__pnome { display: block; margin-top: 10px; font-size: 16px; line-height: 1.35; }
 .mega__psotto { display: block; font-size: 14.5px; color: var(--graphite); }
 .mega__psotto s { color: var(--fog); margin-right: 4px; }
 /* A destra la foto della festa */
 .mega__foto { margin: 0; width: 100%; }
 .mega__cornice { overflow: hidden; aspect-ratio: 4 / 5; background: var(--mist); }
-.mega__cornice img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mega__cornice img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .mega__foto figcaption { margin-top: 10px; color: var(--graphite); }
 .mega__foto--atelier figcaption { display: grid; gap: 8px; justify-items: start; }
 .mega__foto--atelier .mega__cornice { aspect-ratio: 3 / 2; }
@@ -198,8 +198,8 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 .menu__list[data-sopra] .menu__item.is-su .menu__filo { width: 34px; margin-right: 16px; }
 .menu__item { transition: opacity .32s; }
 .menu__carta { position: relative; margin: 0; width: clamp(220px, 22vw, 330px); aspect-ratio: 3 / 4; transform: rotate(-4deg); background: #1c1c1b; overflow: hidden; }
-.menu__scatto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.08); transition: opacity .42s ease, transform .9s var(--ease); }
-.menu__scatto.is-su { opacity: 1; transform: scale(1); }
+.menu__scatto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .42s ease; }
+.menu__scatto.is-su { opacity: 1; }
 .menu__didascalia { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 14px 12px; background: linear-gradient(to top, rgba(11, 11, 11, .7), transparent); color: var(--paper); }
 @media (max-width: 900px) {
   .menu__corpo { grid-template-columns: 1fr; align-items: start; padding-top: 12px; }
@@ -291,13 +291,6 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
   position: absolute; left: 13%; bottom: 12%; width: 74%; height: 68%; object-fit: contain; object-position: 50% 100%;
   transition: transform .9s var(--ease);
   mix-blend-mode: multiply;
-}
-.card__field img, .mega__campo img, .gal__main img, .gal__thumbs img {
-  /* Le foto sono scontornate da telefono: dove l'oggetto toccava il bordo dello scatto la linea si sfuma */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(180deg, transparent, #000 4%, #000 96%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(180deg, transparent, #000 4%, #000 96%, transparent);
-  mask-composite: intersect;
 }
 .card__field::after { /* ombra a terra */
   content: ''; position: absolute; left: 30%; right: 30%; bottom: 10.5%; height: 14px; border-radius: 50%;
@@ -437,24 +430,23 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 
 /* Piede: le due porte dell'hero tornano come i due negozi veri (pannello foto del piede ORRIS, MotionSites), sotto colonne quiete su carta (Lemaire). Niente onda, niente scritta enorme. */
 .foot { position: relative; background: var(--paper); color: var(--ink); }
-.foot__porte { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-.foot__porta { position: relative; overflow: hidden; height: clamp(440px, 72vh, 700px); color: var(--paper); background: var(--bruno-scuro); }
-.foot__porta > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
-.foot__porta::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,25,23,.9), rgba(28,25,23,.72) 34%, rgba(28,25,23,.34) 62%, rgba(28,25,23,0) 86%); pointer-events: none; }
-.foot__porta-testo { position: absolute; left: clamp(20px, 3.4vw, 56px); right: clamp(20px, 3.4vw, 56px); bottom: clamp(24px, 4vw, 52px); z-index: 1; }
-.foot__stato { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; }
-.foot__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--paper); }
-.foot__dot.is-closed { background: transparent; box-shadow: inset 0 0 0 1px rgba(255,255,255,.8); }
-.foot__nome { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(38px, 4.4vw, 72px); line-height: 1; letter-spacing: -.01em; }
-.foot__dove { margin: 14px 0 22px; font-style: normal; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.5; color: rgba(255,255,255,.9); }
-.foot__azioni { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 24px; }
-.foot__azioni .btn { min-width: 176px; }
-.foot__rotta { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.65); transition: border-color .3s; }
-.foot__rotta:hover { border-color: var(--paper); }
+.foot__porte { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.4vw, 56px); max-width: var(--max); margin: 0 auto; padding: clamp(48px, 6vw, 88px) var(--gut) 0; }
+.foot__porta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(18px, 2vw, 32px); align-items: end; }
+.foot__porta > img { display: block; width: 100%; height: auto; }
+.foot__stato { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: var(--graphite); }
+.foot__dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
+.foot__dot.is-closed { background: transparent; box-shadow: inset 0 0 0 1px var(--graphite); }
+.foot__nome { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(30px, 2.7vw, 46px); line-height: 1.04; letter-spacing: -.01em; }
+.foot__dove { margin: 14px 0 22px; font-style: normal; font-size: clamp(15px, 1.1vw, 16.5px); line-height: 1.5; color: var(--graphite); }
+.foot__azioni { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; }
+.foot__azioni .btn { padding: 0 22px; }
+.foot__rotta { padding: 6px 0; border-bottom: 1px solid var(--ink); }
 .foot__corpo { display: grid; grid-template-columns: minmax(0, 4fr) repeat(3, minmax(0, 2fr)) minmax(0, 3.4fr); gap: clamp(28px, 3.2vw, 56px); padding-top: clamp(56px, 7vw, 104px); padding-bottom: clamp(48px, 6vw, 88px); }
 .foot__logo { width: 168px; height: auto; display: block; }
 .foot__frase { margin: 26px 0 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(30px, 2.5vw, 42px); line-height: 1.08; max-width: 13ch; }
 .foot h4 { margin: 0 0 18px; font-weight: 400; color: var(--graphite); }
+.foot__voce summary { list-style: none; margin: 0 0 18px; color: var(--graphite); pointer-events: none; }
+.foot__voce summary::-webkit-details-marker { display: none; }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
 .foot ul a { display: inline-block; position: relative; transition: color .3s; }
 .foot ul a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: right; transition: transform .5s var(--ease); }
@@ -470,15 +462,27 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 .foot .pagamenti span { height: auto; padding: 0; border: 0; color: inherit; font-size: inherit; letter-spacing: inherit; }
 @media (max-width: 1100px) { .foot__corpo { grid-template-columns: repeat(3, minmax(0, 1fr)); } .foot__intro, .foot__lettera { grid-column: 1 / -1; } }
 @media (max-width: 760px) {
-  .foot__porte { grid-template-columns: 1fr; }
-  .foot__porta { height: min(112vw, 72svh); }
+  .foot__porte { grid-template-columns: 1fr; gap: 44px; padding-top: 40px; }
+  .foot__porta { grid-template-columns: minmax(0, 1fr); }
+  .foot__nome { font-size: 38px; }
   .foot__azioni .btn { flex: 1 1 0; min-width: 0; padding: 0 16px; }
-  .foot__negozio { grid-column: 1 / -1; }
-  .foot__negozio ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
-  .foot__lettera { grid-column: 1 / -1; }
-  .foot__corpo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 20px; padding-top: 48px; padding-bottom: 40px; }
+  .foot__corpo { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 48px; padding-bottom: 40px; }
+  .foot__intro { padding-bottom: 36px; }
+  .foot__voce { border-top: 1px solid var(--hair); }
+  .foot__voce:last-of-type { border-bottom: 1px solid var(--hair); }
+  .foot__voce summary { display: flex; justify-content: space-between; align-items: center; min-height: 54px; margin: 0; color: var(--ink); pointer-events: auto; cursor: pointer; }
+  .foot__voce summary::after { content: '+'; font-size: 20px; line-height: 1; transition: transform .35s var(--ease); }
+  .foot__voce[open] summary::after { transform: rotate(45deg); }
+  .foot__voce ul { padding-bottom: 16px; }
+  .foot__lettera { padding-top: 36px; }
   .foot__frase { max-width: none; }
   .foot ul { gap: 2px; }
   .foot ul a { padding: 6px 0; }
   .foot__bottom { flex-direction: column; align-items: flex-start; }
 }
+
+/* Foto e video sempre interi: dove il riquadro ha un'altra forma, il resto lo riempie una copia sfocata */
+img.fondo-sfocato { position: absolute !important; inset: -8% !important; width: 116% !important; height: 116% !important; max-width: none !important; object-fit: cover !important; filter: blur(22px) brightness(.86) !important; mix-blend-mode: normal !important; pointer-events: none; }
+.col img.fondo-sfocato { filter: blur(22px) grayscale(1) brightness(.72) !important; }
+.col.is-on img.fondo-sfocato { filter: blur(22px) brightness(.86) !important; }
+.intera { object-fit: contain !important; }

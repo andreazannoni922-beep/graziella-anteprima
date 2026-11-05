@@ -19,6 +19,20 @@
   /* Metodi di pagamento detti dal cliente: PayPal, carte (via Stripe), bonifico (IBAN mandato il 04/11: va mostrato solo nel negozio online vero, mai in questa anteprima pubblica) */
   const PAGAMENTI = '<div class="pagamenti" aria-label="Pagamenti accettati"><span>PayPal</span><span>Carte di credito e debito</span><span>Stripe</span><span>Bonifico bancario</span></div>';
 
+  /* ---------- Foto e video interi: la copia sfocata riempie il riquadro, l'originale non si taglia mai ---------- */
+  function intere(selettore) {
+    document.querySelectorAll(selettore).forEach(m => {
+      if (m.dataset.intera || m.classList.contains('fondo-sfocato')) return;
+      const src = m.tagName === 'VIDEO' ? m.getAttribute('poster') : (m.currentSrc || m.getAttribute('src'));
+      m.dataset.intera = '1';
+      m.classList.add('intera');
+      if (!src) return;
+      const fondo = document.createElement('img');
+      fondo.className = 'fondo-sfocato'; fondo.src = src; fondo.alt = ''; fondo.setAttribute('aria-hidden', 'true');
+      m.before(fondo);
+    });
+  }
+
   /* ---------- Borsa ---------- */
   const CHIAVE = 'graziella-borsa';
   let borsa = [];
@@ -508,21 +522,21 @@
     <footer class="foot">
       <div class="foot__porte">
         <article class="foot__porta">
-          <img src="assets/img/showroom-travi.webp" alt="Il negozio di bomboniere Graziella a Bomporto" loading="lazy">
+          <img src="assets/img/showroom-travi.webp" width="960" height="1198" alt="Il negozio di bomboniere Graziella a Bomporto" loading="lazy">
           <div class="foot__porta-testo">
             ${statoRiga(st)}
             <h3 class="foot__nome">Bomboniere Graziella</h3>
             <address class="foot__dove">Via Carlo Testa 4, Bomporto (MO)<br>${G.orariTesto.bomboniere}<br>${G.orariTesto.domenica}</address>
-            <div class="foot__azioni"><a class="btn btn--light" href="tel:+39059909858">059 909858</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Bomboniere+Graziella/data=!4m2!3m1!1s0x477feae1bc9b29a5:0x9061f3459a235cc" target="_blank" rel="noopener">Indicazioni</a></div>
+            <div class="foot__azioni"><a class="btn" href="tel:+39059909858">059 909858</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Bomboniere+Graziella/data=!4m2!3m1!1s0x477feae1bc9b29a5:0x9061f3459a235cc" target="_blank" rel="noopener">Indicazioni</a></div>
           </div>
         </article>
         <article class="foot__porta">
-          <img src="assets/img/sposa-facciata.webp" alt="Una sposa davanti alla facciata di Sposi &amp; Sposi" loading="lazy">
+          <img src="assets/img/sposa-facciata.webp" width="1120" height="1400" alt="Una sposa davanti alla facciata di Sposi &amp; Sposi" loading="lazy">
           <div class="foot__porta-testo">
             ${statoRiga(stAbiti)}
             <h3 class="foot__nome">Sposi &amp; Sposi</h3>
             <address class="foot__dove">Via Carlo Testa 6/B, Bomporto (MO)<br>${G.orariTesto.abiti}</address>
-            <div class="foot__azioni"><a class="btn btn--light" href="tel:+39059819315">059 819315</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Sposi+%26+Sposi/data=!4m2!3m1!1s0x477feb186c6f2935:0xec0568c6a1cd542b" target="_blank" rel="noopener">Indicazioni</a></div>
+            <div class="foot__azioni"><a class="btn" href="tel:+39059819315">059 819315</a><a class="foot__rotta label" href="https://www.google.com/maps/place/Sposi+%26+Sposi/data=!4m2!3m1!1s0x477feb186c6f2935:0xec0568c6a1cd542b" target="_blank" rel="noopener">Indicazioni</a></div>
           </div>
         </article>
       </div>
@@ -532,15 +546,15 @@
           <p class="foot__frase">Vieni a vederle dal vivo, prima di scegliere.</p>
           <a class="foot__premio" href="${G.premi.url}" target="_blank" rel="noopener"><b>${G.premi.awards} Wedding Awards</b> di Matrimonio.com, dal ${G.premi.dal}</a>
         </div>
-        <div><h4 class="label">Bomboniere</h4><ul>${G.feste.map(f => `<li><a href="catalogo.html#${f.id}">${f.corto || f.nome}</a></li>`).join('')}</ul></div>
-        <div><h4 class="label">Abiti</h4><ul>
+        <details class="foot__voce"><summary class="label">Bomboniere</summary><ul>${G.feste.map(f => `<li><a href="catalogo.html#${f.id}">${f.corto || f.nome}</a></li>`).join('')}</ul></details>
+        <details class="foot__voce"><summary class="label">Abiti</summary><ul>
           ${G.categorieAbiti.map(c => `<li><a href="${c.href}">${c.nome}</a></li>`).join('')}
-          <li><a href="abiti.html#prova">Prenota la prova</a></li></ul></div>
-        <div class="foot__negozio"><h4 class="label">Il negozio</h4><ul>
+          <li><a href="abiti.html#prova">Prenota la prova</a></li></ul></details>
+        <details class="foot__voce"><summary class="label">Il negozio</summary><ul>
           <li><a href="index.html#chi-siamo">Chi siamo</a></li>
           <li><a href="spedizioni.html">Condizioni di trasporto</a></li>
           <li><a href="https://www.instagram.com/centrosposigraziella/" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="${G.premi.url}" target="_blank" rel="noopener">Matrimonio.com</a></li></ul></div>
+          <li><a href="${G.premi.url}" target="_blank" rel="noopener">Matrimonio.com</a></li></ul></details>
         <div class="foot__lettera"><h4 class="label">Novità</h4>
           <p>Quello che arriva in negozio, ogni tanto, per email.</p>
           <form class="foot__news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie'"><input type="email" placeholder="La tua email" aria-label="Email" required><button class="label">Iscriviti</button></form>
@@ -551,6 +565,11 @@
 
   const mainEl = document.querySelector('main');
   if (piede && mainEl) mainEl.classList.add('pagina');
+  /* Su PC le colonne del piede sono sempre aperte; su telefono diventano una fisarmonica (Almada Label, Awwwards) così il piede resta corto */
+  const piedeLargo = matchMedia('(min-width: 761px)');
+  const colonnePiede = () => document.querySelectorAll('.foot__voce').forEach(d => { d.open = piedeLargo.matches; });
+  colonnePiede();
+  piedeLargo.addEventListener('change', colonnePiede);
 
   /* ---------- Passaggio tra le pagine: lo stesso sipario del menu scende, la pagina nuova lo vede risalire ---------- */
   document.body.insertAdjacentHTML('beforeend', `<div class="passaggio" id="passaggio" aria-hidden="true">
@@ -754,7 +773,6 @@
     gsap.registerPlugin(ScrollTrigger);
     gsap.utils.toArray('.foot__porta').forEach((p, i) => {
       gsap.from(p, { clipPath: 'inset(100% 0% 0% 0%)', duration: 1.2, delay: i * .08, ease: 'expo.out', clearProps: 'clipPath', scrollTrigger: { trigger: p, start: 'top 92%', once: true } });
-      gsap.fromTo(p.querySelector('img'), { yPercent: 0, scale: 1.08 }, { yPercent: 6, scale: 1.08, transformOrigin: '50% 0%', ease: 'none', scrollTrigger: { trigger: p, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
   }
   /* ---------- File orizzontali (telefono e tablet): si scorrono col dito o con le frecce e la pagina non si blocca mai.
@@ -807,5 +825,5 @@
     return { vai, segna };
   }
 
-  window.Negozio = { G, euro, prodotto, festa, card, aggiungi, volaInBorsa, entrate, bottoni, toggleBorsa, fila, stato, CONFEZIONI, MINIMO, SOGLIA_GRATIS, PAGAMENTI, get lenis() { return lenis; } };
+  window.Negozio = { intere, G, euro, prodotto, festa, card, aggiungi, volaInBorsa, entrate, bottoni, toggleBorsa, fila, stato, CONFEZIONI, MINIMO, SOGLIA_GRATIS, PAGAMENTI, get lenis() { return lenis; } };
 })();

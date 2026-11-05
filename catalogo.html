@@ -16,8 +16,8 @@
 /* Cambiando festa le card scorrono sotto il titolo, mai sopra */
 .cat-head { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; padding: 8px 0 36px; position: relative; z-index: 3; background: var(--paper); }
 .cat-head__foto { width: clamp(140px, 16vw, 230px); aspect-ratio: 4/5; overflow: hidden; }
-.cat-head__foto img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
-.cat-head__foto video { width: 100%; height: 100%; object-fit: cover; }
+.cat-head__foto img { width: 100%; height: 100%; object-fit: contain; filter: grayscale(1); }
+.cat-head__foto video { width: 100%; height: 100%; object-fit: contain; }
 .cat-head__foto [hidden] { display: none; }
 .cat-head__foto.is-video { width: clamp(180px, 20vw, 300px); }
 .cat-head p { margin-top: 18px; }
