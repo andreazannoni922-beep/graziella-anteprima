@@ -87,37 +87,27 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 }
 
 /* Feste a colonne (categorie di Luxury Ecommerce): la colonna sotto il mouse si apre */
-.colonne { --h: min(66vh, 620px); display: flex; gap: 10px; height: var(--h); width: max-content; padding: 0 var(--gut); }
+.colonne { --h: min(66vh, 620px); display: flex; gap: 10px; height: var(--h); padding: 0 var(--gut); overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-left: var(--gut); scrollbar-width: none; cursor: grab; }
+.colonne::-webkit-scrollbar { display: none; }
+.col { scroll-snap-align: start; }
+.col__vert { display: none; }
+.col__pezzi span { width: 56px; height: 70px; }
 .col { position: relative; flex: 0 0 auto; width: calc(var(--h) * var(--k)); overflow: hidden; color: var(--paper); background: var(--bruno-scuro); }
-.col__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(.78); transition: filter 1s var(--ease); }
-.col.is-on .col__foto { filter: none; }
-.col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(34,23,17,.7), rgba(34,23,17,.05) 58%); pointer-events: none; }
+.col__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(34,23,17,.78), rgba(34,23,17,.34) 44%, rgba(34,23,17,0) 72%); pointer-events: none; }
 .col__vert { position: absolute; left: 50%; bottom: 26px; z-index: 2; writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg); font-size: clamp(20px, 1.8vw, 28px); white-space: nowrap; transition: opacity .35s; }
 .col.is-on .col__vert { opacity: 0; }
-.col__dentro { position: absolute; left: 30px; right: 30px; bottom: 30px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; opacity: 0; transform: translateY(24px); transition: opacity .35s, transform .35s; }
-.col.is-on .col__dentro { opacity: 1; transform: none; transition: opacity .7s .35s, transform .9s .35s var(--ease); }
-.col__nome { font-family: var(--font-titoli); margin: 0; font-size: clamp(36px, 4vw, 64px); line-height: 1; font-weight: var(--peso-titoli); }
+.col__dentro { position: absolute; left: 26px; right: 26px; bottom: 26px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.col__nome { display: block; font-family: var(--font-titoli); margin: 0; font-size: clamp(30px, 2.7vw, 40px); line-height: 1.04; font-weight: var(--peso-titoli); }
 .col__conta { display: block; margin-top: 12px; color: rgba(255,255,255,.9); font-size: 14px; }
 .col__pezzi { display: flex; gap: 6px; flex-shrink: 0; }
 .col__pezzi span { width: 70px; height: 88px; padding: 7px; background: var(--mist) center / contain no-repeat; background-origin: content-box; box-shadow: 0 10px 24px -12px rgba(0,0,0,.5); }
 .col__cta { display: inline-flex; margin-top: 18px; }
 /* Su PC la sezione si ferma e le feste scorrono in orizzontale con la rotella; quella al centro si accende */
-#feste.is-pista { overflow: hidden; }
-.colonne.is-pista { will-change: transform; }
-.colonne.is-pista .col__vert { display: none; }
-.colonne.is-pista .col__dentro { opacity: 1; transform: none; left: 26px; right: 26px; bottom: 26px; }
-.colonne.is-pista .col__nome { font-size: clamp(34px, 3vw, 48px); }
-.colonne.is-pista .col__pezzi span { width: 56px; height: 70px; }
-.fila-nav--feste { display: none; }
 @media (max-width: 900px) {
-  .colonne { --h: 440px; width: auto; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
-  .colonne::-webkit-scrollbar { display: none; }
-  .col { scroll-snap-align: start; }
-  .col__foto { filter: none; transform: none; }
-  .col__vert { display: none; }
-  .col__dentro, .col.is-on .col__dentro { opacity: 1; transform: none; left: 18px; right: 18px; bottom: 18px; }
+  .colonne { --h: 440px; scroll-snap-type: x mandatory; padding-bottom: 4px; }
+  .col__dentro { left: 18px; right: 18px; bottom: 18px; }
   .col__pezzi span { width: 52px; height: 64px; }
-  .fila-nav--feste { display: flex; }
 }
 
 /* Vetrina: schede con il pallino */
@@ -134,34 +124,23 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   #vetrina-testa { flex-direction: column; align-items: flex-start; }
 }
 
-/* Abiti: anello 3D che gira con lo scroll */
-.anello { position: relative; height: 280vh; background: var(--paper); }
-.anello__stick { position: sticky; top: 0; height: 100vh; height: 100svh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 24px; max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); overflow: hidden; }
-.anello__testo { position: relative; z-index: 2; }
+/* Abiti: foto grandi in fila, con le frecce (via il rullo 3D, Andrea 05/11) */
+.anello { background: var(--paper); padding: clamp(72px, 9vw, 130px) 0 clamp(56px, 7vw, 100px); }
+.anello__testo { max-width: var(--max); margin: 0 auto clamp(32px, 4vw, 56px); padding: 0 var(--gut); display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 24px clamp(32px, 5vw, 80px); align-items: end; }
 .anello__testo .h-xl { font-size: clamp(44px, 5.2vw, 80px); }
-.anello__testo p { margin: 24px 0 32px; }
+.anello__testo p { margin: 0 0 24px; }
 .anello__azioni { display: flex; gap: 12px; flex-wrap: wrap; }
-.anello__scena { position: relative; z-index: 1; height: 100%; perspective: 1400px; perspective-origin: 50% 40%; display: grid; place-items: center; }
-.anello__ring { position: relative; width: 230px; aspect-ratio: 4 / 5; transform-style: preserve-3d; will-change: transform; }
-.anello__ring figure { position: absolute; inset: 0; margin: 0; backface-visibility: visible; }
-.anello__ring img { width: 100%; height: 100%; object-fit: contain; display: block; }
-.anello__ring figcaption { position: absolute; left: -40%; right: -40%; bottom: -30px; text-align: center; color: var(--graphite); white-space: nowrap; backface-visibility: hidden; opacity: 0; transition: opacity .3s; }
-.anello__ombra { position: absolute; left: 50%; bottom: 12%; width: 70%; height: 60px; transform: translateX(-50%); background: radial-gradient(closest-side, rgba(11,11,11,.14), transparent); pointer-events: none; }
-/* Su telefono e tablet l'anello diventa una fila di foto grandi: niente parte bloccata, si scorre col dito o con le frecce */
-.anello__fila, .fila-nav--abiti { display: none; }
+.anello__fila { --h: min(82vh, 780px); display: flex; gap: 12px; padding: 0 var(--gut); overflow-x: auto; scroll-snap-type: x proximity; scroll-padding-left: var(--gut); scrollbar-width: none; cursor: grab; }
+.anello__fila::-webkit-scrollbar { display: none; }
+.abito-h { flex: 0 0 auto; width: calc(var(--h) * .8); scroll-snap-align: start; }
+.abito-h__foto { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--mist); }
+.abito-h__foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.abito-h figcaption { display: flex; justify-content: space-between; gap: 12px; padding-top: 14px; }
+.abito-h figcaption span:last-child { color: var(--fog); }
 @media (max-width: 900px) {
-  .anello { height: auto; }
-  .anello__stick { position: static; height: auto; display: block; padding: 72px 0 8px; max-width: none; }
-  .anello__testo { padding: 0 var(--gut); }
-  .anello__scena { display: none; }
-  .anello__fila { display: flex; gap: 10px; margin-top: 40px; padding: 0 var(--gut); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .anello__fila::-webkit-scrollbar { display: none; }
-  .abito-h { flex: 0 0 78vw; max-width: 460px; scroll-snap-align: start; }
-  .abito-h__foto { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--mist); }
-  .abito-h__foto img { width: 100%; height: 100%; object-fit: contain; }
-  .abito-h figcaption { display: flex; justify-content: space-between; gap: 12px; padding-top: 14px; }
-  .abito-h figcaption span:last-child { color: var(--fog); }
-  .fila-nav--abiti { display: flex; }
+  .anello__testo { grid-template-columns: minmax(0, 1fr); }
+  .anello__fila { scroll-snap-type: x mandatory; gap: 10px; }
+  .abito-h { width: min(78vw, 460px); }
 }
 
 /* Atelier */
@@ -255,43 +234,52 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 /* Recensioni: due file di schede che scorrono da sole in versi opposti e si fermano sotto il mouse o il dito
    (Marquee "wall of love" di Magic UI); la media enorme si scopre cifra per cifra (Gold Standard, libreria MotionSites).
    Ogni scheda porta il logo della sua fonte: Google o Matrimonio.com */
-.recensioni { position: relative; background: var(--paper); color: var(--ink); padding: clamp(88px, 10vw, 150px) 0 clamp(72px, 8vw, 120px); overflow: hidden; }
-.reg__testa { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(24px, 5vw, 96px); align-items: end; margin-bottom: clamp(44px, 5vw, 72px); }
-.reg__media { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(150px, 19vw, 300px); line-height: .78; letter-spacing: -.04em; display: flex; }
-.reg__media .cifra { display: inline-block; overflow: hidden; padding-bottom: .04em; }
-.reg__media .cifra i { display: inline-block; font-style: normal; }
-.reg__intro { padding-bottom: .6vw; }
-.reg__intro p { margin: 18px 0 0; max-width: 46ch; color: var(--graphite); font-size: clamp(16px, 1.25vw, 18px); }
-.reg__fonti { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 24px; }
-.reg__fonti a { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; color: var(--graphite); }
-.reg__fonti a b { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: 26px; color: var(--ink); }
-.reg__fonti svg { width: 20px; height: 20px; }
-.giri { display: grid; gap: 18px; }
-.giro { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
-.giro__pista { display: flex; gap: 18px; width: max-content; animation: giro-scorre var(--durata, 90s) linear infinite; }
-.giro--indietro .giro__pista { animation-direction: reverse; }
-.giro:hover .giro__pista, .giro:focus-within .giro__pista, .giro.is-fermo .giro__pista { animation-play-state: paused; }
-@keyframes giro-scorre { to { transform: translateX(calc(-50% - 9px)); } }
-.voce { flex: none; width: clamp(300px, 27vw, 400px); display: flex; flex-direction: column; gap: 18px; padding: 28px 28px 24px; background: var(--mist); transition: background .4s var(--ease), transform .5s var(--ease), box-shadow .5s var(--ease); }
-.voce:hover { background: var(--paper); box-shadow: 0 0 0 1px var(--ink); transform: translateY(-4px); }
-.voce__testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.voce__fonte { display: inline-flex; align-items: center; gap: 9px; font-size: 13.5px; color: var(--graphite); }
-.voce__fonte svg { width: 22px; height: 22px; flex: none; }
-.voce__fonte .scritta-mc { font-family: var(--font); letter-spacing: .02em; color: #D33B54; font-size: 15px; }
-.voce__stelle { color: var(--ink); letter-spacing: .12em; font-size: 13px; }
-.voce__testo { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: 21px; line-height: 1.38; display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden; }
-.voce__testo .emo { filter: grayscale(1) brightness(.35) sepia(.4); font-size: .82em; }
-.voce__piede { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--hair); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.voce__nome { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: 26px; line-height: 1; }
-.voce__dove { font-size: 13.5px; color: var(--graphite); text-align: right; line-height: 1.4; }
-.voce a.voce__vai { font-size: 12.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink); background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; width: fit-content; }
-@media (prefers-reduced-motion: reduce) { .giro__pista { animation: none; } .giro { overflow-x: auto; } }
+.recensioni { background: var(--paper); color: var(--ink); padding: clamp(80px, 9vw, 140px) 0 clamp(72px, 8vw, 120px); }
+.rec__testa { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px 40px; padding-bottom: clamp(24px, 2.6vw, 36px); border-bottom: 1px solid var(--ink); }
+.rec__testa h2 { margin: 0; }
+.rec__somma { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; font-size: clamp(15px, 1.15vw, 17px); color: var(--graphite); }
+.rec__somma b { font-weight: 400; color: var(--ink); }
+.rec__stelle { letter-spacing: .14em; font-size: .92em; color: var(--ink); }
+/* Una recensione alla volta, grande, con la foto del negozio: citazione e frecce da Arceage e Kova (MotionSites), cambio automatico dal Testimonial Switcher (HorizonX), testata da Thursday Boots */
+.rec__corpo { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(32px, 6vw, 110px); align-items: stretch; padding: clamp(36px, 4.4vw, 64px) 0; }
+.rec__foto { position: relative; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; background: var(--mist); }
+.rec__foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s var(--ease); }
+.rec__foto img.is-on { opacity: 1; }
+.rec__destra { display: flex; flex-direction: column; justify-content: space-between; gap: 36px; min-width: 0; }
+.rec__pila { display: grid; }
+.rec__voce { grid-area: 1 / 1; display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 30px); opacity: 0; visibility: hidden; transform: translateY(14px); transition: opacity .55s var(--ease), transform .75s var(--ease), visibility 0s .55s; }
+.rec__voce.is-on { opacity: 1; visibility: visible; transform: none; transition: opacity .7s var(--ease) .1s, transform .9s var(--ease) .1s, visibility 0s; }
+.rec__fonte { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.rec__marchio { display: inline-flex; align-items: center; gap: 10px; font-size: 15px; color: var(--graphite); }
+.rec__marchio svg { width: 22px; height: 22px; flex: none; }
+.rec__marchio .scritta-mc { color: #D33B54; letter-spacing: .02em; }
+.rec__testo { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(27px, 2.75vw, 42px); line-height: 1.2; letter-spacing: -.005em; }
+.rec__chi { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; color: var(--graphite); font-size: 15.5px; }
+.rec__chi b { font-weight: 400; color: var(--ink); font-size: 17px; }
+.rec__nav { display: flex; align-items: center; gap: 18px; }
+.rec__conta { font-size: 13px; letter-spacing: .12em; color: var(--graphite); white-space: nowrap; }
+.rec__prog { flex: 1; height: 1px; background: var(--hair); overflow: hidden; }
+.rec__prog i { display: block; height: 100%; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; }
+.rec__prog.in-corso i { animation: rec-avanza 8s linear forwards; }
+.rec__corpo:hover .rec__prog i, .rec__destra:focus-within .rec__prog i, .recensioni.is-fermo .rec__prog i { animation-play-state: paused; }
+@keyframes rec-avanza { to { transform: scaleX(1); } }
+.rec__schede { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--hair); }
+.rec__scheda { display: grid; gap: 6px; padding: 24px clamp(14px, 2vw, 28px) 4px 0; color: var(--graphite); font-size: 14.5px; line-height: 1.4; }
+.rec__scheda + .rec__scheda { padding-left: clamp(14px, 2vw, 28px); border-left: 1px solid var(--hair); }
+.rec__scheda .rec__marchio { font-size: 13.5px; }
+.rec__scheda .rec__marchio svg { width: 18px; height: 18px; }
+.rec__voto { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(34px, 3vw, 46px); line-height: 1.05; color: var(--ink); margin-top: 8px; transition: transform .5s var(--ease); }
+@media (hover: hover) and (pointer: fine) { .rec__scheda:hover .rec__voto { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .rec__prog.in-corso i { animation: none; } .rec__voce { transition: none; } }
 @media (max-width: 900px) {
-  .reg__testa { grid-template-columns: 1fr; gap: 20px; }
-  .reg__media { font-size: 36vw; }
-  .voce { width: 82vw; padding: 24px 22px 20px; }
-  .voce__testo { font-size: 19px; }
-  .giro { -webkit-mask-image: none; mask-image: none; }
+  .rec__corpo { grid-template-columns: minmax(0, 1fr); padding: 28px 0 32px; }
+  .rec__foto { display: none; }
+  .rec__testo { font-size: 27px; line-height: 1.24; }
+  .rec__schede { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rec__scheda { padding-bottom: 20px; }
+  .rec__scheda:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .rec__scheda:nth-child(n+3) { border-top: 1px solid var(--hair); }
+}
 }
 </style>
 </head>
@@ -361,12 +349,8 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     <div class="anello__stick">
       <div class="anello__testo">
         <h2 class="h-xl" id="t-abiti" data-split>Abiti da sposa,<br> su misura</h2>
-        <p class="body-l" data-fade>Gli abiti non si comprano online. Li provi in atelier da Sposi &amp; Sposi e la nostra sartoria li adatta a te, dalla prima prova all'ultima cucitura.</p>
-        <div class="anello__azioni" data-fade><a class="btn" href="abiti.html">Vedi gli abiti</a><a class="btn btn--line" href="abiti.html#prova">Prenota la prova</a></div>
-      </div>
-      <div class="anello__scena">
-        <div class="anello__ring" id="ring"></div>
-        <div class="anello__ombra"></div>
+        <div><p class="body-l" data-fade>Gli abiti non si comprano online. Li provi in atelier da Sposi &amp; Sposi e la nostra sartoria li adatta a te, dalla prima prova all'ultima cucitura.</p>
+        <div class="anello__azioni" data-fade><a class="btn" href="abiti.html">Vedi gli abiti</a><a class="btn btn--line" href="abiti.html#prova">Prenota la prova</a></div></div>
       </div>
       <div class="anello__fila" id="abiti-fila"></div>
       <div class="fila-nav fila-nav--abiti">
@@ -437,16 +421,27 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 
   <section class="recensioni" id="recensioni" aria-labelledby="t-rec">
     <div class="wrap">
-      <div class="reg__testa">
-        <div class="reg__media" id="reg-media" aria-label="4,8 su 5"><span class="cifra"><i>4</i></span><span class="cifra"><i>,</i></span><span class="cifra"><i>8</i></span></div>
-        <div class="reg__intro">
-          <h2 class="h-l" id="t-rec" data-split>437 recensioni</h2>
-          <p>La media di chi ha scelto da noi bomboniere e abiti, su Matrimonio.com e Google. Ne trovate qui 25, con le loro parole.</p>
-          <div class="reg__fonti" id="rec-voti"></div>
+      <header class="rec__testa">
+        <h2 class="h-xl" id="t-rec" data-split>Recensioni</h2>
+        <p class="rec__somma"><span class="rec__stelle" aria-hidden="true">★★★★★</span><b>4,8 su 5</b><span>437 recensioni su Google e Matrimonio.com</span></p>
+      </header>
+      <div class="rec__corpo">
+        <figure class="rec__foto" aria-hidden="true">
+          <img src="assets/img/prova-sorriso.webp" alt="" loading="lazy" data-att="abiti">
+          <img src="assets/img/showroom-travi.webp" alt="" loading="lazy" data-att="bomboniere">
+        </figure>
+        <div class="rec__destra">
+          <div class="rec__pila" id="rec-pila"></div>
+          <div class="rec__nav">
+            <button type="button" class="fila-freccia" id="rec-prima" aria-label="Recensione precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button type="button" class="fila-freccia" id="rec-dopo" aria-label="Recensione successiva"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+            <span class="rec__conta" id="rec-conta"></span>
+            <div class="rec__prog" aria-hidden="true"><i id="rec-barra"></i></div>
+          </div>
         </div>
       </div>
+      <div class="rec__schede" id="rec-schede"></div>
     </div>
-    <div class="giri" id="giri" aria-label="Recensioni"></div>
   </section>
 
   <section class="sec servizi" aria-labelledby="t-servizi">
@@ -497,7 +492,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   const apri = c => cols.forEach(x => x.classList.toggle('is-on', x === c));
   cols.forEach(c => { c.addEventListener('mouseenter', () => apri(c)); c.addEventListener('focus', () => apri(c)); });
   /* Su telefono e tablet le feste si scorrono col dito o con le frecce, senza fermare la pagina */
-  if (matchMedia('(max-width: 900px)').matches) Negozio.fila(colonne, { prima: document.getElementById('feste-prima'), dopo: document.getElementById('feste-dopo'), barra: document.getElementById('barra-feste') });
+  Negozio.fila(colonne, { prima: document.getElementById('feste-prima'), dopo: document.getElementById('feste-dopo'), barra: document.getElementById('barra-feste') });
 
   /* Vetrina a schede */
   const SET = {
@@ -551,44 +546,11 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 
   /* Slideshow degli abiti nella porta di destra */
 
-  /* Anello degli abiti: gira e si avvicina con lo scroll */
-  const ring = document.getElementById('ring');
+  /* Abiti: foto grandi in una fila da scorrere, con le frecce */
   const abiti = G.abiti.slice(0, 10);
-  ring.innerHTML = abiti.map(a => `<figure><img src="assets/abiti/${a.id}.jpg" alt="${a.nome}" loading="lazy"><figcaption class="label">${a.nome}</figcaption></figure>`).join('');
-  /* Su telefono e tablet le stesse foto, grandi, in una fila da scorrere */
-  const abitiInFila = matchMedia('(max-width: 900px)').matches;
-  if (abitiInFila) {
-    const filaAbiti = document.getElementById('abiti-fila');
-    filaAbiti.innerHTML = abiti.map(a => `<a class="abito-h" href="abiti.html#${a.linea}"><figure style="margin:0"><span class="abito-h__foto"><img src="assets/abiti/${a.id}.jpg" alt="${a.nome}" loading="lazy"></span><figcaption><span>${a.nome}</span><span class="label">${G.linee.find(l => l.id === a.linea).nome}</span></figcaption></figure></a>`).join('');
-    Negozio.fila(filaAbiti, { prima: document.getElementById('abiti-prima'), dopo: document.getElementById('abiti-dopo'), barra: document.getElementById('abiti-barra') });
-  }
-  const pannelli = [...ring.children];
-  const passo = 360 / pannelli.length;
-  const scenaAnello = ring.parentElement;
-  /* La larghezza dei pannelli segue la colonna, così l'anello non arriva mai sul testo */
-  const misuraAnello = () => {
-    const w = Math.round(Math.min(320, scenaAnello.clientWidth / 3.7, scenaAnello.clientHeight * .6 * .75));
-    ring.style.width = w + 'px';
-  };
-  misuraAnello();
-  let rotAnello = 0;
-  addEventListener('resize', () => { misuraAnello(); posa(rotAnello); });
-  const posa = rot => {
-    rotAnello = rot;
-    const w = ring.offsetWidth, R = Math.round((w / 2) / Math.tan(Math.PI / pannelli.length) + w * .12);
-    pannelli.forEach((f, i) => {
-      const a = i * passo + rot;
-      const c = Math.cos(a * Math.PI / 180);
-      f.style.transform = `rotateY(${a}deg) translateZ(${R}px)`;
-      f.style.opacity = (.28 + .72 * (c + 1) / 2).toFixed(3);
-      f.style.zIndex = Math.round((c + 1) * 50);
-    });
-    /* Solo l'abito più vicino a chi guarda ha il nome: gli altri si sovrapporrebbero alle foto */
-    const coseni = pannelli.map((f, i) => Math.cos((i * passo + rot) * Math.PI / 180));
-    const davanti = coseni.indexOf(Math.max(...coseni));
-    pannelli.forEach((f, i) => { f.querySelector('figcaption').style.opacity = i === davanti ? 1 : 0; });
-  };
-  posa(0);
+  const filaAbiti = document.getElementById('abiti-fila');
+  filaAbiti.innerHTML = abiti.map(a => `<a class="abito-h" href="abiti.html#${a.linea}"><figure style="margin:0"><span class="abito-h__foto"><img src="assets/abiti/${a.id}.jpg" alt="${a.nome}" loading="lazy"></span><figcaption><span>${a.nome}</span><span class="label">${G.linee.find(l => l.id === a.linea).nome}</span></figcaption></figure></a>`).join('');
+  Negozio.fila(filaAbiti, { prima: document.getElementById('abiti-prima'), dopo: document.getElementById('abiti-dopo'), barra: document.getElementById('abiti-barra') });
 
   /* Video dell'atelier: parte quando entra in vista */
   const video = document.querySelector('#cornice-video video');
@@ -596,41 +558,46 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 
   /* Recensioni vere: loghi delle fonti e nomi delle due attività */
   const R = G.recensioni;
-  const BOLLINO = {
-    google: '<span class="fonte"><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.8l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>Google</span>',
-    matrimonio: '<span class="fonte"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#D33B54" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.6 2.9 4.5 6.8 4.5c2.2 0 3.6 1.2 5.2 3 1.6-1.8 3-3 5.2-3 3.9 0 5.9 4.1 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>Matrimonio.com</span>'
-  };
-  const NOMI = { bomboniere: 'Bomboniere Graziella', abiti: 'Sposi & Sposi' };
-  const FONTI = { google: 'Google', matrimonio: 'Matrimonio.com' };
+  const NOMI = { bomboniere: 'Bomboniere Graziella', abiti: 'Sposi &amp; Sposi' };
   const testoSicuro = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const stelle = v => `<span class="rec__stelle" aria-label="${String(v).replace('.', ',')} su 5">${'★'.repeat(Math.round(v))}</span>`;
   const nome = v => { const n = v.autore.split(' ')[0]; return n.charAt(0).toUpperCase() + n.slice(1); };
-
-  /* Una recensione alla volta, intera; la fila dei nomi sotto. Passa da sola ogni 9 secondi finché non la si tocca */
   const virgola = n => String(n).replace('.', ',');
   const LOGO = {
     google: '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 2.9-2.2 5.4-4.7 7.1l7.6 5.9c4.4-4.1 6.9-10.1 6.9-17.5z"/><path fill="#FBBC05" d="M10.5 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.8-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.2-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>',
     matrimonio: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#D33B54" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.6 2.9 4.5 6.8 4.5c2.2 0 3.6 1.2 5.2 3 1.6-1.8 3-3 5.2-3 3.9 0 5.9 4.1 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>'
   };
-  const marchio = f => f === 'google' ? `${LOGO.google}<span>Google</span>` : `${LOGO.matrimonio}<span class="scritta-mc">Matrimonio.com</span>`;
-  document.getElementById('rec-voti').innerHTML = R.schede.map(sc => `<a href="${sc.url}" target="_blank" rel="noopener">${LOGO[sc.fonte]}<b>${virgola(sc.voto)}</b>${NOMI[sc.attivita]}</a>`).join('');
+  const marchio = f => f === 'google' ? `<span class="rec__marchio">${LOGO.google}<span>Google</span></span>` : `<span class="rec__marchio">${LOGO.matrimonio}<span class="scritta-mc">Matrimonio.com</span></span>`;
   const MESI = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
   const quando = d => { const m = d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/); return m ? `${MESI[+m[2] - 1]} ${m[3]}` : d; };
-  const conEmoji = t => testoSicuro(t.trim()).replace(/(\p{Extended_Pictographic}️?)/gu, '<span class="emo">$1</span>');
-  const scheda = (i, copia) => { const v = R.voci[i]; return `<article class="voce"${copia ? ' aria-hidden="true"' : ''}>
-      <div class="voce__testa"><span class="voce__fonte">${marchio(v.fonte)}</span><span class="voce__stelle" aria-label="${virgola(v.voto)} su 5">${'★'.repeat(Math.round(v.voto))}</span></div>
-      <p class="voce__testo">${conEmoji(v.testo)}</p>
-      ${v.url ? `<a class="voce__vai" href="${v.url}" target="_blank" rel="noopener"${copia ? ' tabindex="-1"' : ''}>Leggi tutta</a>` : ''}
-      <div class="voce__piede"><span class="voce__nome">${testoSicuro(nome(v))}</span><span class="voce__dove">${v.attivita === 'abiti' ? 'Sposi &amp; Sposi' : 'Bomboniere Graziella'}<br>${quando(v.data)}</span></div>
-    </article>`; };
-  /* Due file: abiti e bomboniere mescolati, versi e velocità diversi; ogni fila è ripetuta una volta per il giro continuo */
-  const FILE_REC = [[13, 0, 17, 2, 22, 7, 14, 3, 19, 11, 20, 9], [16, 1, 23, 5, 21, 10, 15, 4, 24, 8, 18, 6, 12]];
-  document.getElementById('giri').innerHTML = FILE_REC.map((fila, k) => `<div class="giro${k ? ' giro--indietro' : ''}" style="--durata:${k ? 120 : 105}s"><div class="giro__pista">${fila.map(i => scheda(i)).join('')}${fila.map(i => scheda(i, true)).join('')}</div></div>`).join('');
-  /* Sul telefono si ferma col dito e riparte quando lo si alza */
-  document.querySelectorAll('.giro').forEach(g => {
-    g.addEventListener('touchstart', () => g.classList.add('is-fermo'), { passive: true });
-    g.addEventListener('touchend', () => setTimeout(() => g.classList.remove('is-fermo'), 1800), { passive: true });
-  });
+  /* Le più brevi, alternando atelier e bomboniere: il testo è quello vero, intero */
+  const SCELTE_REC = [14, 0, 16, 1, 18, 2, 20, 3, 21, 4, 7, 5, 8, 12];
+  const pilaRec = document.getElementById('rec-pila'), sezRec = document.getElementById('recensioni');
+  pilaRec.innerHTML = SCELTE_REC.map(i => { const v = R.voci[i]; return `<article class="rec__voce">
+      <div class="rec__fonte">${marchio(v.fonte)}<span class="rec__stelle" aria-label="${virgola(v.voto)} su 5">${'★'.repeat(Math.round(v.voto))}</span></div>
+      <blockquote class="rec__testo">${testoSicuro(v.testo.trim()).replace(/\s*\n+\s*/g, ' ')}</blockquote>
+      <p class="rec__chi"><b>${testoSicuro(nome(v))}</b><span>${NOMI[v.attivita]} · ${quando(v.data)}</span></p>
+    </article>`; }).join('');
+  document.getElementById('rec-schede').innerHTML = R.schede.map(sc => `<a class="rec__scheda" href="${sc.url}" target="_blank" rel="noopener">${marchio(sc.fonte)}<span class="rec__voto">${virgola(sc.voto)}</span><span>${sc.totale} recensioni<br>${NOMI[sc.attivita]}</span></a>`).join('');
+  const vociRec = [...pilaRec.children], fotoRec = [...document.querySelectorAll('.rec__foto img')], barraRec = document.getElementById('rec-barra');
+  let quiRec = 0;
+  const mostraRec = n => {
+    quiRec = (n + vociRec.length) % vociRec.length;
+    vociRec.forEach((v, i) => v.classList.toggle('is-on', i === quiRec));
+    const att = R.voci[SCELTE_REC[quiRec]].attivita;
+    fotoRec.forEach(f => f.classList.toggle('is-on', f.dataset.att === att));
+    document.getElementById('rec-conta').textContent = `${String(quiRec + 1).padStart(2, '0')} / ${vociRec.length}`;
+    /* La linea riparte da zero: quando arriva in fondo passa alla recensione dopo; col mouse sopra si ferma */
+    const prog = barraRec.parentElement; prog.classList.remove('in-corso'); void prog.offsetWidth; prog.classList.add('in-corso');
+  };
+  barraRec.addEventListener('animationend', () => mostraRec(quiRec + 1));
+  document.getElementById('rec-prima').addEventListener('click', () => mostraRec(quiRec - 1));
+  document.getElementById('rec-dopo').addEventListener('click', () => mostraRec(quiRec + 1));
+  /* Sul telefono si cambia anche col dito, e toccandola si ferma */
+  let xRec = 0;
+  pilaRec.addEventListener('touchstart', e => { xRec = e.touches[0].clientX; sezRec.classList.add('is-fermo'); }, { passive: true });
+  pilaRec.addEventListener('touchend', e => { const d = e.changedTouches[0].clientX - xRec; if (Math.abs(d) > 50) mostraRec(quiRec + (d < 0 ? 1 : -1)); setTimeout(() => sezRec.classList.remove('is-fermo'), 1800); }, { passive: true });
+  new IntersectionObserver(([e]) => sezRec.classList.toggle('is-fermo', !e.isIntersecting), { threshold: .2 }).observe(sezRec);
+  mostraRec(0);
 
   /* Il reel parte solo quando si vede */
   const videoReel = document.querySelector('#reel video');
@@ -707,26 +674,9 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     .to(parole, { opacity: 1, duration: .06, stagger: .7 / parole.length }, .05)
     .fromTo('.frase__piede', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .08 }, .8);
 
-  /* Anello: rotazione e profondità legate allo scroll */
-  const giro = { r: 0 };
-  if (!abitiInFila) gsap.timeline({ scrollTrigger: { trigger: '#abiti-home', start: 'top top', end: 'bottom bottom', scrub: 1 } })
-    .to(giro, { r: -300, ease: 'none', duration: 1, onUpdate: () => posa(giro.r) }, 0)
-    .fromTo(ring, { rotateX: -14, scale: .82 }, { rotateX: 6, scale: 1, ease: 'power1.inOut', duration: 1 }, 0);
 
   /* Feste: le colonne salgono una dopo l'altra */
   gsap.from('.col', { clipPath: 'inset(100% 0 0 0)', duration: 1.2, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: '#colonne', start: 'top 82%', once: true } });
-  /* Su PC la pagina si ferma sulle feste e la rotella le fa scorrere in orizzontale fino all'ultima */
-  if (!matchMedia('(max-width: 900px)').matches) {
-    const feste = document.getElementById('feste');
-    feste.classList.add('is-pista'); colonne.classList.add('is-pista');
-    const corsa = () => Math.max(0, colonne.offsetWidth - document.documentElement.clientWidth);
-    /* La festa accesa segue la fila: la prima all'inizio, l'ultima alla fine */
-    const accendi = function () {
-      const c = cols[Math.round(this.progress() * (cols.length - 1))];
-      if (!c.classList.contains('is-on')) apri(c);
-    };
-    gsap.to(colonne, { x: () => -corsa(), ease: 'none', onUpdate: accendi, scrollTrigger: { trigger: feste, start: 'center center', end: () => '+=' + corsa(), pin: true, scrub: .8, invalidateOnRefresh: true } });
-  }
 
   /* Atelier: la cornice del video cresce entrando */
   gsap.fromTo('#cornice-video', { clipPath: 'inset(14% 10% 14% 10%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { trigger: '#atelier', start: 'top 85%', end: 'center center', scrub: 1 } });
@@ -788,8 +738,6 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   /* Il reel sale raddrizzandosi */
   gsap.fromTo('#reel', { yPercent: 12, rotate: -3 }, { yPercent: -6, rotate: 1.5, ease: 'none', scrollTrigger: { trigger: '#chi-siamo', start: 'top bottom', end: 'bottom top', scrub: 1 } });
 
-  /* Recensioni: la media si scopre cifra per cifra */
-  gsap.from('#reg-media .cifra i', { yPercent: 105, duration: 1.3, stagger: .14, ease: 'power4.out', scrollTrigger: { trigger: '#reg-media', start: 'top 85%', once: true } });
   entrate();
 })();
 </script>

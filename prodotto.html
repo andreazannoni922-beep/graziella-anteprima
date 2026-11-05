@@ -87,22 +87,15 @@ summary::-webkit-details-marker { display: none; }
 summary::after { content: '+'; font-size: 16px; line-height: 1; transition: transform .4s var(--ease); }
 details[open] summary::after { transform: rotate(45deg); }
 details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-width: 52ch; }
-/* Per la stessa festa: una fila da trascinare (GSAP Draggable + Inertia), sul telefono si scorre col dito */
-.rail { overflow: hidden; cursor: grab; }
-.rail.is-presa { cursor: grabbing; }
+/* Per la stessa festa: una fila con le frecce, si trascina col mouse e si scorre col dito */
+.rail { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; cursor: grab; }
+.rail::-webkit-scrollbar { display: none; }
 .rail__track { display: flex; gap: 10px; width: max-content; will-change: transform; }
-.rail__track .card { width: clamp(220px, 23vw, 330px); flex-shrink: 0; }
-.rail.is-presa a { pointer-events: none; }
-.rail__barra { position: relative; height: 1px; background: var(--hair); margin-top: 28px; overflow: hidden; }
-.rail__barra i { position: absolute; left: 0; top: 0; height: 100%; width: 30%; background: var(--ink); transform-origin: 0 0; }
+.rail__track .card { width: clamp(220px, 23vw, 330px); flex-shrink: 0; scroll-snap-align: start; }
 @media (hover: none), (max-width: 760px) {
-  .rail { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; cursor: auto; }
-  .rail::-webkit-scrollbar { display: none; }
+  .rail { scroll-snap-type: x mandatory; }
   .rail__track .card { width: 62vw; scroll-snap-align: start; }
-  .rail__barra { display: none; }
-  .fila-nav--rail { display: flex; }
 }
-.fila-nav--rail { display: none; }
 .barra-m { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--paper); border-top: 1px solid var(--hair); padding: 10px var(--gut); display: none; gap: 12px; align-items: center; transform: translateY(100%); transition: transform .5s var(--ease); }
 .barra-m.is-on { transform: none; }
 @media (max-width: 900px) {
@@ -167,7 +160,6 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
     <div class="wrap">
       <div class="sec__head"><h2 class="h-l" id="t-simili" data-split>Per lo stesso evento</h2><a class="link" id="link-festa" href="catalogo.html">Vedi tutte</a></div>
       <div class="rail" id="rail"><div class="rail__track" id="simili"></div></div>
-      <div class="rail__barra" aria-hidden="true"><i id="rail-barra"></i></div>
       <div class="fila-nav fila-nav--rail">
         <button type="button" class="fila-freccia" data-verso="-1" id="rail-prima" aria-label="Bomboniera precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
         <div class="fila-barra" aria-hidden="true"><i id="rail-barra-m"></i></div>
@@ -182,8 +174,6 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/SplitText.min.js"></script>
-<script src="assets/vendor/Draggable.min.js"></script>
-<script src="assets/vendor/InertiaPlugin.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
 <script src="assets/vendor/three.min.js"></script>
 <script src="assets/js/dati.js"></script>
@@ -330,25 +320,8 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   const simili = G.prodotti.filter(x => x.id !== p.id && x.feste.some(ff => p.feste.includes(ff))).slice(0, 10);
   document.getElementById('simili').innerHTML = simili.map(card).join('');
   /* La fila si trascina col mouse e prosegue per inerzia; la barretta sotto dice dove sei */
-  const rail = document.getElementById('rail'), track = document.getElementById('simili'), barraRail = document.getElementById('rail-barra');
-  const fineRail = () => Math.max(0, track.scrollWidth - rail.clientWidth);
-  const segnaRail = x => {
-    const max = fineRail();
-    barraRail.style.width = (max ? Math.max(12, rail.clientWidth / track.scrollWidth * 100) : 100) + '%';
-    barraRail.style.transform = `translateX(${max ? (-x / max) * (100 / parseFloat(barraRail.style.width) * 100 - 100) : 0}%)`;
-  };
-  segnaRail(0);
-  if (window.Draggable && matchMedia('(hover: hover) and (min-width: 761px)').matches) {
-    gsap.registerPlugin(Draggable, InertiaPlugin);
-    Draggable.create(track, {
-      type: 'x', inertia: true, edgeResistance: .85, dragClickables: true, minimumMovement: 6,
-      bounds: { minX: -fineRail(), maxX: 0 },
-      onPress() { this.applyBounds({ minX: -fineRail(), maxX: 0 }); },
-      onDragStart: () => rail.classList.add('is-presa'),
-      onRelease: () => setTimeout(() => rail.classList.remove('is-presa'), 0),
-      onDrag() { segnaRail(this.x); }, onThrowUpdate() { segnaRail(this.x); }
-    });
-  } else Negozio.fila(rail, { voci: track, prima: document.getElementById('rail-prima'), dopo: document.getElementById('rail-dopo'), barra: document.getElementById('rail-barra-m'), parallasse: 0 });
+  const rail = document.getElementById('rail'), track = document.getElementById('simili');
+  Negozio.fila(rail, { voci: track, prima: document.getElementById('rail-prima'), dopo: document.getElementById('rail-dopo'), barra: document.getElementById('rail-barra-m') });
 
   if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.from('#principale', { clipPath: 'inset(10% 10% 10% 10%)', duration: 1.3, ease: 'power4.out' });

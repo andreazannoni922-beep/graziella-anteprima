@@ -413,8 +413,7 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 }
 .fila { scroll-padding-inline: var(--gut); scroll-behavior: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
 .fila-voce { transition: opacity .6s var(--ease); }
-.fila-voce:not(.is-qui) { opacity: .55; }
-.fila--parallasse .fila-voce img { will-change: transform; transition: filter 1s var(--ease); }
+@media (max-width: 900px) { .fila-voce:not(.is-qui) { opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .fila-voce:not(.is-qui) { opacity: 1; } }
 
 /* Borsa: quanto manca alla consegna gratuita e i pagamenti accettati */

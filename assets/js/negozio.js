@@ -762,9 +762,9 @@
     });
   }
   /* ---------- File orizzontali (telefono e tablet): si scorrono col dito o con le frecce e la pagina non si blocca mai.
-     Le frecce fanno scivolare la fila con una curva morbida, la foto dentro ogni scheda si sposta appena (parallasse),
+     Le frecce fanno scivolare la fila con una curva morbida,
      la scheda in primo piano è piena e le vicine restano un passo indietro. ---------- */
-  function fila(pista, { voci = pista, prima, dopo, barra, parallasse = 9 } = {}) {
+  function fila(pista, { voci = pista, prima, dopo, barra } = {}) {
     const schede = () => [...voci.children];
     const max = () => Math.max(0, pista.scrollWidth - pista.clientWidth);
     const inizio = () => parseFloat(getComputedStyle(voci).paddingLeft) || 0;
@@ -780,10 +780,6 @@
       schede().forEach((s, i) => {
         s.classList.add('fila-voce');
         s.classList.toggle('is-qui', i === qui);
-        const foto = parallasse && s.querySelector('img');
-        if (!foto || ridotto) return;
-        const b = s.getBoundingClientRect(), d = (b.left + b.width / 2 - centro) / largo;
-        foto.style.transform = `translate3d(${(-d * parallasse).toFixed(2)}%, 0, 0) scale(1.14)`;
       });
     };
     const ferma = () => { if (corsa) { corsa.kill(); corsa = null; pista.style.scrollSnapType = ''; } };
@@ -801,12 +797,18 @@
     if (prima) prima.addEventListener('click', () => vai(-1));
     if (dopo) dopo.addEventListener('click', () => vai(1));
     pista.addEventListener('pointerdown', ferma, { passive: true });
+    /* Col mouse la fila si trascina; un trascinamento non apre il link sotto */
+    let presa = null, mosso = false;
+    pista.addEventListener('pointerdown', e => { if (e.pointerType === 'mouse' && e.button === 0) { presa = { x: e.clientX, s: pista.scrollLeft }; mosso = false; } });
+    addEventListener('pointermove', e => { if (!presa) return; const d = e.clientX - presa.x; if (Math.abs(d) > 5) { mosso = true; pista.style.scrollSnapType = 'none'; pista.style.cursor = 'grabbing'; pista.scrollLeft = presa.s - d; } });
+    addEventListener('pointerup', () => { if (!presa) return; presa = null; pista.style.scrollSnapType = ''; pista.style.cursor = ''; });
+    pista.addEventListener('click', e => { if (mosso) { e.preventDefault(); e.stopPropagation(); mosso = false; } }, true);
+    pista.addEventListener('dragstart', e => e.preventDefault());
     pista.addEventListener('touchstart', ferma, { passive: true });
     pista.addEventListener('scroll', () => { cancelAnimationFrame(attesa); attesa = requestAnimationFrame(segna); }, { passive: true });
     addEventListener('resize', segna);
     pista.classList.add('fila');
     schede().forEach(s => s.classList.add('fila-voce'));
-    if (parallasse) pista.classList.add('fila--parallasse');
     segna();
     return { vai, segna };
   }
