@@ -19,20 +19,6 @@
   /* Metodi di pagamento detti dal cliente: PayPal, carte (via Stripe), bonifico (IBAN mandato il 04/11: va mostrato solo nel negozio online vero, mai in questa anteprima pubblica) */
   const PAGAMENTI = '<div class="pagamenti" aria-label="Pagamenti accettati"><span>PayPal</span><span>Carte di credito e debito</span><span>Stripe</span><span>Bonifico bancario</span></div>';
 
-  /* ---------- Foto e video interi: la copia sfocata riempie il riquadro, l'originale non si taglia mai ---------- */
-  function intere(selettore) {
-    document.querySelectorAll(selettore).forEach(m => {
-      if (m.dataset.intera || m.classList.contains('fondo-sfocato')) return;
-      const src = m.tagName === 'VIDEO' ? m.getAttribute('poster') : (m.currentSrc || m.getAttribute('src'));
-      m.dataset.intera = '1';
-      m.classList.add('intera');
-      if (!src) return;
-      const fondo = document.createElement('img');
-      fondo.className = 'fondo-sfocato'; fondo.src = src; fondo.alt = ''; fondo.setAttribute('aria-hidden', 'true');
-      m.before(fondo);
-    });
-  }
-
   /* ---------- Borsa ---------- */
   const CHIAVE = 'graziella-borsa';
   let borsa = [];
@@ -75,7 +61,7 @@
   const scelteDi = id => { const l = perFesta(id), piene = l.filter(p => id === 'offerte' || !p.prezzoPieno); return (piene.length >= 3 ? piene : l).slice(0, 3); };
   const testata = document.getElementById('testata');
   testata.outerHTML = `
-    <div class="bar label"><p>Confezionate a mano <span class="bar__lungo">nel nostro negozio </span>a Bomporto · Consegna gratuita oltre ${SOGLIA_GRATIS} €</p></div>
+    <div class="bar label"><p><span class="bar__lungo">Confezionate a mano nel nostro negozio a Bomporto · </span>Consegna gratuita oltre ${SOGLIA_GRATIS} €</p></div>
     <header class="head" id="head">
       <div class="head__row">
         <div class="head__left">
@@ -825,5 +811,5 @@
     return { vai, segna };
   }
 
-  window.Negozio = { intere, G, euro, prodotto, festa, card, aggiungi, volaInBorsa, entrate, bottoni, toggleBorsa, fila, stato, CONFEZIONI, MINIMO, SOGLIA_GRATIS, PAGAMENTI, get lenis() { return lenis; } };
+  window.Negozio = { G, euro, prodotto, festa, card, aggiungi, volaInBorsa, entrate, bottoni, toggleBorsa, fila, stato, CONFEZIONI, MINIMO, SOGLIA_GRATIS, PAGAMENTI, get lenis() { return lenis; } };
 })();

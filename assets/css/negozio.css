@@ -24,7 +24,7 @@
   --bar: 34px;
   --head: 64px;
 }
-@media (max-width: 760px) { :root { --gut: 16px; --head: 56px; --testata: 101px; } }
+@media (max-width: 760px) { :root { --gut: 16px; --head: 56px; } }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -480,9 +480,3 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
   .foot ul a { padding: 6px 0; }
   .foot__bottom { flex-direction: column; align-items: flex-start; }
 }
-
-/* Foto e video sempre interi: dove il riquadro ha un'altra forma, il resto lo riempie una copia sfocata */
-img.fondo-sfocato { position: absolute !important; inset: -8% !important; width: 116% !important; height: 116% !important; max-width: none !important; object-fit: cover !important; filter: blur(22px) brightness(.86) !important; mix-blend-mode: normal !important; pointer-events: none; }
-.col img.fondo-sfocato { filter: blur(22px) grayscale(1) brightness(.72) !important; }
-.col.is-on img.fondo-sfocato { filter: blur(22px) brightness(.86) !important; }
-.intera { object-fit: contain !important; }

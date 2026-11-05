@@ -15,14 +15,14 @@
 <link rel="stylesheet" href="assets/css/negozio.css">
 <style>
 /* Hero "il sipario": due porte (Luxury Ecommerce) che si colorano sotto il mouse (Reveal Hero) e si aprono sulla frase (Orla) */
-.sipario { position: relative; height: 320vh; margin-top: calc(-1 * (var(--bar) + var(--head) + 42px)); }
+.sipario { position: relative; height: 220vh; }
 .sipario__stick { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--paper); }
-.porte { position: absolute; inset: 0; display: flex; gap: 2px; z-index: 2; pointer-events: none; }
+/* Porte alte come il video (9:16), così i video si vedono interi e pieni (Andrea, 05/11) */
+.porte { position: relative; display: flex; gap: 2px; }
 .porta { pointer-events: auto; }
-.porta { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; color: var(--paper); background: var(--bruno-scuro); transition: flex-grow 1.1s var(--ease); will-change: transform; }
-.porte.is-sx .porta--sx, .porte.is-dx .porta--dx { flex-grow: 1.32; }
+.porta { position: relative; flex: 1 1 0; min-width: 0; aspect-ratio: 9 / 16; overflow: clip; display: flex; flex-direction: column; justify-content: flex-end; color: var(--paper); background: var(--bruno-scuro); }
 .porta__media { position: absolute; inset: 0; will-change: transform; }
-.porta__media img, .porta__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.porta__media video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .porta__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s var(--ease); }
 .porta__slide.is-on { opacity: 1; }
 /* Il colore: una copia della foto, mascherata da un cerchio che segue il mouse (Reveal Hero) */
@@ -30,10 +30,9 @@
 .porta__colore { position: absolute; inset: 0; z-index: 1; pointer-events: none; will-change: transform;
   -webkit-mask-image: radial-gradient(circle var(--r, 0px) at var(--x, 50%) var(--y, 50%), #000 0, #000 36%, rgba(0,0,0,.45) 68%, transparent 100%);
   mask-image: radial-gradient(circle var(--r, 0px) at var(--x, 50%) var(--y, 50%), #000 0, #000 36%, rgba(0,0,0,.45) 68%, transparent 100%); }
-.porta__colore img, .porta__colore video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.15) brightness(1.04); }
-.porta::before { content: ''; position: absolute; inset: 0 0 auto; height: 42%; z-index: 1; background: linear-gradient(to bottom, rgba(34,23,17,.66), rgba(34,23,17,.3) 45%, rgba(34,23,17,0)); pointer-events: none; }
-.porta::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(34,23,17,.8), rgba(34,23,17,.36) 34%, rgba(34,23,17,0) 62%); pointer-events: none; }
-.porta__testo { position: absolute; left: clamp(20px, 3.4vw, 56px); right: clamp(20px, 3.4vw, 56px); bottom: clamp(28px, 6vh, 64px); z-index: 2; }
+.porta__colore video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(1.15) brightness(1.04); }
+/* Il testo resta in vista mentre la porta scorre */
+.porta__testo { position: sticky; bottom: 0; z-index: 2; padding: 140px clamp(20px, 3.4vw, 56px) clamp(28px, 6vh, 64px); background: linear-gradient(to top, rgba(34,23,17,.82), rgba(34,23,17,.42) 58%, rgba(34,23,17,0)); }
 .porta__titolo { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(44px, 6.2vw, 104px); line-height: .96; letter-spacing: -.01em; margin: 0; }
 .porta__testo p:not(.porta__titolo) { margin: 16px 0 26px; min-height: 4.8em; max-width: 34ch; font-size: clamp(16px, 1.3vw, 19px); color: rgba(255,255,255,.9); }
 .porta__azioni { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -61,24 +60,19 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 .apertura__filo { position: relative; width: min(220px, 50vw); height: 1px; background: var(--hair); overflow: hidden; }
 .apertura__filo i { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; }
 @media (max-width: 760px) {
-  /* Il taglio cade esattamente sulla fessura tra le due porte */
-  .apertura { --taglio: calc(var(--testata) + (100svh - var(--testata)) / 2); }
-  .apertura__meta--a { clip-path: inset(0 0 calc(100% - var(--taglio)) 0); }
-  .apertura__meta--b { clip-path: inset(var(--taglio) 0 0 0); }
+  .apertura__meta--a { clip-path: inset(0 0 50% 0); }
+  .apertura__meta--b { clip-path: inset(50% 0 0 0); }
 }
 @media (max-width: 760px) {
-  /* Telefono: niente barra annunci sulla home e le porte partono sotto la testata, così sono alte uguali e riempiono tutto lo schermo (Andrea, 04/11) */
-  body[data-pagina="home"] .bar { display: none; }
-  .sipario { height: 280vh; margin-top: calc(-1 * var(--testata)); }
-  .porte { flex-direction: column; top: var(--testata); }
+  .sipario { height: 200vh; }
+  .porte { flex-direction: column; }
+  .porta { flex: none; width: 100%; }
   .porta__media { filter: none; }
   .porta__colore { display: none; }
   .porta__titolo { font-size: 44px; }
-  .porta::before { display: none; }
-  .porta::after { background: linear-gradient(to top, rgba(34,23,17,.82), rgba(34,23,17,.34) 42%, rgba(34,23,17,0) 72%); }
   .a-capo { display: none; }
   .porta__testo p:not(.porta__titolo) { display: none; }
-  .porta__testo { bottom: 22px; }
+  .porta__testo { padding: 110px 20px 22px; }
   .porta__azioni { margin-top: 18px; }
   /* Porte una sopra l'altra: niente margine laterale, la foto in alto parte sotto l'intestazione, i volti restano nell'inquadratura */
   .porta__media, .porta__colore { inset: 0; }
@@ -93,15 +87,14 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 }
 
 /* Feste a colonne (categorie di Luxury Ecommerce): la colonna sotto il mouse si apre */
-.colonne { display: flex; gap: 6px; height: min(78vh, 780px); max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
-.col { position: relative; flex: 1 1 0; min-width: 0; overflow: hidden; color: var(--paper); background: var(--bruno-scuro); transition: flex-grow 1s var(--ease); }
-.col.is-on { flex-grow: 5.4; }
-.col__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: grayscale(1) brightness(.78); transition: filter 1s var(--ease); }
+.colonne { --h: min(66vh, 620px); display: flex; gap: 10px; height: var(--h); width: max-content; padding: 0 var(--gut); }
+.col { position: relative; flex: 0 0 auto; width: calc(var(--h) * var(--k)); overflow: hidden; color: var(--paper); background: var(--bruno-scuro); }
+.col__foto { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) brightness(.78); transition: filter 1s var(--ease); }
 .col.is-on .col__foto { filter: none; }
 .col::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(34,23,17,.7), rgba(34,23,17,.05) 58%); pointer-events: none; }
 .col__vert { position: absolute; left: 50%; bottom: 26px; z-index: 2; writing-mode: vertical-rl; transform: translateX(-50%) rotate(180deg); font-size: clamp(20px, 1.8vw, 28px); white-space: nowrap; transition: opacity .35s; }
 .col.is-on .col__vert { opacity: 0; }
-.col__dentro { position: absolute; left: 30px; right: 30px; bottom: 30px; z-index: 2; min-width: 420px; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; opacity: 0; transform: translateY(24px); transition: opacity .35s, transform .35s; }
+.col__dentro { position: absolute; left: 30px; right: 30px; bottom: 30px; z-index: 2; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; opacity: 0; transform: translateY(24px); transition: opacity .35s, transform .35s; }
 .col.is-on .col__dentro { opacity: 1; transform: none; transition: opacity .7s .35s, transform .9s .35s var(--ease); }
 .col__nome { font-family: var(--font-titoli); margin: 0; font-size: clamp(36px, 4vw, 64px); line-height: 1; font-weight: var(--peso-titoli); }
 .col__conta { display: block; margin-top: 12px; color: rgba(255,255,255,.9); font-size: 14px; }
@@ -110,20 +103,19 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 .col__cta { display: inline-flex; margin-top: 18px; }
 /* Su PC la sezione si ferma e le feste scorrono in orizzontale con la rotella; quella al centro si accende */
 #feste.is-pista { overflow: hidden; }
-.colonne.is-pista { width: max-content; max-width: none; height: min(60vh, 600px); gap: 14px; will-change: transform; }
-.colonne.is-pista .col, .colonne.is-pista .col.is-on { flex: 0 0 clamp(320px, 31vw, 500px); }
+.colonne.is-pista { will-change: transform; }
 .colonne.is-pista .col__vert { display: none; }
-.colonne.is-pista .col__dentro { opacity: 1; transform: none; min-width: 0; left: 26px; right: 26px; bottom: 26px; }
+.colonne.is-pista .col__dentro { opacity: 1; transform: none; left: 26px; right: 26px; bottom: 26px; }
 .colonne.is-pista .col__nome { font-size: clamp(34px, 3vw, 48px); }
 .colonne.is-pista .col__pezzi span { width: 56px; height: 70px; }
 .fila-nav--feste { display: none; }
 @media (max-width: 900px) {
-  .colonne { height: auto; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+  .colonne { --h: 440px; width: auto; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
   .colonne::-webkit-scrollbar { display: none; }
-  .col, .col.is-on { flex: 0 0 80vw; height: 66vh; max-height: 560px; scroll-snap-align: start; }
+  .col { scroll-snap-align: start; }
   .col__foto { filter: none; transform: none; }
   .col__vert { display: none; }
-  .col__dentro, .col.is-on .col__dentro { opacity: 1; transform: none; min-width: 0; left: 18px; right: 18px; bottom: 18px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .col__dentro, .col.is-on .col__dentro { opacity: 1; transform: none; left: 18px; right: 18px; bottom: 18px; }
   .col__pezzi span { width: 52px; height: 64px; }
   .fila-nav--feste { display: flex; }
 }
@@ -193,9 +185,9 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 .vetrine__griglia { display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 10px; align-items: center; }
 .vt { position: relative; overflow: hidden; margin: 0; }
 .vt__in { position: absolute; inset: 0; overflow: hidden; }
-.vt img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.vt--alta { aspect-ratio: 2 / 3; }
-.vt--larga { aspect-ratio: 4 / 3; }
+.vt img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.vt--alta { aspect-ratio: 4 / 5; }
+.vt--larga { aspect-ratio: 3 / 2; }
 .vt--quadra { aspect-ratio: 1; }
 .s1 { grid-column: auto / span 1; } .s2 { grid-column: auto / span 2; } .s3 { grid-column: auto / span 3; } .s4 { grid-column: auto / span 4; }
 .vetrine__testo { align-self: center; padding-right: 12px; }
@@ -209,8 +201,8 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   .vetrine__stick { position: relative; height: auto; overflow: visible; }
   .vetrine__griglia { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
   .vetrine__testo { grid-column: 1 / -1; padding: 0 0 16px; }
-  .vt--alta, .vt--quadra, .vt--larga.s2 { grid-column: auto / span 3; aspect-ratio: 4 / 5; }
-  .vt--larga.s3 { grid-column: 1 / -1; aspect-ratio: 3 / 2; }
+  .vt--alta, .vt--quadra, .vt--larga.s2 { grid-column: auto / span 3; }
+  .vt--larga.s3 { grid-column: 1 / -1; }
   .numeri { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-top: 16px; }
 }
 
@@ -307,34 +299,32 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 <div id="testata"></div>
 
 <main>
+  <div class="porte" id="porte">
+    <a class="porta porta--sx" href="catalogo.html" data-porta="sx">
+      <div class="porta__media"><video src="assets/video/banco.mp4" poster="assets/video/banco-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Al banco di Graziella si confeziona a mano una bomboniera"></video></div>
+      <div class="porta__testo">
+        <p class="porta__titolo">Bomboniere</p>
+        <p>Per ogni evento, confezionate a mano nel nostro negozio. Si ordinano qui, con il vostro bigliettino.</p>
+        <span class="porta__azioni"><span class="btn btn--light">Scegli l'evento</span></span>
+      </div>
+    </a>
+    <a class="porta porta--dx" href="abiti.html" data-porta="dx">
+      <div class="porta__media" id="slides">
+        <div class="porta__slide is-on"><video src="assets/video/atelier.mp4" poster="assets/video/atelier-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Una prova d'abito nell'atelier Sposi & Sposi"></video></div>
+      </div>
+      <div class="porta__testo">
+        <p class="porta__titolo">Abiti da sposa</p>
+        <p>Su misura, nella nostra sartoria. Non si comprano online: si provano in atelier.</p>
+        <span class="porta__azioni"><span class="btn btn--light">Prenota la prova</span></span>
+      </div>
+    </a>
+  </div>
   <section class="sipario" id="hero" aria-labelledby="t-hero">
     <h1 class="sr" id="t-hero">Graziella Centro Sposi: bomboniere e abiti da sposa a Bomporto</h1>
     <div class="sipario__stick">
       <div class="frase" aria-label="Da più di sessant'anni, a Bomporto, confezioniamo bomboniere a mano e vestiamo le spose su misura.">
         <p id="frase" aria-hidden="true"></p>
         <div class="frase__piede label" aria-hidden="true"><span>Via Carlo Testa, Bomporto</span><span>Bomboniere Graziella</span><span>Sposi &amp; Sposi</span></div>
-      </div>
-      <div class="porte" id="porte">
-        <a class="porta porta--sx" href="catalogo.html" data-porta="sx">
-          <div class="porta__media"><video src="assets/video/banco.mp4" poster="assets/video/banco-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Al banco di Graziella si confeziona a mano una bomboniera"></video></div>
-          <div class="porta__testo">
-            <p class="porta__titolo">Bomboniere</p>
-            <p>Per ogni evento, confezionate a mano nel nostro negozio. Si ordinano qui, con il vostro bigliettino.</p>
-            <span class="porta__azioni"><span class="btn btn--light">Scegli l'evento</span></span>
-          </div>
-        </a>
-        <a class="porta porta--dx" href="abiti.html" data-porta="dx">
-          <div class="porta__media" id="slides">
-            <div class="porta__slide is-on"><video src="assets/video/atelier.mp4" poster="assets/video/atelier-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Una prova d'abito nell'atelier Sposi & Sposi"></video></div>
-            <div class="porta__slide"><img src="assets/abiti/velo-cattedrale.jpg" alt="Sposa con velo cattedrale" loading="lazy"></div>
-            <div class="porta__slide"><img src="assets/abiti/sirena-pizzo.jpg" alt="Sposa con abito a sirena in pizzo" loading="lazy"></div>
-          </div>
-          <div class="porta__testo">
-            <p class="porta__titolo">Abiti da sposa</p>
-            <p>Su misura, nella nostra sartoria. Non si comprano online: si provano in atelier.</p>
-            <span class="porta__azioni"><span class="btn btn--light">Prenota la prova</span></span>
-          </div>
-        </a>
       </div>
     </div>
   </section>
@@ -434,7 +424,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
         <figure class="vt vt--larga s3"><div class="vt__in"><img src="assets/img/mani-lacci.webp" alt="Mani che stringono i lacci di un corsetto in atelier" loading="lazy"></div></figure>
         <figure class="vt vt--alta s2"><div class="vt__in"><img src="assets/img/atelier-bn.webp" alt="Una sposa in prova nell'atelier" loading="lazy"></div></figure>
         <figure class="vt vt--quadra s2"><div class="vt__in"><img src="assets/img/vetrina-laurea.webp" alt="La vetrina delle bomboniere per la laurea" loading="lazy"></div></figure>
-        <figure class="vt vt--quadra s2"><div class="vt__in"><img src="assets/img/prova-sorriso.webp" alt="Una sposa sorride durante la prova" loading="lazy"></div></figure>
+        <figure class="vt vt--alta s2"><div class="vt__in"><img src="assets/img/prova-sorriso.webp" alt="Una sposa sorride durante la prova" loading="lazy"></div></figure>
         <figure class="vt vt--alta s2"><div class="vt__in"><img src="assets/img/comunione-bimbo.webp" alt="Un bambino vestito per la comunione nel negozio" loading="lazy"></div></figure>
         <div class="vetrine__testo s4 numeri">
           <div><b>1.300</b><span class="label muted">bomboniere in negozio</span></div>
@@ -490,9 +480,11 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 
   /* Feste a colonne */
   const colonne = document.getElementById('colonne');
+  /* Larghezza su altezza di ogni foto o video, per non tagliarli */
+  const FORMATI = { matrimonio: .5625, battesimo: .8, comunione: .8, cresima: .8, laurea: 1, anniversari: 1.5, compleanno: 1, offerte: .8 };
   colonne.innerHTML = G.feste.map((f, i) => {
     const pezzi = G.prodotti.filter(p => p.feste.includes(f.id));
-    return `<a class="col${i === 0 ? ' is-on' : ''}" href="catalogo.html#${f.id}">
+    return `<a class="col${i === 0 ? ' is-on' : ''}" style="--k:${FORMATI[f.id] || .8}" href="catalogo.html#${f.id}">
       ${f.video ? `<video class="col__foto" src="assets/video/${f.video}.mp4" poster="assets/video/${f.video}-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>` : `<img class="col__foto" src="assets/img/${f.foto}.webp" alt="" loading="lazy">`}
       <span class="col__vert" aria-hidden="true">${f.corto || f.nome}</span>
       <span class="col__dentro">
@@ -545,8 +537,6 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     colore.setAttribute('aria-hidden', 'true');
     media.after(colore);
   });
-  /* Foto e video interi, mai tagliati (Andrea, 05/11): il resto del riquadro lo riempie una copia sfocata */
-  Negozio.intere('.porta__media video, .porta__media img, .porta__colore video, .porta__colore img, .col__foto, .vt img');
   /* In ogni porta il video a colori segue quello in bianco e nero */
   document.querySelectorAll('.porta').forEach(porta => {
     const [videoGrigio, videoColore] = porta.querySelectorAll('video');
@@ -560,14 +550,6 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   addEventListener('scroll', trasparenza, { passive: true });
 
   /* Slideshow degli abiti nella porta di destra */
-  const slides = [...document.querySelectorAll('.porta--dx .porta__slide')];
-  const nSlide = slides.length / 2;
-  let attuale = 0;
-  const vai = n => {
-    attuale = (n + nSlide) % nSlide;
-    slides.forEach((s, i) => s.classList.toggle('is-on', i % nSlide === attuale));
-  };
-  setInterval(() => vai(attuale + 1), 5000);
 
   /* Anello degli abiti: gira e si avvicina con lo scroll */
   const ring = document.getElementById('ring');
@@ -699,8 +681,8 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
       const grigio = porta.querySelector('.porta__colore');
       const raggio = { r: 0 };
       const setR = () => grigio.style.setProperty('--r', raggio.r.toFixed(0) + 'px');
-      porta.addEventListener('pointerenter', () => { porte.classList.toggle('is-sx', porta.dataset.porta === 'sx'); porte.classList.toggle('is-dx', porta.dataset.porta === 'dx'); gsap.to(raggio, { r: 420, duration: .9, ease: 'power3.out', onUpdate: setR }); });
-      porta.addEventListener('pointerleave', () => { porte.classList.remove('is-sx', 'is-dx'); gsap.to(raggio, { r: 0, duration: .7, ease: 'power2.inOut', onUpdate: setR }); });
+      porta.addEventListener('pointerenter', () => { gsap.to(raggio, { r: 420, duration: .9, ease: 'power3.out', onUpdate: setR }); });
+      porta.addEventListener('pointerleave', () => { gsap.to(raggio, { r: 0, duration: .7, ease: 'power2.inOut', onUpdate: setR }); });
       let px = 0, py = 0, tx = 0, ty = 0;
       porta.addEventListener('pointermove', e => { const b = porta.getBoundingClientRect(); tx = e.clientX - b.left + b.width * .06; ty = e.clientY - b.top; });
       gsap.ticker.add(() => { px += (tx - px) * .14; py += (ty - py) * .14; grigio.style.setProperty('--x', px.toFixed(1) + 'px'); grigio.style.setProperty('--y', py.toFixed(1) + 'px'); });
@@ -718,17 +700,12 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     });
   }
 
-  /* Scorrendo, le porte si aprono e dietro la frase si accende parola per parola */
+  /* Scorrendo, la frase si accende parola per parola */
   const parole = document.querySelectorAll('#frase .w');
-  const asseX = !telefono;
   gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 1 } })
-    .to('.porta--sx', asseX ? { xPercent: -101, duration: .42, ease: 'power2.inOut' } : { yPercent: -101, duration: .42, ease: 'power2.inOut' }, 0)
-    .to('.porta--dx', asseX ? { xPercent: 101, duration: .42, ease: 'power2.inOut' } : { yPercent: 101, duration: .42, ease: 'power2.inOut' }, 0)
-    .to('.porta--sx .porta__media, .porta--sx .porta__colore', asseX ? { xPercent: 40, duration: .42, ease: 'power2.inOut' } : { yPercent: 40, duration: .42, ease: 'power2.inOut' }, 0)
-    .to('.porta--dx .porta__media, .porta--dx .porta__colore', asseX ? { xPercent: -40, duration: .42, ease: 'power2.inOut' } : { yPercent: -40, duration: .42, ease: 'power2.inOut' }, 0)
     .fromTo('.frase p', { scale: .92 }, { scale: 1, duration: .42, ease: 'power2.out' }, 0)
-    .to(parole, { opacity: 1, duration: .06, stagger: .36 / parole.length }, .4)
-    .fromTo('.frase__piede', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .08 }, .7);
+    .to(parole, { opacity: 1, duration: .06, stagger: .7 / parole.length }, .05)
+    .fromTo('.frase__piede', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: .08 }, .8);
 
   /* Anello: rotazione e profondità legate allo scroll */
   const giro = { r: 0 };
