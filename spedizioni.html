@@ -6,14 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/img/logo-graziella.png">
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
-<title>Condizioni di trasporto · Graziella</title>
-<meta name="description" content="Ritiro gratuito nel negozio di Bomporto o spedizione in tutta Italia, gratuita oltre 180 €: tempi, costi e cosa fare alla consegna delle bomboniere Graziella.">
+<title>Spedizione e pagamento · Graziella</title>
+<meta name="description" content="Ritiro gratuito nel negozio di Bomporto o spedizione in tutta Italia, gratuita oltre 180 €: tempi, costi e modi di pagamento delle bomboniere Graziella.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/vendor/lenis.css">
 <link rel="stylesheet" href="assets/css/negozio.css">
 <style>
-/* Condizioni di trasporto: struttura presa dalla pagina spedizioni di Nara Bomboniere (indicata da Enrico, 02/11/2026), testi e dati di Graziella */
+/* Spedizione e pagamento: argomenti presi dalle pagine di Nara Bomboniere e Viale Magico (indicate da Enrico, 02/11 e 06/11/2026), testi e dati di Graziella */
 .sped { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(32px, 6vw, 112px); padding: 8px 0 120px; align-items: start; }
 .sped__lato { position: sticky; top: calc(var(--head) + 72px); }
 .sped__lato p { margin: 22px 0 0; max-width: 32ch; color: var(--graphite); }
@@ -35,11 +35,11 @@
 <body data-pagina="spedizioni">
 <div id="testata"></div>
 <main class="wrap">
-  <nav class="crumbs label" aria-label="Percorso"><a href="index.html">Home</a><span>/</span><span>Condizioni di trasporto</span></nav>
+  <nav class="crumbs label" aria-label="Percorso"><a href="index.html">Home</a><span>/</span><span>Spedizione e pagamento</span></nav>
   <div class="sped">
     <div class="sped__lato">
-      <h1 class="h-xl" data-split>Condizioni di trasporto</h1>
-      <p>Le bomboniere si possono ritirare in negozio a Bomporto oppure ricevere a casa. Qui sotto trovate tempi, costi e cosa fare alla consegna.</p>
+      <h1 class="h-xl" data-split>Spedizione e pagamento</h1>
+      <p>Le bomboniere si possono ritirare in negozio a Bomporto oppure ricevere a casa. Qui sotto trovate tempi, costi, modi di pagamento e cosa fare alla consegna.</p>
       <div class="sped__soglia"><b>180 €</b><span class="label muted">oltre questa spesa la consegna è gratuita</span></div>
     </div>
     <div class="sped__voci">
@@ -60,7 +60,7 @@
       <section class="sped__voce">
         <h2>Tempi</h2>
         <div>
-          <p>Ogni bomboniera viene confezionata a mano al banco: i giorni di preparazione sono indicati nella scheda di ogni prodotto. Dalla partenza il corriere consegna di solito in 1–2 giorni lavorativi <span class="conferma">[da confermare]</span>.</p>
+          <p>I tempi sono due. La preparazione: ogni bomboniera viene confezionata a mano al banco e i giorni sono indicati nella scheda del prodotto; si contano dalla conferma del pagamento. Il trasporto: dalla partenza il corriere consegna di solito in 1–2 giorni lavorativi <span class="conferma">[da confermare]</span>.</p>
           <p>Potete scegliere voi la data: consigliamo di far arrivare le bomboniere 20–30 giorni prima dell'evento <span class="conferma">[da confermare]</span>.</p>
         </div>
       </section>
@@ -68,7 +68,15 @@
         <h2>Isole ed estero</h2>
         <div>
           <p>Per Sicilia, Sardegna, Calabria e Laguna di Venezia il costo si calcola a parte, in base al pacco <span class="conferma">[da confermare]</span>.</p>
-          <p>Per l'estero vi mandiamo un preventivo: scriveteci dalla scheda del prodotto o chiamate il 059 909858. Fuori dall'Unione europea i costi di dogana sono a parte.</p>
+          <p>Per l'estero vi mandiamo un preventivo: chiamate il 059 909858. Fuori dall'Unione europea i costi di dogana sono a parte.</p>
+        </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Pagamento</h2>
+        <div>
+          <p><b style="font-weight:400;color:var(--ink)">Carta di credito o di debito</b>: pagamento protetto con Stripe, l'ordine entra subito in lavorazione.</p>
+          <p><b style="font-weight:400;color:var(--ink)">PayPal</b>: accredito immediato.</p>
+          <p><b style="font-weight:400;color:var(--ink)">Bonifico bancario</b>: i dati arrivano dopo la conferma dell'ordine. Prepariamo le bomboniere quando il pagamento è accreditato, di solito in 1–2 giorni lavorativi.</p>
         </div>
       </section>
       <section class="sped__voce">
@@ -84,6 +92,10 @@
           <p>Il corriere lascia un avviso e riprova il giorno lavorativo dopo. Lasciateci un numero di telefono da dare al corriere: è il modo più semplice per non perdere la consegna.</p>
           <p>Potete anche farvi spedire al lavoro, oppure ritirare il pacco in una filiale del corriere <span class="conferma">[fermo deposito da confermare]</span>.</p>
         </div>
+      </section>
+      <section class="sped__voce">
+        <h2>Altre condizioni</h2>
+        <div><p>Ordine, recesso e garanzia sono nelle <a class="link" href="condizioni.html">Condizioni di vendita</a>.</p></div>
       </section>
     </div>
   </div>

@@ -19,7 +19,7 @@
 .cat-head p { margin-top: 18px; }
 
 /* Eventi: tutti in vista in una griglia, si vede subito dove si è */
-.eventi { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-bottom: 32px; }
+.eventi { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-bottom: 32px; }
 .eventi a { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 4px; background: var(--paper); color: var(--graphite); font-size: 12px; letter-spacing: .08em; text-align: center; transition: background .3s var(--ease), color .3s var(--ease); }
 .eventi a[aria-current] { background: var(--nero); color: var(--paper); }
 @media (hover: hover) and (pointer: fine) { .eventi a:not([aria-current]):hover { background: var(--mist); color: var(--ink); } }
@@ -68,7 +68,12 @@
 .fv:disabled { opacity: .32; cursor: default; }
 @media (hover: hover) and (pointer: fine) { .fv:not(:disabled):hover .fv__box { box-shadow: inset 0 0 0 1px var(--ink); } }
 
-@media (max-width: 1000px) { .eventi { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 1000px) {
+  .eventi { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* L'ultima riga resta piena anche se le voci non sono un multiplo di tre */
+  .eventi a:last-child:nth-child(3n+2) { grid-column: span 2; }
+  .eventi a:last-child:nth-child(3n+1) { grid-column: span 3; }
+}
 @media (max-width: 900px) {
   .cat-head { grid-template-columns: minmax(0, 1fr); padding-bottom: 24px; }
   .cat-head__foto { display: none; }
@@ -176,12 +181,12 @@
   const TESTI = {
     '': 'Una parte delle circa 1.300 bomboniere del negozio. Scegli l’evento per vedere solo quelle adatte.',
     matrimonio: 'Porcellane, cristalli e qualche pezzo spiritoso per il giorno del sì.',
-    battesimo: 'Portafoto, orologi, carillon e animali in ceramica per dare il benvenuto.',
-    comunione: 'Calici, icone, tempietti e qualche pezzo allegro per la Prima Comunione.',
+    battesimo: 'Portafoto, orologi e paperi per dare il benvenuto.',
+    comunione: 'Calici, icone, tempietti e calciatori per la Prima Comunione.',
     cresima: 'Icone e pezzi sobri, in argento e vetro, per la Cresima.',
-    laurea: 'Laureati col tocco, gufi e un mappamondo per chi ha finito.',
-    anniversari: 'Argento, porcellana e vetro soffiato, per gli anni passati insieme.',
-    compleanno: 'Pezzi allegri, dai calciatori alla ceramica, per ogni età.',
+    laurea: 'Laureati col tocco, scatoline e sacchetti per chi ha finito.',
+    anniversari: 'Porcellana di Limoges e vetro soffiato, per gli anni passati insieme.',
+    compleanno: 'Pezzi allegri, dai calciatori alla ceramica dipinta.',
     offerte: 'Pezzi ribassati, finché ci sono in negozio.'
   };
 
@@ -194,7 +199,9 @@
     { id: 'materia', nome: 'Materiale', voci: F.materie, vale: (p, v) => F.materie.find(x => x[0] === v)[2].test(p.materiale) },
     { id: 'stile', nome: 'Stile', voci: F.stili, vale: (p, v) => p.stile === v }
   ];
-  const stato = { festa: document.body.dataset.festa, ordina: '', scelte: Object.fromEntries(GRUPPI.map(g => [g.id, new Set()])) };
+  /* Le voci che non hanno nessun prodotto non si mostrano */
+  GRUPPI.forEach(g => { g.voci = g.voci.filter(v => G.prodotti.some(p => g.vale(p, v[0]))); });
+  const stato = { festa: festa(document.body.dataset.festa) ? document.body.dataset.festa : '', ordina: '', scelte: Object.fromEntries(GRUPPI.map(g => [g.id, new Set()])) };
   /* Tornando indietro da una scheda i filtri restano com'erano */
   try {
     const nav = performance.getEntriesByType('navigation')[0];
@@ -313,7 +320,7 @@
 
   /* Foglio dei filtri sul telefono: la pagina sotto resta ferma */
   const pannello = $('filtri'), velo = $('filtri-velo'), apri = $('apri-filtri');
-  /* Il foglio sta sopra testata e borsa: sul telefono vive direttamente nel body, su PC torna nella colonna */
+  /* Il foglio sta sopra testata e carrello: sul telefono vive direttamente nel body, su PC torna nella colonna */
   const colloca = () => { if (foglio.matches) document.body.append(velo, pannello); else $('corpo').prepend(velo, pannello); };
   colloca();
   function foglioAperto(si) {

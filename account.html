@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="assets/img/logo-graziella.png">
+<script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
+<title>Il mio account · Graziella</title>
+<meta name="description" content="Accedi al tuo account Graziella o registrati per seguire i tuoi ordini di bomboniere.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/vendor/lenis.css">
+<link rel="stylesheet" href="assets/css/negozio.css">
+<style>
+.conti { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(40px, 7vw, 120px); padding: 16px 0 120px; align-items: start; }
+.conti section { scroll-margin-top: calc(var(--head) + 72px); }
+.conti h1, .conti h2 { margin: 0 0 12px; }
+.conti__nota { margin: 0 0 28px; color: var(--graphite); max-width: 42ch; }
+.conto-form { display: grid; gap: 18px; }
+.conto-form label { display: grid; gap: 4px; }
+.conto-form input:not([type=checkbox]) { width: 100%; height: 46px; border: 0; border-bottom: 1px solid rgba(11, 11, 11, .36); background: none; outline: none; font-size: 17px; border-radius: 0; }
+.conto-form input:focus { border-bottom-color: var(--ink); }
+.conto-form .btn { margin-top: 8px; justify-self: start; }
+.conto-form__esito { margin: 0; min-height: 1.6em; color: var(--graphite); font-size: 15.5px; }
+@media (max-width: 760px) {
+  .conti { grid-template-columns: minmax(0, 1fr); padding-bottom: 72px; }
+  .conto-form .btn { justify-self: stretch; }
+}
+</style>
+</head>
+<body data-pagina="account">
+<div id="testata"></div>
+<main class="wrap">
+  <nav class="crumbs label" aria-label="Percorso"><a href="index.html">Home</a><span>/</span><span>Il mio account</span></nav>
+  <div class="conti">
+    <section aria-labelledby="t-accedi">
+      <h1 class="h-l" id="t-accedi">Il mio account</h1>
+      <p class="conti__nota">Accedi per vedere i tuoi ordini e i tuoi dati di consegna.</p>
+      <form class="conto-form" data-conto>
+        <label><span class="label">Email</span><input type="email" autocomplete="email" required></label>
+        <label><span class="label">Password</span><input type="password" autocomplete="current-password" required></label>
+        <button class="btn" type="submit">Accedi</button>
+        <p class="conto-form__esito" aria-live="polite"></p>
+      </form>
+    </section>
+    <section id="registrati" aria-labelledby="t-registrati">
+      <h2 class="h-l" id="t-registrati">Registrati</h2>
+      <p class="conti__nota">Con un account ritrovi i tuoi ordini e non devi riscrivere i dati ogni volta.</p>
+      <form class="conto-form" data-conto>
+        <label><span class="label">Nome e cognome</span><input type="text" autocomplete="name" required></label>
+        <label><span class="label">Email</span><input type="email" autocomplete="email" required></label>
+        <label><span class="label">Password</span><input type="password" autocomplete="new-password" required></label>
+        <button class="btn" type="submit">Crea l'account</button>
+        <p class="conto-form__esito" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+</main>
+<div id="piede"></div>
+
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/vendor/SplitText.min.js"></script>
+<script src="assets/vendor/lenis.min.js"></script>
+<script src="assets/js/dati.js"></script>
+<script src="assets/js/negozio.js"></script>
+<script>
+/* Anteprima: i moduli non inviano né salvano nulla. Gli account veri arrivano con il negozio online */
+document.querySelectorAll('[data-conto]').forEach(f => f.addEventListener('submit', e => {
+  e.preventDefault();
+  f.querySelector('.conto-form__esito').textContent = 'Anteprima del nuovo sito: gli account saranno attivi con il negozio online.';
+  f.reset();
+}));
+Negozio.entrate();
+</script>
+</body>
+</html>

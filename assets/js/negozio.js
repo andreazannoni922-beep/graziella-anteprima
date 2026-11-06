@@ -31,10 +31,17 @@
 
   /* Alcuni prodotti hanno un minimo loro, indicato da Enrico (papero terracotta 16, portafoto elefantino 6) */
   const minimoDi = id => prodotto(id).minimo || MINIMO;
+  /* Il fermo chiesto da Enrico (05/11): i pezzi in magazzino non si mostrano, ma non se ne possono ordinare di più.
+     Conta anche le altre righe dello stesso prodotto nel carrello. Senza dato (fiore di cristallo, vaso ambra) non c'è limite. */
+  const massimoDi = id => prodotto(id).disponibili || Infinity;
+  const rimastiDi = (id, riga) => massimoDi(id) - borsa.filter(x => x.id === id && x !== riga).reduce((s, x) => s + x.qty, 0);
+  /* Dice quanti pezzi sono entrati davvero */
   function aggiungi(id, conf = 'oggetto', qty = minimoDi(id), nomi = '') {
     const r = borsa.find(x => x.id === id && x.conf === conf && x.nomi === nomi);
-    if (r) r.qty += qty; else borsa.push({ id, conf, qty, nomi });
+    const entrano = Math.max(0, Math.min(qty, rimastiDi(id, null)));
+    if (entrano) { if (r) r.qty += entrano; else borsa.push({ id, conf, qty: entrano, nomi }); }
     salva(); disegnaBorsa();
+    return entrano;
   }
 
   /* ---------- Testata ---------- */
@@ -73,13 +80,17 @@
         <a class="logo-img" href="index.html"><img src="assets/img/logo-graziella.png" alt="Graziella Centro Sposi, home"></a>
         <div class="head__right">
           <a class="label hide-s" href="abiti.html#prova">059 819315</a>
-          <button class="label bag-btn" id="apri-borsa" aria-controls="borsa">Borsa <span>(<span class="bag-btn__n" id="n-borsa">0</span>)</span></button>
+          <div class="conto" id="conto">
+            <button class="conto__btn" type="button" id="conto-btn" aria-label="Il mio account e registrazione" aria-expanded="false" aria-controls="conto-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6.5 8-6.5s7 2 8 6.5"/></svg></button>
+            <div class="conto__menu label" id="conto-menu"><a href="account.html">Il mio account</a><a href="account.html#registrati">Registrati</a></div>
+          </div>
+          <button class="label bag-btn" id="apri-borsa" aria-controls="borsa">Carrello <span>(<span class="bag-btn__n" id="n-borsa">0</span>)</span></button>
         </div>
       </div>
       <nav class="head__cats label" aria-label="Sezioni">
         <a href="catalogo.html" data-mega="bomboniere" aria-haspopup="true" aria-expanded="false"${pagina === 'catalogo' || pagina === 'prodotto' ? ' aria-current="page"' : ''}>Bomboniere<i class="freccia" aria-hidden="true"></i></a>
         <a href="abiti.html" data-mega="abiti" aria-haspopup="true" aria-expanded="false"${pagina === 'abiti' ? ' aria-current="page"' : ''}>Abiti<i class="freccia" aria-hidden="true"></i></a>
-        <a href="catalogo.html#offerte">Offerte</a>
+        ${festa('offerte') ? '<a href="catalogo.html#offerte">Offerte</a>' : ''}
         <a href="index.html#chi-siamo">Chi siamo</a>
         <a href="abiti.html#prova">Prenota<span class="hide-s"> la prova</span></a>
       </nav>
@@ -88,7 +99,7 @@
           <div class="mega__col">
             <p class="mega__tit label">Per evento</p>
             <ul class="mega__lista">${G.feste.map(f => `<li class="mega__riga"><a href="catalogo.html#${f.id}" data-voce="${f.id}"><span class="mega__sale"><i class="mega__filo" aria-hidden="true"></i><span class="mega__nome">${f.nome}</span></span><span class="mega__n">${perFesta(f.id).length}</span></a></li>`).join('')}</ul>
-            <div class="mega__extra label"><a href="catalogo.html">Tutte le bomboniere</a><a href="prodotto.html#bacio">Il bigliettino personalizzato</a></div>
+            <div class="mega__extra label"><a href="catalogo.html">Tutte le bomboniere</a><a href="prodotto.html#scatola-roselline">Il bigliettino personalizzato</a></div>
           </div>
           <div class="mega__vetrina">
             <div class="mega__vtesta"><p class="label" data-vtit></p><a class="link" data-vlink href="catalogo.html"></a></div>
@@ -221,7 +232,7 @@
     { nome: 'Bomboniere', href: 'catalogo.html', foto: 'assets/img/statuette-bianche.webp', nota: `${G.prodotti.length} bomboniere online` },
     { nome: 'Abiti da sposa', href: 'abiti.html', foto: 'assets/abiti/velo-cattedrale.jpg', nota: 'Su misura, in atelier' },
     { nome: 'Prenota la prova', href: 'abiti.html#prova', foto: 'assets/abiti/prova-specchio.jpg', nota: 'Sposi & Sposi' },
-    { nome: 'Offerte', href: 'catalogo.html#offerte', foto: 'assets/img/vetrina-cristallo.webp', nota: `${G.prodotti.filter(p => p.prezzoPieno).length} bomboniere in offerta` },
+    ...(festa('offerte') ? [{ nome: 'Offerte', href: 'catalogo.html#offerte', foto: 'assets/img/vetrina-cristallo.webp', nota: `${G.prodotti.filter(p => p.prezzoPieno).length} bomboniere in offerta` }] : []),
     { nome: 'Il negozio', href: 'index.html#negozio', foto: 'assets/img/showroom-travi.webp', nota: 'Via Carlo Testa 4, Bomporto' }
   ];
   document.body.insertAdjacentHTML('beforeend', `
@@ -351,13 +362,20 @@
     out.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
   });
 
-  /* ---------- Pannello borsa ---------- */
+  /* ---------- Il mio account: su PC le due voci si leggono accanto all'icona, altrove si aprono col tocco ---------- */
+  const contoBtn = document.getElementById('conto-btn'), conto = document.getElementById('conto');
+  const apriConto = si => { conto.classList.toggle('is-on', si); contoBtn.setAttribute('aria-expanded', String(si)); };
+  contoBtn.addEventListener('click', e => { e.stopPropagation(); apriConto(!conto.classList.contains('is-on')); });
+  document.addEventListener('click', e => { if (!conto.contains(e.target)) apriConto(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') apriConto(false); });
+
+  /* ---------- Pannello carrello ---------- */
   document.body.insertAdjacentHTML('beforeend', `
     <div class="bag" id="borsa" aria-hidden="true">
       <div class="bag__veil" data-chiudi-borsa></div>
-      <aside class="bag__panel" role="dialog" aria-label="Borsa">
+      <aside class="bag__panel" role="dialog" aria-label="Carrello">
         <svg class="bag__orlo" viewBox="0 0 100 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M100,0 L100,1000 Z"/></svg>
-        <div class="bag__head"><span class="label">La tua borsa</span><button class="label" data-chiudi-borsa>Chiudi ✕</button></div>
+        <div class="bag__head"><span class="label">Il tuo carrello</span><button class="label" data-chiudi-borsa>Chiudi ✕</button></div>
         <ul class="bag__list" id="righe"></ul>
         <div class="bag__foot" id="piede-borsa"></div>
       </aside>
@@ -385,7 +403,7 @@
     const righe = document.getElementById('righe');
     const piede = document.getElementById('piede-borsa');
     if (!borsa.length) {
-      righe.innerHTML = '<li class="bag__empty"><p class="h-m" style="color:var(--ink)">La borsa è vuota.</p><p>Scegli prima l’evento: ti mostriamo solo le bomboniere adatte.</p><a class="link" href="catalogo.html">Vai alle bomboniere</a></li>';
+      righe.innerHTML = '<li class="bag__empty"><p class="h-m" style="color:var(--ink)">Il carrello è vuoto.</p><p>Scegli prima l’evento: ti mostriamo solo le bomboniere adatte.</p><a class="link" href="catalogo.html">Vai alle bomboniere</a></li>';
       piede.innerHTML = '';
       return;
     }
@@ -398,6 +416,7 @@
           <p>${c.nome}${r.nomi ? ' · “' + r.nomi + '”' : ''}</p>
           <p>${euro(p.prezzo + c.extra)} al pezzo</p>
           <div class="qty" data-riga="${i}"><button data-d="-1" aria-label="Meno">−</button><input value="${r.qty}" inputmode="numeric" aria-label="Quantità"><button data-d="1" aria-label="Più">+</button></div>
+          ${r.qty >= rimastiDi(r.id, r) ? '<p class="bag__limite">Per più pezzi chiamaci: 059 909858</p>' : ''}
           <div><button class="bag__rm" data-togli="${i}">Togli</button></div>
         </div>
         <p class="bag__price">${euro(prezzoRiga(r))}</p>
@@ -409,14 +428,14 @@
     piede.innerHTML = `
       <div class="spedizione"><p class="bag__note">${manca > 0 ? `Ti mancano <b>${euro(manca)}</b> per la consegna gratuita` : '<b>Consegna gratuita</b> in tutta Italia'}</p><div class="spedizione__barra" aria-hidden="true"><i style="transform:scaleX(${Math.min(1, totale / SOGLIA_GRATIS).toFixed(3)})"></i></div></div>
       <div class="bag__row"><span class="label">Totale</span><span>${euro(totale)}</span></div>
-      <p class="bag__note">Pronte in ${giorni} giorni lavorativi. Ritiro gratuito a Bomporto, oppure spedizione gratuita oltre ${SOGLIA_GRATIS} €. <a class="link" href="spedizioni.html">Condizioni di trasporto</a></p>
+      <p class="bag__note">Pronte in ${giorni} giorni lavorativi. Ritiro gratuito a Bomporto, oppure spedizione gratuita oltre ${SOGLIA_GRATIS} €. Dopo l'ordine ti confermiamo la disponibilità. <a class="link" href="spedizioni.html">Spedizione e pagamento</a></p>
       <button class="btn btn--full" type="button">Procedi all'ordine</button>
       ${PAGAMENTI}
       <p class="bag__note">Anteprima del nuovo sito: il pagamento sarà attivo con il negozio online.</p>`;
     bottoni(piede);
     righe.querySelectorAll('.qty').forEach(q => {
       const r = borsa[+q.dataset.riga];
-      const set = v => { r.qty = Math.max(minimoDi(r.id), v || minimoDi(r.id)); salva(); disegnaBorsa(); };
+      const set = v => { r.qty = Math.min(rimastiDi(r.id, r), Math.max(minimoDi(r.id), v || minimoDi(r.id))); salva(); disegnaBorsa(); };
       q.querySelectorAll('button').forEach(b => b.addEventListener('click', () => set(r.qty + (+b.dataset.d) * 5)));
       q.querySelector('input').addEventListener('change', e => set(parseInt(e.target.value, 10)));
     });
@@ -479,8 +498,7 @@
   document.addEventListener('click', e => {
     const b = e.target.closest('[data-aggiungi]');
     if (!b) return;
-    aggiungi(b.dataset.aggiungi);
-    volaInBorsa(b.closest('.card').querySelector('img'));
+    if (aggiungi(b.dataset.aggiungi)) volaInBorsa(b.closest('.card').querySelector('img'));
   });
 
   /* ---------- Piede ---------- */
@@ -538,7 +556,9 @@
           <li><a href="abiti.html#prova">Prenota la prova</a></li></ul></details>
         <details class="foot__voce"><summary class="label">Il negozio</summary><ul>
           <li><a href="index.html#chi-siamo">Chi siamo</a></li>
-          <li><a href="spedizioni.html">Condizioni di trasporto</a></li>
+          <li><a href="spedizioni.html">Spedizione e pagamento</a></li>
+          <li><a href="condizioni.html">Condizioni di vendita</a></li>
+          <li><a href="account.html">Il mio account</a></li>
           <li><a href="https://www.instagram.com/centrosposigraziella/" target="_blank" rel="noopener">Instagram</a></li>
           <li><a href="${G.premi.url}" target="_blank" rel="noopener">Matrimonio.com</a></li></ul></details>
         <div class="foot__lettera"><h4 class="label">Novità</h4>
@@ -720,7 +740,7 @@
 
   /* ---------- Cursore con etichetta: compare solo sulle immagini che si aprono (card, abiti, porte, eventi, fila da trascinare) ---------- */
   if (matchMedia('(hover: hover) and (pointer: fine)').matches && window.gsap && !ridotto) {
-    const ETICHETTE = [['#rail', 'Trascina'], ['.card__media', 'Vedi'], ['.abito__media', 'Prova'], ['.porta', 'Entra'], ['.col', 'Scegli'], ['.mega__pezzo', 'Vedi'], ['.gal__main:not(.is-3d)', 'Zoom']];
+    const ETICHETTE = [['#rail', 'Trascina'], ['.card__media', 'Vedi'], ['.abito__media', 'Prova'], ['.porta', 'Entra'], ['.col', 'Scegli'], ['.mega__pezzo', 'Vedi'], ['.gal__main', 'Zoom']];
     const cursore = document.createElement('div');
     cursore.className = 'cursore'; cursore.setAttribute('aria-hidden', 'true');
     cursore.innerHTML = '<span class="cursore__testo"></span>';

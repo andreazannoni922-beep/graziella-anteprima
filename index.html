@@ -117,7 +117,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 @media (max-width: 760px) {
   #vetrina-testa { display: block; margin-bottom: 20px; }
   #vetrina-testa > .link { display: none; }
-  .schede { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-bottom: 1px solid var(--hair); }
+  .schede { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; border-bottom: 1px solid var(--hair); }
   .schede button { padding: 0 0 14px; font-size: clamp(16px, 4.5vw, 19px); text-align: center; white-space: nowrap; }
   .schede button::after { bottom: -1px; }
   .vetrina__piede { display: block; margin-top: 24px; }
@@ -301,7 +301,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     <div class="sipario__corsa"></div>
     <div class="sipario__dietro">
       <div class="sipario__stick">
-        <div class="frase" aria-label="Da più di sessant'anni, a Bomporto, confezioniamo bomboniere a mano e vestiamo le spose su misura.">
+        <div class="frase" aria-label="Da più di cinquant'anni a Bomporto confezioniamo bomboniere con passione e vestiamo gli sposi con originalità ed eleganza.">
           <p id="frase" aria-hidden="true"></p>
           <div class="frase__piede label" aria-hidden="true"><span>Via Carlo Testa 4, Bomporto</span><span>Bomboniere Graziella</span><span>Sposi &amp; Sposi</span></div>
         </div>
@@ -327,7 +327,6 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
       <div class="sec__head" id="vetrina-testa">
         <div class="schede" id="schede" role="group" aria-label="Vetrina">
           <button type="button" aria-pressed="true" data-set="scelte" id="t-vetrina">Le più scelte</button>
-          <button type="button" aria-pressed="false" data-set="offerte">In offerta</button>
           <button type="button" aria-pressed="false" data-set="matrimonio">Matrimonio</button>
         </div>
         <a class="link" href="catalogo.html">Vedi tutte</a>
@@ -374,7 +373,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     <div class="wrap chi__in">
       <div class="chi__testo">
         <h2 class="h-xl" id="t-chi" data-split>Chi siamo</h2>
-        <p class="body-l" data-fade>Il negozio di bomboniere l'ha aperto la mamma di Sara più di sessant'anni fa, in via Carlo Testa. Oggi al banco c'è William; in atelier ci sono Sara e Cinzia, con la sartoria in casa.</p>
+        <p class="body-l" data-fade>Il negozio di bomboniere l'ha aperto Graziella più di cinquant'anni fa insieme a William con la volontà di distinguersi per prodotti originali ed eleganti dedicati alle cerimonie. Oggi accanto a loro ci sono Enrico nel reparto bomboniere e Sara con Cinzia che si occupano dell'atelier.</p>
         <p class="body-l" data-fade>Quello che esce dal banco e dalla sartoria lo mostriamo su Instagram.</p>
         <a class="btn btn--line" href="https://www.instagram.com/centrosposigraziella/" target="_blank" rel="noopener" data-fade>Seguici su Instagram</a>
       </div>
@@ -405,7 +404,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
         <figure class="vt vt--alta s2"><div class="vt__in"><img src="assets/img/comunione-bimbo.webp" alt="Un bambino vestito per la comunione nel negozio" loading="lazy"></div></figure>
         <div class="vetrine__testo s4 numeri">
           <div><b>1.300</b><span class="label muted">bomboniere in negozio</span></div>
-          <div><b>60</b><span class="label muted">anni e più in via Carlo Testa</span></div>
+          <div><b>50</b><span class="label muted">anni e più in via Carlo Testa</span></div>
           <div><b>2</b><span class="label muted">negozi nella stessa via: bomboniere e atelier</span></div>
         </div>
       </div>
@@ -435,7 +434,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
       <h2 class="sr" id="t-servizi">Come lavoriamo</h2>
       <ul class="srv-lista" id="servizi-righe">
         <li class="srv" data-img="assets/img/bomboniere-matrimonio.webp"><span class="srv__mini" style="background-image:url(assets/img/bomboniere-matrimonio.webp)" aria-hidden="true"></span><span class="srv__tit">Confezione a mano</span><span class="srv__txt">Ogni pezzo passa dal nostro banco, uno per uno: scatola, nastro, confetti e bigliettino.</span></li>
-        <li class="srv" data-img="assets/img/bollino-pergamena.webp"><span class="srv__mini" style="background-image:url(assets/img/bollino-pergamena.webp)" aria-hidden="true"></span><span class="srv__tit">Il vostro bollino</span><span class="srv__txt">Nomi e data sul bigliettino: li scrivete nella scheda e vedete l’anteprima prima di ordinare.</span></li>
+        <li class="srv" data-img="assets/img/bollino-pergamena.webp"><span class="srv__mini" style="background-image:url(assets/img/bollino-pergamena.webp)" aria-hidden="true"></span><span class="srv__tit">Il vostro bollino</span><span class="srv__txt">Nomi e data sul bigliettino: li scrivete nella scheda quando ordinate.</span></li>
         <li class="srv" data-img="assets/img/showroom-travi.webp"><span class="srv__mini" style="background-image:url(assets/img/showroom-travi.webp)" aria-hidden="true"></span><span class="srv__tit">Ritiro a Bomporto</span><span class="srv__txt">Gratuito in negozio, oppure spedizione: gratuita sopra i 180 €.</span></li>
         <li class="srv" data-img="assets/video/banco-poster.jpg"><span class="srv__mini" style="background-image:url(assets/video/banco-poster.jpg)" aria-hidden="true"></span><span class="srv__tit">Un consiglio vero</span><span class="srv__txt">Scrivici o chiama il 059 909858: rispondiamo noi del negozio.</span></li>
       </ul>
@@ -489,6 +488,8 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   const vetrina = document.getElementById('vetrina');
   const mostra = set => { vetrina.innerHTML = SET[set].map(id => card(Negozio.prodotto(id))).join(''); };
   mostra('scelte');
+  /* La scheda In offerta compare solo quando ci sono prodotti ribassati */
+  if (SET.offerte.length) document.querySelector('#schede [data-set="matrimonio"]').insertAdjacentHTML('beforebegin', '<button type="button" aria-pressed="false" data-set="offerte">In offerta</button>');
   document.getElementById('schede').addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b || b.getAttribute('aria-pressed') === 'true') return;
     document.querySelectorAll('#schede button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
@@ -501,7 +502,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   });
 
   /* Frase dietro al sipario: parole e due piccole immagini nel testo */
-  const FRASE = "Da più di sessant'anni, a Bomporto, [br] confezioniamo bomboniere a mano [ogg] e vestiamo le spose su misura [abito].";
+  const FRASE = "Da più di cinquant'anni a Bomporto [br] confezioniamo bomboniere con passione [ogg] e vestiamo gli sposi con originalità ed eleganza [abito].";
   document.getElementById('frase').innerHTML = FRASE.split(' ').map(w =>
     w.startsWith('[ogg]') ? `<span class="w pic" style="background-image:url(assets/img/coppie-pietra.webp)"></span>${w.slice(5)}`
     : w.startsWith('[abito]') ? `<span class="w pic" style="background-image:url(assets/abiti/strascico-tulle.jpg)"></span>${w.slice(7)}`

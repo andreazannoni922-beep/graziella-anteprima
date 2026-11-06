@@ -14,7 +14,7 @@ window.GRAZIELLA = {
     /* Prodotti veri mandati da Enrico nel gruppo il 02/11/2026: nome, misure, prezzo e pezzi in magazzino come scritti da lui;
        "viste" = quante foto scontornate da angoli diversi (la prima è assets/prodotti/<id>.webp, le altre in assets/prodotti/viste/<id>-<n>.webp) */
     { id: 'scatola-roselline', nome: 'Scatola con roselline', materiale: 'Porcellana', prezzo: 4.5, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico', tipo: 'scatole', colori: ['bianco'], misure: '⌀ 8,8 cm, altezza 4,4 cm', disponibili: 180, viste: 3 },
-    { id: 'zuccheriera-blu', nome: 'Zuccheriera blu a puntini', materiale: 'Porcellana', prezzo: 5, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico', tipo: 'tavola', colori: ['blu'], misure: 'altezza 9,7 cm, ⌀ da 9 a 13,5 cm', codice: '94628', disponibili: 370, viste: 4, modello: 'assets/prodotti/3d/zuccheriera-blu.glb' },
+    { id: 'zuccheriera-blu', nome: 'Zuccheriera blu a puntini', materiale: 'Porcellana', prezzo: 5, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico', tipo: 'tavola', colori: ['blu'], misure: 'altezza 9,7 cm, ⌀ da 9 a 13,5 cm', codice: '94628', disponibili: 370, viste: 4 },
     { id: 'campana-ambra', nome: 'Campana ambra', materiale: 'Vetro soffiato', prezzo: 4, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico', tipo: 'vasi', colori: ['oro'], misure: '5 × 9,7 cm', codice: '104C', disponibili: 360, viste: 3 },
     { id: 'anfora-ambra', nome: 'Anfora ambra', materiale: 'Vetro soffiato', prezzo: 5.5, feste: ['matrimonio'], giorni: 5, stile: 'classico', tipo: 'vasi', colori: ['oro'], misure: '6 × 18,5 cm', disponibili: 358, viste: 4 },
     { id: 'vaso-righe-blu', nome: 'Vaso a righe blu', materiale: 'Vetro', prezzo: 6, feste: ['matrimonio'], giorni: 5, stile: 'moderno', tipo: 'vasi', colori: ['blu', 'trasparente'], misure: '10 × 11 cm', codice: '97665', disponibili: 220, viste: 3 },
@@ -59,36 +59,7 @@ window.GRAZIELLA = {
     { id: 'scatola-tocco', nome: 'Scatolina con tocco e nappa, frasi assortite', materiale: 'Scatolina', prezzo: 1.5, feste: ['laurea'], giorni: 5, stile: 'spiritoso', tipo: 'scatole', colori: ['nero', 'rosso'], misure: '6,5 × 6,5 cm', codice: '122017', disponibili: 125, minimo: 12, viste: 4 },
     { id: 'appendino-sole-luna', nome: 'Appendino sole, luna e stella, assortiti', materiale: 'Ceramica', prezzo: 2, feste: ['compleanno', 'matrimonio'], giorni: 5, stile: 'spiritoso', tipo: 'decori', colori: ['blu', 'giallo'], misure: '8 cm', codice: '83396', disponibili: 480, minimo: 12, viste: 3 },
     { id: 'sacchetto-rosso-placca', nome: 'Sacchetto rosso con placca argento', materiale: 'Placca argento', prezzo: 4, feste: ['laurea'], giorni: 5, stile: 'classico', tipo: 'scatole', colori: ['rosso', 'argento'], misure: '7 × 10 cm', codice: 'AR5422', disponibili: 100, minimo: 10, viste: 1 },
-    { id: 'vaso-fiori-blu', nome: 'Vaso a fiori blu', materiale: 'Ceramica', prezzo: 6.5, feste: ['matrimonio'], giorni: 5, stile: 'classico', tipo: 'vasi', colori: ['blu', 'verde'], misure: 'altezza 18 cm, ⌀ 9,5 cm', codice: '51061', disponibili: 300, viste: 3, modello: 'assets/prodotti/3d/vaso-fiori-blu.glb' },
-    { id: 'bacio', nome: 'Il bacio', materiale: 'Resina effetto porcellana', prezzo: 6.9, feste: ['matrimonio', 'anniversari'], giorni: 5, stile: 'classico', tipo: 'statuine', colori: ['bianco'] },
-    { id: 'coppie-bianche', nome: 'Coppie in porcellana', materiale: 'Porcellana bianca', prezzo: 7.5, feste: ['matrimonio'], giorni: 5, stile: 'moderno', tipo: 'statuine', colori: ['bianco'] },
-    { id: 'danza-cristallo', nome: 'Danza sul cristallo', materiale: 'Resina e cristallo', prezzo: 12.9, feste: ['matrimonio', 'anniversari'], giorni: 8, stile: 'classico', tipo: 'statuine', colori: ['marrone', 'trasparente'] },
-    { id: 'carillon-elefantino', nome: 'Carillon elefantino', materiale: 'Ceramica', prezzo: 9.9, feste: ['battesimo'], giorni: 5, stile: 'classico', tipo: 'orologi', colori: ['argento'] },
-    { id: 'cagnolino-palloncino', nome: 'Cagnolino col palloncino', materiale: 'Ceramica lucida', prezzo: 8.5, feste: ['compleanno', 'battesimo'], giorni: 4, stile: 'spiritoso', tipo: 'statuine', colori: ['bianco'] },
-    { id: 'gatto-oro', nome: 'Gatto con foglia oro', materiale: 'Porcellana e oro', prezzo: 11.5, prezzoPieno: 14.9, feste: ['matrimonio', 'anniversari', 'offerte'], giorni: 8, stile: 'classico', tipo: 'statuine', colori: ['bianco', 'oro'] },
-    { id: 'mappamondo', nome: 'Profumatore mappamondo', materiale: 'Vetro e metallo dorato', prezzo: 9.5, feste: ['laurea', 'matrimonio'], giorni: 4, stile: 'moderno', tipo: 'profumatori', colori: ['verde', 'oro'] },
-    { id: 'barattolo-miele', nome: 'Dolce come il miele', materiale: 'Ceramica', prezzo: 5.9, feste: ['matrimonio'], giorni: 4, stile: 'spiritoso', tipo: 'tavola', colori: ['bianco'] },
-    { id: 'oliera', nome: 'Liscio come l’olio', materiale: 'Ceramica', prezzo: 6.5, feste: ['matrimonio', 'anniversari'], giorni: 4, stile: 'spiritoso', tipo: 'tavola', colori: ['bianco'] },
-    { id: 'profumiera', nome: 'Profumiera verde acqua', materiale: 'Vetro', prezzo: 7.9, feste: ['comunione', 'cresima', 'matrimonio'], giorni: 5, stile: 'moderno', tipo: 'profumatori', colori: ['verde'] },
-    { id: 'sposini', nome: 'Sposini', materiale: 'Resina dipinta a mano', prezzo: 4.9, feste: ['matrimonio'], giorni: 3, stile: 'spiritoso', tipo: 'statuine', colori: ['bianco'] },
-    { id: 'albero-della-vita', nome: 'Vaso albero della vita', materiale: 'Ceramica decorata a mano', prezzo: 14.9, feste: ['matrimonio', 'anniversari'], giorni: 10, stile: 'classico', tipo: 'vasi', colori: ['bianco', 'marrone'] },
-    { id: 'cuore-maiolica', nome: 'Cuore in maiolica', materiale: 'Maiolica', prezzo: 10.5, feste: ['matrimonio', 'anniversari'], giorni: 8, stile: 'classico', tipo: 'piatti', colori: ['blu', 'giallo'] },
-    { id: 'stella-sogni', nome: 'Stella dei sogni', materiale: 'Gesso profumato', prezzo: 3.9, feste: ['battesimo', 'comunione'], giorni: 3, stile: 'moderno', tipo: 'profumatori', colori: ['blu'] },
-    { id: 'orologio-argento', nome: 'Orologio in argento', materiale: 'Argento laminato', prezzo: 19.9, feste: ['anniversari', 'matrimonio'], giorni: 6, stile: 'classico', tipo: 'orologi', colori: ['argento'] },
-    { id: 'elefante-rose', nome: 'Elefante con rose', materiale: 'Porcellana', prezzo: 8.9, feste: ['battesimo', 'matrimonio'], giorni: 6, stile: 'classico', tipo: 'statuine', colori: ['bianco'] },
-    { id: 'vivi-e-ama', nome: 'Vivi e ama all’infinito', materiale: 'Plexiglass e metallo', prezzo: 5.5, prezzoPieno: 7.5, feste: ['matrimonio', 'anniversari', 'offerte'], giorni: 4, stile: 'moderno', tipo: 'decori', colori: ['bianco'] },
-    { id: 'bacio-grigio', nome: 'Il bacio, grigio perla', materiale: 'Resina effetto pietra', prezzo: 7.2, prezzoPieno: 9.5, feste: ['matrimonio', 'offerte'], giorni: 5, stile: 'moderno', tipo: 'statuine', colori: ['argento'] },
-    { id: 'gufi-laurea', nome: 'Gufi col tocco', materiale: 'Ceramica dipinta', prezzo: 6.5, feste: ['laurea'], giorni: 3, stile: 'spiritoso', tipo: 'statuine', colori: ['colori'] },
-    { id: 'sacchetti-laurea', nome: 'Sacchetti Carpe Diem', materiale: 'Raso rosso e confetti', prezzo: 3.5, feste: ['laurea'], giorni: 3, stile: 'spiritoso', tipo: 'scatole', colori: ['rosso'] },
-    { id: 'targhe-comunione', nome: 'Targhe sacre', materiale: 'Resina e argento', prezzo: 6.9, feste: ['comunione', 'cresima'], giorni: 5, stile: 'classico', tipo: 'sacri', colori: ['bianco'] },
-    { id: 'alberi-pergamena', nome: 'Albero della vita con pergamena', materiale: 'Resina e argento', prezzo: 7.9, feste: ['comunione', 'cresima'], giorni: 5, stile: 'classico', tipo: 'sacri', colori: ['bianco'] },
-    { id: 'angioletti', nome: 'Angioletti', materiale: 'Ceramica dipinta', prezzo: 5.9, feste: ['battesimo', 'comunione'], giorni: 4, stile: 'classico', tipo: 'statuine', colori: ['rosso'] },
-    { id: 'orologio-klimt', nome: 'Orologio albero della vita', materiale: 'Legno stampato', prezzo: 13.9, feste: ['matrimonio', 'anniversari'], giorni: 6, stile: 'moderno', tipo: 'orologi', colori: ['oro'] },
-    { id: 'abbraccio-pietra', nome: 'L’abbraccio', materiale: 'Resina effetto pietra', prezzo: 8.9, feste: ['anniversari', 'matrimonio'], giorni: 5, stile: 'moderno', tipo: 'statuine', colori: ['marrone'] },
-    { id: 'cuori-legno', nome: 'Cuori in legno', materiale: 'Legno naturale', prezzo: 4.5, feste: ['compleanno', 'matrimonio'], giorni: 3, stile: 'moderno', tipo: 'decori', colori: ['marrone', 'bianco'] },
-    { id: 'scrigno-fiori', nome: 'Scrigno con fiori', materiale: 'Porcellana dipinta', prezzo: 9.5, feste: ['cresima', 'compleanno'], giorni: 6, stile: 'classico', tipo: 'scatole', colori: ['verde', 'giallo'] },
-    { id: 'sacchetti-cuore', nome: 'Sacchetti col cuore', materiale: 'Organza e ceramica', prezzo: 3.9, prezzoPieno: 4.9, feste: ['comunione', 'battesimo', 'offerte'], giorni: 3, stile: 'spiritoso', tipo: 'scatole', colori: ['bianco'] },
-    { id: 'mestolo', nome: 'Mestolo da cucina', materiale: 'Legno e ceramica', prezzo: 5.2, feste: ['matrimonio', 'compleanno'], giorni: 4, stile: 'spiritoso', tipo: 'tavola', colori: ['bianco'] }
+    { id: 'vaso-fiori-blu', nome: 'Vaso a fiori blu', materiale: 'Ceramica', prezzo: 6.5, feste: ['matrimonio'], giorni: 5, stile: 'classico', tipo: 'vasi', colori: ['blu', 'verde'], misure: 'altezza 18 cm, ⌀ 9,5 cm', codice: '51061', disponibili: 300, viste: 3 },
   ],
   /* Orari detti dal cliente all'incontro del 26/10: bomboniere 9:00–12:30 e 15:30–19:00, abiti 9:30–12:30 e 15:30–19:30 su appuntamento,
      domenica su appuntamento. I giorni di chiusura (lunedì, martedì pomeriggio) vengono dal sito vecchio: da confermare. Ore in decimali, 0 = domenica. */
@@ -100,6 +71,9 @@ window.GRAZIELLA = {
 };
 
 /* Abiti da sposa: non si vendono online, si prova in atelier e la sartoria li fa su misura. Nomi descrittivi dalle foto Instagram di Sposi & Sposi. */
+/* Senza prodotti ribassati la voce Offerte sparisce da tutto il sito; torna da sola appena un prodotto ha prezzoPieno */
+if (!window.GRAZIELLA.prodotti.some(p => p.prezzoPieno)) window.GRAZIELLA.feste = window.GRAZIELLA.feste.filter(f => f.id !== 'offerte');
+
 window.GRAZIELLA.filtri = {
   tipi: [['statuine', 'Statuine'], ['vasi', 'Vasi e vetri'], ['portafoto', 'Portafoto'], ['orologi', 'Orologi e carillon'], ['scatole', 'Scatole e sacchetti'], ['tavola', 'Per la tavola'], ['piatti', 'Piatti e ciotole'], ['sacri', 'Icone e sacri'], ['profumatori', 'Profumatori'], ['portachiavi', 'Portachiavi'], ['decori', 'Fiori e decori']],
   colori: [['bianco', 'Bianco e avorio', '#F5F0E6'], ['argento', 'Argento e grigio', 'linear-gradient(135deg,#E9E9E7,#A9A9A6)'], ['oro', 'Oro e ambra', 'linear-gradient(135deg,#EBD08A,#B98A34)'], ['marrone', 'Tortora e marrone', '#A48C74'], ['rosa', 'Rosa', '#EDBBC4'], ['rosso', 'Rosso', '#B3262E'], ['blu', 'Blu e azzurro', '#2F568F'], ['verde', 'Verde', '#6F9A72'], ['giallo', 'Giallo e arancio', '#E7A93C'], ['nero', 'Nero', '#1C1917'], ['trasparente', 'Trasparente', 'linear-gradient(135deg,#fff 45%,#D9E3E6 50%,#fff 55%)'], ['colori', 'Più colori', 'conic-gradient(#D9534F,#E7A93C,#6F9A72,#2F568F,#D9534F)']],

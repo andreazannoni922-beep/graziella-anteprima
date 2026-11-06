@@ -9,7 +9,7 @@
 <title>Bomboniera · Graziella</title>
 <meta name="description" content="Bomboniera confezionata a mano nel negozio Graziella di Bomporto, con bigliettino personalizzato, ritiro in negozio o spedizione.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Cormorant+Garamond:wght@500&family=Great+Vibes&family=Noto+Serif+Display:wght@300;400&family=Josefin+Sans&family=Tenor+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/vendor/lenis.css">
 <link rel="stylesheet" href="assets/css/negozio.css">
 <style>
@@ -43,9 +43,6 @@
 .opt span:first-of-type::before { content: ''; width: 13px; height: 13px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--fog); transition: box-shadow .3s var(--ease); }
 .opt:has(input:checked) span:first-of-type::before { box-shadow: inset 0 0 0 4px var(--ink); }
 .opt:has(input:focus-visible) { outline: 1px solid var(--ink); outline-offset: 2px; }
-.pers__testa { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.pers__testa canvas { width: 96px; height: 96px; flex-shrink: 0; }
-.pers__testa button { text-decoration: underline; text-underline-offset: 3px; }
 .pers__campi { display: grid; gap: 6px; margin-top: 4px; }
 .pers__campi input { width: 100%; height: 46px; border: 0; border-bottom: 1px solid var(--hair); background: none; outline: none; font-size: 17px; border-radius: 0; }
 .pers__campi input:focus { border-bottom-color: var(--ink); }
@@ -63,17 +60,6 @@
 .pers__seg { display: flex; flex-wrap: wrap; gap: 6px; }
 .pers__seg button { height: 40px; padding: 0 16px; box-shadow: inset 0 0 0 1px var(--hair); font-size: 15.5px; transition: background .3s, color .3s; }
 .pers__seg button[aria-checked="true"] { background: var(--nero); color: var(--paper); box-shadow: none; }
-.gal__main canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: none; cursor: grab; touch-action: pan-y; }
-.gal__main.is-3d canvas { display: block; }
-/* Modello 3D girabile a 360° (Higgsfield, da 3 foto vere) */
-.gal__main model-viewer { position: absolute; inset: 0; width: 100%; height: 100%; display: none; background: transparent; --poster-color: transparent; }
-.gal__main.is-modello model-viewer { display: block; }
-.gal__main.is-modello #foto { opacity: 0; }
-.gal__main.is-modello::after { opacity: 0; }
-.gal__thumbs button[data-vista="m"] { display: grid; place-items: center; font-size: 11px; letter-spacing: .12em; }
-.gal__main.is-3d img, .gal__main.is-3d::after { display: none; }
-.gal__main.is-3d { cursor: default; }
-.gal__thumbs button[data-vista="3d"] { display: grid; place-items: center; font-size: 11px; letter-spacing: .12em; }
 .riepilogo { display: flex; align-items: center; gap: 12px; margin-top: 30px; }
 .riepilogo .btn { flex: 1; height: 52px; white-space: nowrap; }
 @media (max-width: 420px) { .riepilogo .btn { padding: 0 16px; letter-spacing: .1em; } }
@@ -119,9 +105,8 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
         <div class="gal__thumbs" id="thumbs">
           <button aria-pressed="true" data-vista="intero" aria-label="Vista intera"><img alt="" id="th1"></button>
           <button aria-pressed="false" data-vista="dettaglio" aria-label="Dettaglio"><img alt="" id="th2"></button>
-          <button aria-pressed="false" data-vista="3d" aria-label="Il tuo bigliettino in 3D">3D</button>
         </div>
-        <div class="gal__main" id="principale"><img id="foto" alt=""><canvas id="scena3d" aria-label="Anteprima 3D della scatolina con il tuo bigliettino"></canvas><model-viewer id="modello" camera-controls camera-orbit="0deg 76deg 135%" field-of-view="28deg" auto-rotate auto-rotate-delay="0" rotation-per-second="24deg" interaction-prompt="none" touch-action="pan-y" shadow-intensity="0.7" shadow-softness="0.9" exposure="1.05" environment-image="neutral" disable-zoom alt=""></model-viewer><span class="gal__hint label" id="hint-gal">Clic per ingrandire</span></div>
+        <div class="gal__main" id="principale"><img id="foto" alt=""><span class="gal__hint label" id="hint-gal">Clic per ingrandire</span></div>
       </div>
 
       <div class="buy">
@@ -135,10 +120,8 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
         </div>
 
         <div class="grp">
-          <div class="pers__testa">
-            <div><div class="label">Personalizza la bomboniera</div><p class="muted" style="margin:4px 0 0;font-size:15.5px">Bigliettino, nastro, confetti e scatola. <button type="button" id="vedi-3d">Guardala in 3D</button></p></div>
-            <canvas id="anteprima-2d" width="192" height="192" aria-label="Anteprima del bigliettino"></canvas>
-          </div>
+          <div class="label">Personalizza la bomboniera</div>
+          <p class="muted" style="margin:4px 0 0;font-size:15.5px">Scatola, bigliettino, nastro e confetti.</p>
           <div id="personalizza"></div>
         </div>
 
@@ -150,8 +133,8 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
         <div class="buy__tempi"><span id="tempi"></span><span>Ritiro gratuito a Bomporto, oppure spedizione: gratuita oltre 180 €.</span><span id="minimo"></span></div>
 
         <details><summary class="label">Materiale e misure</summary><p id="det-mat"></p></details>
-        <details><summary class="label">Come la confezioniamo</summary><p>Al banco del negozio, a mano: oggetto, confetti, nastro e bigliettino col bollino. Prima di confezionare ti mandiamo una foto della prima bomboniera pronta.</p></details>
-        <details><summary class="label">Ritiro e spedizione</summary><p>Ritiro gratuito nel negozio di Bomporto (MO) negli orari di apertura. Spedizione in tutta Italia, gratuita per ordini oltre 180 €. Paghi con PayPal o con la carta (Stripe). <a class="link" href="spedizioni.html">Condizioni di trasporto</a></p></details>
+        <details><summary class="label">Come la confezioniamo</summary><p>Al banco del negozio, a mano: oggetto, confetti, nastro e bigliettino col bollino.</p></details>
+        <details><summary class="label">Ritiro e spedizione</summary><p>Ritiro gratuito nel negozio di Bomporto (MO) negli orari di apertura. Spedizione in tutta Italia, gratuita per ordini oltre 180 €. Paghi con carta, PayPal o bonifico. <a class="link" href="spedizioni.html">Spedizione e pagamento</a></p></details>
       </div>
     </div>
   </div>
@@ -168,14 +151,13 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
     </div>
   </section>
 </main>
-<div class="barra-m" id="barra-m"><span id="m-tot" style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"></span><button class="btn" id="m-agg">Aggiungi alla borsa</button></div>
+<div class="barra-m" id="barra-m"><span id="m-tot" style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis"></span><button class="btn" id="m-agg">Aggiungi al carrello</button></div>
 <div id="piede"></div>
 
 <script src="assets/vendor/gsap.min.js"></script>
 <script src="assets/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/vendor/SplitText.min.js"></script>
 <script src="assets/vendor/lenis.min.js"></script>
-<script src="assets/vendor/three.min.js"></script>
 <script src="assets/js/dati.js"></script>
 <script src="assets/js/bigliettino.js"></script>
 <script>
@@ -210,24 +192,11 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
     pollici.classList.add('is-viste');
     pollici.insertAdjacentHTML('afterbegin', VISTE.map((u, k) => `<button aria-pressed="${k ? 'false' : 'true'}" data-vista="v${k}" aria-label="Vista ${k + 1} di ${VISTE.length}"><img alt="" src="${u}"></button>`).join(''));
   }
-  /* Modello 3D: miniatura "360°"; lo script di model-viewer si carica solo quando serve */
-  const modello = document.getElementById('modello');
-  if (p.modello) {
-    const b3 = document.querySelector('#thumbs [data-vista="3d"]');
-    b3.insertAdjacentHTML('beforebegin', '<button aria-pressed="false" data-vista="m" aria-label="Il prodotto in 3D, da girare a 360 gradi">360°</button>');
-    modello.setAttribute('alt', `${p.nome} in 3D`);
-  }
-  let mvCaricato = false;
-  const caricaModello = () => {
-    if (mvCaricato) return; mvCaricato = true;
-    const s = document.createElement('script'); s.type = 'module'; s.src = 'https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js'; document.head.appendChild(s);
-    modello.src = p.modello;
-  };
   document.getElementById('foto').alt = `${p.nome}, ${p.materiale.toLowerCase()}`;
   document.getElementById('tempi').textContent = `Pronte in ${p.giorni} giorni lavorativi dall'ordine.`;
   const MIN = p.minimo || MINIMO;
   document.getElementById('minimo').textContent = p.minimo ? `Minimo ${MIN} pezzi.` : `Minimo ${MIN} pezzi, poi a gruppi di 5.`;
-  document.getElementById('det-mat').textContent = `${p.materiale}. Misure: ${p.misure || '[da chiedere a Graziella]'}.${p.codice ? ` Codice ${p.codice}.` : ''}${p.disponibili ? ` In negozio ne abbiamo ${p.disponibili}.` : ''} Ogni pezzo è controllato al banco prima di essere confezionato.`;
+  document.getElementById('det-mat').textContent = `${p.materiale}. Misure: ${p.misure || '[da chiedere a Graziella]'}.${p.codice ? ` Codice ${p.codice}.` : ''} Ogni pezzo è controllato al banco prima di essere confezionato.`;
 
   /* Confezioni */
   const box = document.getElementById('confezioni');
@@ -237,7 +206,11 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   const q = document.getElementById('q');
   const conf = () => box.querySelector('input:checked').value;
   if (p.minimo) q.value = p.minimo;
-  const qta = () => Math.max(MIN, parseInt(q.value, 10) || MIN);
+  /* Fermo sui pezzi in magazzino: il numero non si mostra, si avvisa solo quando si arriva al limite */
+  const MAX = p.disponibili || Infinity;
+  const qta = () => Math.min(MAX, Math.max(MIN, parseInt(q.value, 10) || MIN));
+  const AVVISO_LIMITE = 'Per più pezzi chiamaci allo 059 909858: controlliamo in negozio.';
+  const limite = () => { if ((parseInt(q.value, 10) || 0) > MAX) document.getElementById('conferma').textContent = AVVISO_LIMITE; };
   function totale() {
     const c = CONFEZIONI.find(x => x.id === conf());
     const t = (p.prezzo + c.extra) * qta();
@@ -245,16 +218,17 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
     document.getElementById('m-tot').textContent = `${qta()} pezzi · ${euro(t)}`;
   }
   box.addEventListener('change', totale);
-  document.querySelectorAll('#qty button').forEach(b => b.addEventListener('click', () => { q.value = Math.max(MIN, qta() + +b.dataset.d); totale(); }));
-  q.addEventListener('change', () => { q.value = qta(); totale(); });
+  document.querySelectorAll('#qty button').forEach(b => b.addEventListener('click', () => { q.value = Math.max(MIN, qta() + +b.dataset.d); limite(); q.value = qta(); totale(); }));
+  q.addEventListener('change', () => { limite(); q.value = qta(); totale(); });
   totale();
 
   /* Aggiungi */
   function metti() {
-    aggiungi(p.id, conf(), qta(), Bigliettino.descrizione());
-    volaInBorsa(document.querySelector('#principale.is-3d') ? document.getElementById('anteprima-2d') : document.getElementById('foto'));
+    const entrati = aggiungi(p.id, conf(), qta(), Bigliettino.descrizione());
     const ok = document.getElementById('conferma');
-    ok.innerHTML = `Aggiunti ${qta()} pezzi. <button type="button">Vedi la borsa</button>`;
+    if (!entrati) { ok.textContent = AVVISO_LIMITE; return; }
+    volaInBorsa(foto);
+    ok.innerHTML = `Aggiunti ${entrati} pezzi.${entrati < qta() ? ' ' + AVVISO_LIMITE : ''} <button type="button">Vedi il carrello</button>`;
     ok.querySelector('button').addEventListener('click', () => Negozio.toggleBorsa(true));
   }
   document.getElementById('aggiungi').addEventListener('click', metti);
@@ -270,11 +244,11 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
 
   /* Galleria: intero / dettaglio, ingrandimento che segue il mouse */
   const main = document.getElementById('principale'), foto = document.getElementById('foto');
-  main.addEventListener('click', () => { if (trascinato) { trascinato = false; return; } if (!main.classList.contains('is-3d') && !main.classList.contains('is-modello')) main.classList.toggle('is-zoom'); });
+  main.addEventListener('click', () => { if (trascinato) { trascinato = false; return; } main.classList.toggle('is-zoom'); });
   /* Trascinando la foto in orizzontale il prodotto passa da un lato all'altro, come girarlo in mano */
   if (VISTE) {
     let x0 = null, passo = 0;
-    main.addEventListener('pointerdown', e => { if (main.classList.contains('is-3d') || main.classList.contains('is-modello')) return; x0 = e.clientX; passo = 0; trascinato = false; });
+    main.addEventListener('pointerdown', e => { x0 = e.clientX; passo = 0; trascinato = false; });
     main.addEventListener('pointermove', e => {
       if (x0 === null) return;
       const d = Math.round((e.clientX - x0) / 70);
@@ -289,32 +263,15 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
     foto.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${((e.clientY - r.top) / r.height) * 100}%`;
   });
   main.addEventListener('mouseleave', () => main.classList.remove('is-zoom'));
-  let pers = null;
   let lato = 0, trascinato = false;
   function vista(v) {
     document.querySelectorAll('#thumbs button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.vista === v)));
     if (VISTE && /^v\d+$/.test(v)) { lato = +v.slice(1); foto.src = VISTE[lato]; }
-    main.classList.toggle('is-modello', v === 'm');
-    if (v === 'm') caricaModello();
     foto.style.transformOrigin = '50% 40%';
     main.classList.toggle('is-zoom', v === 'dettaglio');
-    main.classList.toggle('is-3d', v === '3d');
-    document.getElementById('hint-gal').textContent = v === '3d' ? 'Trascina per girarla' : v === 'm' ? 'Trascina per girarla a 360°' : VISTE ? 'Trascina per girarla · clic per ingrandire' : 'Clic per ingrandire';
-    if (pers) pers.attiva3D(v === '3d');
   }
   document.getElementById('thumbs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) vista(b.dataset.vista); });
-  document.getElementById('vedi-3d').addEventListener('click', () => {
-    vista('3d');
-    if (innerWidth <= 900) (Negozio.lenis ? Negozio.lenis.scrollTo(main, { offset: -80 }) : main.scrollIntoView({ behavior: 'smooth' }));
-  });
-  /* La prima modifica al bigliettino porta la scatolina 3D in primo piano */
-  let gia3D = false;
-  Bigliettino.init({
-    contenitore: document.getElementById('personalizza'),
-    anteprima: document.getElementById('anteprima-2d'),
-    canvas3d: document.getElementById('scena3d'),
-    onCambio: () => { if (!gia3D && innerWidth > 900) { gia3D = true; vista('3d'); } }
-  }).then(r => { pers = r; if (!r.ha3D) document.querySelector('[data-vista="3d"]').hidden = true; });
+  Bigliettino.init({ contenitore: document.getElementById('personalizza') });
 
   /* Simili */
   const simili = G.prodotti.filter(x => x.id !== p.id && x.feste.some(ff => p.feste.includes(ff))).slice(0, 10);
