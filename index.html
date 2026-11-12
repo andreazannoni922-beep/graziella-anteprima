@@ -270,6 +270,54 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   .rec__totale { min-width: 0; }
 }
 @media (min-width: 761px) and (max-width: 900px) { .rec__fila { --h: 560px; } .rec-voce { width: 448px; } }
+
+/* Sfilata delle bomboniere (Runway Lookbook di MotionSites): palco a sinistra, colonna dei prodotti a destra */
+.sfilata { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 360px; height: min(100svh, 920px); min-height: 640px; background: var(--paper); border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.sf__palco { position: relative; overflow: hidden; background: linear-gradient(transparent 62%, rgba(255,255,255,.75) 100%), linear-gradient(90deg, #EFECE8 0%, #E7E2DC 38%, #EEEAE5 62%, #F6F3F0 100%); touch-action: pan-y; user-select: none; -webkit-user-select: none; outline: none; }
+.sf__palco:focus-visible { box-shadow: inset 0 0 0 2px var(--nero); }
+@media (hover: hover) and (pointer: fine) { .sf__palco { cursor: none; } }
+.sf__pezzi { position: absolute; inset: 0; opacity: 0; transition: opacity .8s var(--ease); }
+.sfilata.is-pronta .sf__pezzi { opacity: 1; }
+.sf__pezzo { position: absolute; left: 0; top: 0; margin: 0; display: flex; align-items: flex-end; justify-content: center; transform-origin: 50% 100%; will-change: transform; pointer-events: auto; }
+.sf__pezzo img { display: block; height: 100%; width: auto; max-width: none; object-fit: contain; mix-blend-mode: multiply; -webkit-user-drag: none; }
+.sf__ombra { position: absolute; left: 8%; right: 8%; bottom: -1.6%; height: 3.6%; border-radius: 50%; background: radial-gradient(closest-side, rgba(59, 42, 32, .26), transparent); }
+.sf__testa { position: absolute; left: clamp(20px, 3vw, 46px); top: clamp(22px, 4vh, 40px); z-index: 120; max-width: 380px; pointer-events: none; }
+.sf__testa h2 { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(34px, 3.4vw, 54px); line-height: 1.02; letter-spacing: -.01em; }
+.sf__testa p { margin: 14px 0 0; font-size: 16px; line-height: 1.55; color: var(--graphite); }
+.sf__piede { position: absolute; left: clamp(20px, 3vw, 46px); bottom: clamp(22px, 4vh, 44px); z-index: 120; display: grid; justify-items: start; gap: 10px; }
+.sf__finestra { height: clamp(34px, 3vw, 46px); overflow: hidden; }
+.sf__nomi { will-change: transform; }
+.sf__nomi span { display: block; height: clamp(34px, 3vw, 46px); line-height: clamp(34px, 3vw, 46px); font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(24px, 2.2vw, 36px); white-space: nowrap; }
+.sf__prezzo { margin: 0; font-size: 16px; color: var(--graphite); }
+.sf__prezzo s { color: var(--fog); margin-right: 6px; }
+.sf__frecce { position: absolute; right: clamp(16px, 2.4vw, 36px); bottom: clamp(22px, 4vh, 44px); z-index: 120; display: flex; gap: 10px; }
+.sf__anello { position: absolute; left: 0; top: 0; z-index: 130; width: 46px; height: 46px; border: 2px solid var(--nero); border-radius: 999px; pointer-events: none; opacity: 0; transition: opacity .25s, width .22s cubic-bezier(.2,.8,.2,1), height .22s cubic-bezier(.2,.8,.2,1); }
+.sf__anello.is-on { opacity: 1; }
+.sfilata.is-trascina .sf__anello { width: 84px; height: 34px; }
+.sf__binario { position: relative; overflow: hidden; background: #F4F1EE; }
+.sf__card { position: absolute; left: 0; right: 0; top: 0; height: calc(100% / 3); display: grid; grid-template-rows: minmax(0, 1fr) auto; padding: 18px 24px 20px; background: #F4F1EE; will-change: transform; transition: background .4s; }
+.sf__card:nth-child(odd) { background: #FBFAF8; }
+.sf__card-foto { display: flex; align-items: center; justify-content: center; min-height: 0; }
+.sf__card-foto img { max-height: 100%; max-width: 70%; object-fit: contain; mix-blend-mode: multiply; }
+.sf__card-testo h3 { margin: 10px 0 2px; font-size: 14px; font-weight: 400; letter-spacing: .06em; text-transform: uppercase; line-height: 1.35; padding-right: 40px; }
+.sf__card-testo p { margin: 0; font-size: 15px; color: var(--graphite); }
+.sf__card-testo s { color: var(--fog); }
+.sf__piu { position: absolute; right: 20px; bottom: 20px; width: 30px; height: 30px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--hair); }
+.sf__piu i { position: absolute; left: 50%; top: 50%; width: 12px; height: 1.5px; background: var(--nero); transform: translate(-50%, -50%); transition: transform .4s var(--ease); }
+.sf__piu i + i { transform: translate(-50%, -50%) rotate(90deg); }
+@media (hover: hover) and (pointer: fine) { .sf__piu:hover i { transform: translate(-50%, -50%) rotate(90deg); } .sf__piu:hover i + i { transform: translate(-50%, -50%) rotate(180deg); } }
+@media (max-width: 900px) {
+  .sfilata { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) 196px; height: auto; min-height: 0; }
+  .sf__palco { height: min(70svh, 600px); min-height: 460px; }
+  .sf__testa { right: 16px; }
+  .sf__testa h2 { font-size: 32px; }
+  .sf__testa p { font-size: 15px; }
+  .sf__binario { height: 196px; }
+  .sf__card { width: 168px; height: 100%; right: auto; padding: 12px 14px 14px; }
+  .sf__card-testo h3 { font-size: 12px; padding-right: 30px; }
+  .sf__card-testo p { font-size: 13px; }
+  .sf__piu { right: 12px; bottom: 14px; width: 26px; height: 26px; }
+}
 </style>
 </head>
 <body data-pagina="home">
@@ -336,6 +384,28 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     </div>
   </section>
 
+
+
+  <section class="sfilata" id="sfilata" aria-labelledby="t-sfilata" data-prodotti='["sposi-bianchi","portacandele-pendagli","vaso-fiori-blu","fiore-cristallo","anfora-ambra","sposi-tortora"]'>
+    <div class="sf__palco" tabindex="0" aria-roledescription="sfilata" aria-label="Sfilata delle bomboniere">
+      <div class="sf__testa">
+        <h2 id="t-sfilata">Dal nostro banco</h2>
+        <p>Sei bomboniere del negozio, una dopo l'altra. Trascinale o usa le frecce.</p>
+      </div>
+      <div class="sf__pezzi"></div>
+      <div class="sf__piede">
+        <div class="sf__finestra" aria-hidden="true"><div class="sf__nomi"></div></div>
+        <p class="sf__prezzo"></p>
+        <a class="link sf__link" href="catalogo.html">Vedi la bomboniera</a>
+      </div>
+      <div class="sf__frecce">
+        <button type="button" class="fila-freccia" data-sf="-1" aria-label="Bomboniera precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="fila-freccia" data-sf="1" aria-label="Bomboniera successiva"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <span class="sf__anello" aria-hidden="true"></span>
+    </div>
+    <div class="sf__binario" aria-label="Le bomboniere della sfilata"></div>
+  </section>
 
   <section class="anello" id="abiti-home" aria-labelledby="t-abiti">
     <div class="anello__stick">
@@ -452,6 +522,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 <script src="assets/js/dati.js"></script>
 <script src="assets/js/recensioni.js"></script>
 <script src="assets/js/negozio.js"></script>
+<script src="assets/js/sfilata.js"></script>
 <script>
 (function () {
   const { G, card, entrate } = Negozio;
