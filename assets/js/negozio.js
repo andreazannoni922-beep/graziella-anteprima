@@ -625,6 +625,8 @@
     if (pagina1(url) === pagina1(location)) {
       if (!ricaricaSuHash || url.hash === location.hash) return;
     }
+    /* In prova: tra pagine diverse il cambio lo fa il browser (View Transition a libro, cambio-pagina.css) */
+    if (document.documentElement.classList.contains('libro') && pagina1(url) !== pagina1(location)) return;
     e.preventDefault();
     parti(url.href);
   });

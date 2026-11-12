@@ -1,0 +1,18 @@
+/* Cambio pagina a libro ("047R" di UberDesigner): un foglio color carta si apre dalla linea centrale sopra la pagina vecchia,
+   poi la pagina nuova si apre dal centro sopra il foglio. Stessa molla della pila degli abiti (massa 1, rigidità 170, smorzamento 21).
+   Usa le View Transitions tra documenti (Chrome 126+, Safari 18.2+); dove non ci sono resta il sipario. */
+@view-transition { navigation: auto; }
+@property --vt-buco { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+html.libro::view-transition { background: #FFFFFF; }
+html.libro::view-transition-group(root) { animation-duration: 1.3s; }
+html.libro::view-transition-old(root) {
+  animation: vt-buco 1000ms linear(0, 0.0167, 0.0687, 0.1231, 0.2077, 0.2759, 0.3684, 0.4364, 0.5227, 0.5831, 0.6567, 0.7064, 0.7652, 0.8038, 0.8482, 0.8767, 0.9087, 0.9287, 0.9507, 0.964, 0.9782, 0.9866, 0.9951, 0.9999, 1.0046, 1.007, 1.0086, 1.0099, 1.0103, 1.0104, 1.0101, 1.0095, 1.0089, 1.0079, 1.0072, 1.0063, 1.0056, 1.0047, 1.0041, 1.0033, 1.0028, 1.0023, 1.0019, 1.0014, 1.0012, 1.0009, 1.0007, 1.0004, 1) both;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(50% - var(--vt-buco)), transparent calc(50% - var(--vt-buco)), transparent calc(50% + var(--vt-buco)), #000 calc(50% + var(--vt-buco)));
+  mask-image: linear-gradient(90deg, #000 calc(50% - var(--vt-buco)), transparent calc(50% - var(--vt-buco)), transparent calc(50% + var(--vt-buco)), #000 calc(50% + var(--vt-buco)));
+}
+html.libro::view-transition-new(root) { animation: vt-pagina 1000ms linear(0, 0.0167, 0.0687, 0.1231, 0.2077, 0.2759, 0.3684, 0.4364, 0.5227, 0.5831, 0.6567, 0.7064, 0.7652, 0.8038, 0.8482, 0.8767, 0.9087, 0.9287, 0.9507, 0.964, 0.9782, 0.9866, 0.9951, 0.9999, 1.0046, 1.007, 1.0086, 1.0099, 1.0103, 1.0104, 1.0101, 1.0095, 1.0089, 1.0079, 1.0072, 1.0063, 1.0056, 1.0047, 1.0041, 1.0033, 1.0028, 1.0023, 1.0019, 1.0014, 1.0012, 1.0009, 1.0007, 1.0004, 1) 240ms both; }
+@keyframes vt-buco { from { --vt-buco: 0%; } to { --vt-buco: 51%; } }
+@keyframes vt-pagina { from { clip-path: inset(0 50% 0 50%); } to { clip-path: inset(0 -1% 0 -1%); } }
+@media (prefers-reduced-motion: reduce) {
+  html.libro::view-transition-old(root), html.libro::view-transition-new(root) { animation: none; }
+}
