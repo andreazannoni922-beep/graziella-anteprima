@@ -461,6 +461,8 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 .foot__premio { display: inline-block; margin-top: 26px; color: var(--graphite); }
 .foot__premio b { font-weight: 400; color: var(--ink); }
 .foot__bottom { display: flex; justify-content: space-between; align-items: center; gap: 10px 24px; flex-wrap: wrap; padding-top: 20px; padding-bottom: 24px; border-top: 1px solid var(--hair); color: var(--graphite); }
+.foot__firma { flex-basis: 100%; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+@media (hover: hover) and (pointer: fine) { .foot__firma:hover { text-decoration-thickness: 2px; } }
 .foot .pagamenti { gap: 0 14px; }
 .foot .pagamenti span { height: auto; padding: 0; border: 0; color: inherit; font-size: inherit; letter-spacing: inherit; }
 @media (max-width: 1100px) { .foot__corpo { grid-template-columns: repeat(3, minmax(0, 1fr)); } .foot__intro, .foot__lettera { grid-column: 1 / -1; } }

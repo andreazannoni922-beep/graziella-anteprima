@@ -566,7 +566,7 @@
           <form class="foot__news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie'"><input type="email" placeholder="La tua email" aria-label="Email" required><button class="label">Iscriviti</button></form>
         </div>
       </div>
-      <div class="wrap foot__bottom label"><span>© Graziella Centro Sposi</span>${PAGAMENTI}<span>Anteprima del nuovo sito · novembre 2026</span></div>
+      <div class="wrap foot__bottom label"><span>© Graziella Centro Sposi</span>${PAGAMENTI}<span>Anteprima del nuovo sito · novembre 2026</span><a class="foot__firma" href="mailto:andreazannoni922@gmail.com">Sito creato da Andrea Zannoni</a></div>
     </footer>`;
 
   const mainEl = document.querySelector('main');
