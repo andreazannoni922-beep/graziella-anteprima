@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<script>try{var q=location.search;if(/[?&]prova=1/.test(q))localStorage.setItem("graziella-prova","1");if(/[?&]prova=0/.test(q))localStorage.removeItem("graziella-prova");if(localStorage.getItem("graziella-prova")==="1"&&"onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
+<script>try{var q=location.search;if(/[?&]prova=1/.test(q))localStorage.setItem("graziella-prova","1");if(/[?&]prova=0/.test(q))localStorage.removeItem("graziella-prova");if(localStorage.getItem("graziella-prova")==="1"){document.documentElement.classList.add("nuovo")}if(localStorage.getItem("graziella-prova")==="1"&&"onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/img/logo-graziella.png">
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
@@ -319,6 +319,48 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   .sf__card-testo p { font-size: 13px; }
   .sf__piu { right: 12px; bottom: 14px; width: 26px; height: 26px; }
 }
+
+/* ---- Prova (?prova=1): sezioni nuove al posto di Abiti in home e Atelier ---- */
+.solo-nuovo { display: none; }
+html.nuovo .solo-nuovo { display: block; }
+html.nuovo #abiti-home, html.nuovo #atelier { display: none; }
+/* Salita degli abiti (Gallery Rise di HorizonX): tessere 4:5, così le foto restano intere */
+.salita { position: relative; height: calc(100svh + 110vh); background: var(--paper); }
+.sl-palco { position: sticky; top: 0; height: 100svh; display: grid; grid-template-rows: auto minmax(0, 1fr); padding: calc(var(--head) + var(--bar) + 18px) var(--gut) 22px; overflow: hidden; }
+.sl-testa { max-width: var(--max); width: 100%; margin: 0 auto 18px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px clamp(32px, 5vw, 80px); align-items: end; }
+.sl-testa .h-xl { font-size: clamp(40px, 4.4vw, 70px); }
+.sl-testa p { margin: 0 0 18px; }
+.sl-griglia { --g: 12px; --cw: min(calc((100vw - 2 * var(--gut) - 7 * var(--g)) / 8), calc((100svh - var(--head) - var(--bar) - 250px - 2 * var(--g)) / 3.75)); display: grid; grid-template-columns: repeat(8, var(--cw)); grid-auto-rows: calc(var(--cw) * 1.25); gap: var(--g); justify-content: center; align-content: center; }
+.sl-item { grid-area: var(--pos); position: relative; overflow: hidden; background: var(--mist); will-change: transform; }
+.sl-item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+@media (hover: hover) and (pointer: fine) { .sl-item img { transition: transform .9s var(--ease); } .sl-item:hover img { transform: scale(1.04); } }
+/* Parole dell'atelier (Type Reveal di HorizonX): la foto si apre tra le parole, a sipario, senza inclinazioni */
+.parole { background: var(--paper); padding: 12vh var(--gut) 14vh; display: flex; flex-direction: column; overflow: hidden; }
+html.nuovo .parole { display: flex; }
+.tr-blocco { --open: 0; max-width: min(90%, 1100px); padding: 7vh 0; }
+.tr-blocco[data-align='center'] { align-self: center; text-align: center; }
+.tr-blocco[data-align='right'] { align-self: flex-end; text-align: right; }
+.tr-tipo { margin: 0; font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(44px, 6.4vw, 104px); line-height: 1.04; letter-spacing: -.015em; color: var(--ink); }
+.tr-slot { display: inline-grid; grid-template-columns: min-content; vertical-align: top; padding-top: calc(var(--open) * 22px); gap: calc(var(--open) * 22px); }
+.tr-blocco[data-align='center'] .tr-slot { justify-items: center; }
+.tr-blocco[data-align='right'] .tr-slot { justify-items: end; }
+.tr-cornice { display: block; position: relative; width: calc(var(--open) * var(--fw, 0px)); aspect-ratio: var(--r); overflow: hidden; will-change: width; }
+.tr-fill { position: absolute; top: 50%; left: 50%; width: var(--fw, 0px); aspect-ratio: var(--r); height: auto; transform: translate(-50%, -50%); object-fit: cover; display: block; background: var(--mist); }
+.tr-parola { display: inline-block; white-space: nowrap; }
+.tr-corpo { margin: 26px 0 0; max-width: 38ch; font-size: clamp(16px, 1.3vw, 19px); line-height: 1.55; color: var(--graphite); }
+.tr-blocco[data-align='center'] .tr-corpo { margin-left: auto; margin-right: auto; }
+.tr-blocco[data-align='right'] .tr-corpo { margin-left: auto; }
+.tr-blocco .btn { margin-top: 26px; }
+@media (max-width: 900px) {
+  .salita { height: auto; }
+  .sl-palco { position: relative; height: auto; padding: 64px var(--gut) 48px; }
+  .sl-testa { grid-template-columns: 1fr; }
+  .sl-griglia { --cw: auto; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: auto; gap: 8px; }
+  .sl-item { grid-area: auto; aspect-ratio: 4 / 5; }
+  .sl-item:nth-child(n + 16) { display: none; }
+  .tr-blocco { max-width: 100%; padding: 5vh 0; }
+  .tr-tipo { font-size: clamp(38px, 10.5vw, 60px); }
+}
 </style>
 </head>
 <body data-pagina="home">
@@ -424,6 +466,18 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     </div>
   </section>
 
+  <section class="salita solo-nuovo" id="salita" aria-labelledby="t-salita">
+    <div class="sl-palco">
+      <div class="sl-testa">
+        <h2 class="h-xl" id="t-salita">Abiti da sposa,<br> su misura</h2>
+        <div><p class="body-l">Gli abiti non si comprano online. Li provi in atelier da Sposi &amp; Sposi e la nostra sartoria li adatta a te, dalla prima prova all'ultima cucitura.</p>
+        <div class="anello__azioni"><a class="btn" href="abiti.html">Vedi gli abiti</a><a class="btn btn--line" href="abiti.html#prova">Prenota la prova</a></div></div>
+      </div>
+      <div class="sl-griglia"><a class="sl-item" href="abiti.html#collezione" style="--pos:1/1" tabindex="-1" aria-hidden="true"><img src="assets/abiti/sirena-pizzo.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:1/3" tabindex="-1" aria-hidden="true"><img src="assets/abiti/principessa-velo.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:1/4" tabindex="-1" aria-hidden="true"><img src="assets/img/prova-sorriso.webp" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:1/5" tabindex="-1" aria-hidden="true"><img src="assets/abiti/scollo-v-raso.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:1/7" tabindex="-1" aria-hidden="true"><img src="assets/abiti/sirena-strascico.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/1" tabindex="-1" aria-hidden="true"><img src="assets/abiti/velo-cattedrale.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/3" tabindex="-1" aria-hidden="true"><img src="assets/abiti/linea-a-giardino.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/4" tabindex="-1" aria-hidden="true"><img src="assets/img/atelier-bn.webp" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/6" tabindex="-1" aria-hidden="true"><img src="assets/abiti/pizzo-ricamato.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/7" tabindex="-1" aria-hidden="true"><img src="assets/abiti/strascico-tulle.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:2/8" tabindex="-1" aria-hidden="true"><img src="assets/abiti/nero-spacco.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/1" tabindex="-1" aria-hidden="true"><img src="assets/abiti/bustier-nero.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/2" tabindex="-1" aria-hidden="true"><img src="assets/abiti/prova-specchio.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/4" tabindex="-1" aria-hidden="true"><img src="assets/abiti/nero-pizzo.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/5" tabindex="-1" aria-hidden="true"><img src="assets/img/sposa-facciata.webp" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/7" tabindex="-1" aria-hidden="true"><img src="assets/abiti/prova-sartoria.jpg" alt="" loading="lazy" decoding="async"></a><a class="sl-item" href="abiti.html#collezione" style="--pos:3/8" tabindex="-1" aria-hidden="true"><img src="assets/abiti/prova-atelier.jpg" alt="" loading="lazy" decoding="async"></a></div>
+    </div>
+  </section>
+
+
   <section class="atelier" id="atelier" aria-labelledby="t-atelier">
     <div class="atelier__in">
       <div>
@@ -439,6 +493,23 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
       </div>
     </div>
   </section>
+
+  <section class="parole solo-nuovo" id="parole" aria-labelledby="t-parole">
+    <article class="tr-blocco" data-align="left">
+      <h2 class="tr-tipo" id="t-parole">Non lo sai<br>finché non<br><span class="tr-slot"><span class="tr-cornice" style="--r:0.8"><img class="tr-fill" src="assets/img/prova-sorriso.webp" alt="Una sposa sorride durante la prova in atelier" loading="lazy"></span><span class="tr-parola">lo provi.</span></span></h2>
+      <p class="tr-corpo">Da Sposi &amp; Sposi l'abito si sceglie addosso, con calma, prova dopo prova.</p>
+    </article>
+    <article class="tr-blocco" data-align="center">
+      <p class="tr-tipo" aria-hidden="false">La sartoria<br>è in casa:<br><span class="tr-slot"><span class="tr-cornice" style="--r:1.5"><img class="tr-fill" src="assets/img/mani-lacci.webp" alt="Mani che stringono i lacci di un corsetto" loading="lazy"></span><span class="tr-parola">Sara e Cinzia.</span></span></p>
+      <p class="tr-corpo">Sistemano l'abito su di te, dall'orlo al corpetto, finché è tuo.</p>
+    </article>
+    <article class="tr-blocco" data-align="right">
+      <p class="tr-tipo">Vieni a<br>provarlo in<br><span class="tr-slot"><span class="tr-cornice" style="--r:0.5625"><video class="tr-fill" src="assets/video/atelier.mp4" poster="assets/video/atelier-poster.jpg" muted loop playsinline preload="metadata" aria-label="Una prova d'abito nell'atelier"></video></span><span class="tr-parola">atelier.</span></span></p>
+      <p class="tr-corpo">Su appuntamento, in via Carlo Testa 6/B a Bomporto.</p>
+      <a class="btn" href="abiti.html#prova">Prenota la prova</a>
+    </article>
+  </section>
+
 
   <section class="chi" id="chi-siamo" aria-labelledby="t-chi">
     <div class="wrap chi__in">
@@ -476,7 +547,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
         <div class="vetrine__testo s4 numeri">
           <div><b>1.300</b><span class="label muted">bomboniere in negozio</span></div>
           <div><b>50</b><span class="label muted">anni e più in via Carlo Testa</span></div>
-          <div><b>2</b><span class="label muted">negozi nella stessa via: bomboniere e atelier</span></div>
+          <div><b>10</b><span class="label muted">Wedding Awards di Matrimonio.com, dal 2017</span></div>
         </div>
       </div>
     </div>
@@ -808,5 +879,6 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   entrate();
 })();
 </script>
+<script src="assets/js/novita-home.js"></script>
 </body>
 </html>
