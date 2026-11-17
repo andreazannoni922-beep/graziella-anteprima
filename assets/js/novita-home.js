@@ -1,12 +1,10 @@
-/* Sezioni nuove della home, visibili solo in prova (html.nuovo, aperto con ?prova=1).
+/* Sezioni della home approvate da Andrea il 17/11/2026.
    1. Salita degli abiti: "Gallery Rise" di HorizonX. Le foto salgono dal basso, ognuna da un'altezza diversa e una dopo l'altra,
       finché si compongono nel mosaico. La ricetta originale (ease sine, stagger 0.07, scrub 0.5) qui la guida lo scroll della pagina.
    2. Parole dell'atelier: "Type Reveal" di HorizonX. Dentro le frasi grandi si apre una foto (o il video) tra le parole, a sipario;
       l'apertura segue la posizione della frase nello schermo, con la stessa morbidezza (0.12) e la curva power1.inOut.
       Le foto alla fine si vedono intere: il riempimento ha già la misura finale e la cornice lo scopre. */
 (function () {
-  const html = document.documentElement;
-  if (!html.classList.contains('nuovo')) return;
   const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp = v => (v < 0 ? 0 : v > 1 ? 1 : v);
 

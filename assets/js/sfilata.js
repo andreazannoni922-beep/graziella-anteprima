@@ -28,9 +28,9 @@
   const prezzoEl = radice.querySelector('.sf__prezzo');
   const linkEl = radice.querySelector('.sf__link');
 
-  pista.innerHTML = pezzi.map((p, i) => `<figure class="sf__pezzo" data-i="${i}"><i class="sf__ombra"></i><img src="assets/prodotti/${p.id}.webp" alt="${p.nome}" draggable="false"></figure>`).join('');
+  pista.innerHTML = pezzi.map((p, i) => `<figure class="sf__pezzo" data-i="${i}"><i class="sf__ombra"></i><img src="${GRAZIELLA.foto(p)}" alt="${p.nome}" draggable="false"></figure>`).join('');
   binario.innerHTML = pezzi.map((p, i) => `<article class="sf__card" data-i="${i}">
-      <a class="sf__card-foto" href="prodotto.html#${p.id}"><img src="assets/prodotti/${p.id}.webp" alt="" loading="lazy"></a>
+      <a class="sf__card-foto" href="prodotto.html#${p.id}"><img src="${GRAZIELLA.foto(p)}" alt="" loading="lazy"></a>
       <div class="sf__card-testo"><h3><a href="prodotto.html#${p.id}">${p.nome}</a></h3><p>${p.prezzoPieno ? `<s>${euro(p.prezzoPieno)}</s> ` : ''}${euro(p.prezzo)} al pezzo</p></div>
       <button class="sf__piu" type="button" data-aggiungi-sf="${p.id}" aria-label="Aggiungi ${p.nome} al carrello"><i></i><i></i></button>
     </article>`).join('');

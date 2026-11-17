@@ -143,7 +143,7 @@
         tit: id === 'offerte' ? 'In offerta adesso' : `Le più scelte per ${(f.corto || f.nome).toLowerCase()}`,
         link: `catalogo.html#${id}`, linkTxt: `Tutte le ${l.length}`,
         foto: `assets/img/${f.foto}.webp`, cap: `${f.nome} · ${l.length} bomboniere`,
-        pezzi: scelteDi(id).map(p => ({ href: `prodotto.html#${p.id}`, img: `assets/prodotti/${p.id}.webp`, nome: p.nome, sotto: `${p.prezzoPieno ? `<s>${euro(p.prezzoPieno)}</s> ` : ''}${euro(p.prezzo)}` }))
+        pezzi: scelteDi(id).map(p => ({ href: `prodotto.html#${p.id}`, img: G.foto(p), nome: p.nome, sotto: `${p.prezzoPieno ? `<s>${euro(p.prezzoPieno)}</s> ` : ''}${euro(p.prezzo)}` }))
       };
     },
     abiti: id => {
@@ -183,7 +183,7 @@
   function apriPannello(id) {
     clearTimeout(chiudiDopo);
     /* Alla prima apertura si caricano le foto di tutte le feste, così passando sulla lista appaiono subito */
-    if (!precaricato) { precaricato = true; G.feste.forEach(f => { scelteDi(f.id).forEach(x => { new Image().src = `assets/prodotti/${x.id}.webp`; }); new Image().src = `assets/img/${f.foto}.webp`; }); }
+    if (!precaricato) { precaricato = true; G.feste.forEach(f => { scelteDi(f.id).forEach(x => { new Image().src = G.foto(x); }); new Image().src = `assets/img/${f.foto}.webp`; }); }
     head.classList.add('is-aperto');
     velo.classList.add('is-on');
     pannelli.forEach(p => {
@@ -357,7 +357,7 @@
     const trovati = G.prodotti.filter(p =>
       (p.nome + ' ' + p.materiale + ' ' + p.feste.map(f => festa(f).nome).join(' ')).toLowerCase().includes(q)).slice(0, 5);
     out.innerHTML = trovati.length
-      ? trovati.map(p => `<li><a href="prodotto.html#${p.id}"><img src="assets/prodotti/${p.id}.webp" alt=""><span>${p.nome}</span><span class="fog">${euro(p.prezzo)}</span></a></li>`).join('')
+      ? trovati.map(p => `<li><a href="prodotto.html#${p.id}"><img src="${G.foto(p)}" alt=""><span>${p.nome}</span><span class="fog">${euro(p.prezzo)}</span></a></li>`).join('')
       : '<li class="fog" style="padding:12px 0">Nessuna bomboniera con questo nome. Chiedi in negozio: ne abbiamo circa 1.300.</li>';
     out.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
   });
@@ -410,7 +410,7 @@
     righe.innerHTML = borsa.map((r, i) => {
       const p = prodotto(r.id), c = CONFEZIONI.find(x => x.id === r.conf);
       return `<li class="bag__item">
-        <a href="prodotto.html#${p.id}"><img src="assets/prodotti/${p.id}.webp" alt=""></a>
+        <a href="prodotto.html#${p.id}"><img src="${G.foto(p)}" alt=""></a>
         <div>
           <h3>${p.nome}</h3>
           <p>${c.nome}${r.nomi ? ' · “' + r.nomi + '”' : ''}</p>
@@ -429,10 +429,26 @@
       <div class="spedizione"><p class="bag__note">${manca > 0 ? `Ti mancano <b>${euro(manca)}</b> per la consegna gratuita` : '<b>Consegna gratuita</b> in tutta Italia'}</p><div class="spedizione__barra" aria-hidden="true"><i style="transform:scaleX(${Math.min(1, totale / SOGLIA_GRATIS).toFixed(3)})"></i></div></div>
       <div class="bag__row"><span class="label">Totale</span><span>${euro(totale)}</span></div>
       <p class="bag__note">Pronte in ${giorni} giorni lavorativi. Ritiro gratuito a Bomporto, oppure spedizione gratuita oltre ${SOGLIA_GRATIS} €. Dopo l'ordine ti confermiamo la disponibilità. <a class="link" href="spedizioni.html">Spedizione e pagamento</a></p>
-      <button class="btn btn--full" type="button">Procedi all'ordine</button>
+      <button class="btn btn--full" type="button" data-cassa>Procedi all'ordine</button>
       ${PAGAMENTI}
-      <p class="bag__note">Anteprima del nuovo sito: il pagamento sarà attivo con il negozio online.</p>`;
+      ${G.wp ? '' : '<p class="bag__note">Anteprima del nuovo sito: il pagamento sarà attivo con il negozio online.</p>'}`;
     bottoni(piede);
+    /* Su WordPress il carrello passa a WooCommerce (confezione e bigliettino compresi) e si va alla cassa */
+    const cassa = piede.querySelector('[data-cassa]');
+    if (G.wp && cassa) cassa.addEventListener('click', async () => {
+      cassa.disabled = true; cassa.textContent = 'Un momento…';
+      const fd = new FormData();
+      fd.append('action', 'graziella_ordine'); fd.append('nonce', G.wp.nonce); fd.append('righe', JSON.stringify(borsa));
+      try {
+        const r = await fetch(G.wp.ajax, { method: 'POST', body: fd, credentials: 'same-origin' });
+        const j = await r.json();
+        if (!j.success) throw new Error('ordine');
+        location.href = j.data.url;
+      } catch (err) {
+        cassa.disabled = false; cassa.textContent = "Procedi all'ordine";
+        piede.insertAdjacentHTML('beforeend', '<p class="bag__note">Non siamo riusciti ad aprire la cassa. Riprova, oppure chiamaci allo 059 909858.</p>');
+      }
+    });
     righe.querySelectorAll('.qty').forEach(q => {
       const r = borsa[+q.dataset.riga];
       const set = v => { r.qty = Math.min(rimastiDi(r.id, r), Math.max(minimoDi(r.id), v || minimoDi(r.id))); salva(); disegnaBorsa(); };
@@ -488,7 +504,7 @@
     return `<article class="card" data-id="${p.id}">
       <div class="card__media"><a class="card__field" href="prodotto.html#${p.id}">
         ${p.prezzoPieno ? '<span class="card__tag">Offerta</span>' : ''}
-        <img src="assets/prodotti/${p.id}.webp" alt="${p.nome}, ${p.materiale.toLowerCase()}" loading="lazy">
+        <img src="${G.foto(p)}" alt="${p.nome}, ${p.materiale.toLowerCase()}" loading="lazy">
       </a>
       <button class="card__add" data-aggiungi="${p.id}">Aggiungi ${p.minimo || MINIMO} pezzi</button></div>
       <div class="card__meta"><h3><a href="prodotto.html#${p.id}">${p.nome}</a></h3><p class="price">${p.prezzoPieno ? `<s>${euro(p.prezzoPieno)}</s>` : ''}${euro(p.prezzo)}</p></div>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<script>try{var q=location.search;if(/[?&]prova=1/.test(q))localStorage.setItem("graziella-prova","1");if(/[?&]prova=0/.test(q))localStorage.removeItem("graziella-prova");if(localStorage.getItem("graziella-prova")==="1"){document.documentElement.classList.add("nuovo")}if(localStorage.getItem("graziella-prova")==="1"&&"onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
+<script>try{if("onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/img/logo-graziella.png">
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
@@ -320,10 +320,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
   .sf__piu { right: 12px; bottom: 14px; width: 26px; height: 26px; }
 }
 
-/* ---- Prova (?prova=1): sezioni nuove al posto di Abiti in home e Atelier ---- */
-.solo-nuovo { display: none; }
-html.nuovo .solo-nuovo { display: block; }
-html.nuovo #abiti-home, html.nuovo #atelier { display: none; }
+/* ---- Abiti che salgono e parole dell'atelier (12/11/2026, approvate da Andrea il 17/11) ---- */
 /* Salita degli abiti (Gallery Rise di HorizonX): tessere 4:5, così le foto restano intere */
 .salita { position: relative; height: calc(100svh + 110vh); background: var(--paper); }
 .sl-palco { position: sticky; top: 0; height: 100svh; display: grid; grid-template-rows: auto minmax(0, 1fr); padding: calc(var(--head) + var(--bar) + 18px) var(--gut) 22px; overflow: hidden; }
@@ -336,7 +333,6 @@ html.nuovo #abiti-home, html.nuovo #atelier { display: none; }
 @media (hover: hover) and (pointer: fine) { .sl-item img { transition: transform .9s var(--ease); } .sl-item:hover img { transform: scale(1.04); } }
 /* Parole dell'atelier (Type Reveal di HorizonX): la foto si apre tra le parole, a sipario, senza inclinazioni */
 .parole { background: var(--paper); padding: 12vh var(--gut) 14vh; display: flex; flex-direction: column; overflow: hidden; }
-html.nuovo .parole { display: flex; }
 .tr-blocco { --open: 0; max-width: min(90%, 1100px); padding: 7vh 0; }
 .tr-blocco[data-align='center'] { align-self: center; text-align: center; }
 .tr-blocco[data-align='right'] { align-self: flex-end; text-align: right; }
@@ -450,23 +446,8 @@ html.nuovo .parole { display: flex; }
     <div class="sf__binario" aria-label="Le bomboniere della sfilata"></div>
   </section>
 
-  <section class="anello" id="abiti-home" aria-labelledby="t-abiti">
-    <div class="anello__stick">
-      <div class="anello__testo">
-        <h2 class="h-xl" id="t-abiti" data-split>Abiti da sposa,<br> su misura</h2>
-        <div><p class="body-l" data-fade>Gli abiti non si comprano online. Li provi in atelier da Sposi &amp; Sposi e la nostra sartoria li adatta a te, dalla prima prova all'ultima cucitura.</p>
-        <div class="anello__azioni" data-fade><a class="btn" href="abiti.html">Vedi gli abiti</a><a class="btn btn--line" href="abiti.html#prova">Prenota la prova</a></div></div>
-      </div>
-      <div class="anello__fila" id="abiti-fila"></div>
-      <div class="fila-nav fila-nav--abiti">
-        <button type="button" class="fila-freccia" data-verso="-1" id="abiti-prima" aria-label="Abito precedente"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <div class="fila-barra" aria-hidden="true"><i id="abiti-barra"></i></div>
-        <button type="button" class="fila-freccia" data-verso="1" id="abiti-dopo" aria-label="Abito successivo"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
-      </div>
-    </div>
-  </section>
 
-  <section class="salita solo-nuovo" id="salita" aria-labelledby="t-salita">
+  <section class="salita" id="salita" aria-labelledby="t-salita">
     <div class="sl-palco">
       <div class="sl-testa">
         <h2 class="h-xl" id="t-salita">Abiti da sposa,<br> su misura</h2>
@@ -478,23 +459,8 @@ html.nuovo .parole { display: flex; }
   </section>
 
 
-  <section class="atelier" id="atelier" aria-labelledby="t-atelier">
-    <div class="atelier__in">
-      <div>
-        <h2 class="h-xl" id="t-atelier" data-split>Sposi &amp; Sposi</h2>
-        <p class="atelier__frase" data-fade>Non lo sai finché non lo provi. L'atelier ha la sartoria in casa: Sara e Cinzia sistemano l'abito su di te.</p>
-        <a class="btn" href="abiti.html#prova" data-fade>Prenota la prova</a>
-      </div>
-      <figure class="atelier__foto" data-fade>
-        <img src="assets/img/sposa-facciata.webp" alt="Una sposa in abito di raso davanti a un palazzo arancione" loading="lazy">
-      </figure>
-      <div class="atelier__frame" id="cornice-video">
-        <video src="assets/video/atelier.mp4" poster="assets/video/atelier-poster.jpg" muted loop playsinline preload="metadata" aria-label="Una prova d'abito nell'atelier"></video>
-      </div>
-    </div>
-  </section>
 
-  <section class="parole solo-nuovo" id="parole" aria-labelledby="t-parole">
+  <section class="parole" id="parole" aria-labelledby="t-parole">
     <article class="tr-blocco" data-align="left">
       <h2 class="tr-tipo" id="t-parole">Non lo sai<br>finché non<br><span class="tr-slot"><span class="tr-cornice" style="--r:0.8"><img class="tr-fill" src="assets/img/prova-sorriso.webp" alt="Una sposa sorride durante la prova in atelier" loading="lazy"></span><span class="tr-parola">lo provi.</span></span></h2>
       <p class="tr-corpo">Da Sposi &amp; Sposi l'abito si sceglie addosso, con calma, prova dopo prova.</p>
@@ -612,7 +578,7 @@ html.nuovo .parole { display: flex; }
       <span class="col__vert" aria-hidden="true">${f.corto || f.nome}</span>
       <span class="col__dentro">
         <span><span class="col__nome">${f.nome}</span><span class="col__conta label">${pezzi.length} bomboniere</span><span class="btn btn--light col__cta">Scegli</span></span>
-        <span class="col__pezzi" aria-hidden="true">${pezzi.slice(0, 2).map(p => `<span style="background-image:url(assets/prodotti/${p.id}.webp)"></span>`).join('')}</span>
+        <span class="col__pezzi" aria-hidden="true">${pezzi.slice(0, 2).map(p => `<span style="background-image:url(${GRAZIELLA.foto(p)})"></span>`).join('')}</span>
       </span>
     </a>`;
   }).join('');
@@ -675,16 +641,6 @@ html.nuovo .parole { display: flex; }
   addEventListener('scroll', trasparenza, { passive: true });
 
   /* Slideshow degli abiti nella porta di destra */
-
-  /* Abiti: foto grandi in una fila da scorrere, con le frecce */
-  const abiti = G.abiti.slice(0, 10);
-  const filaAbiti = document.getElementById('abiti-fila');
-  filaAbiti.innerHTML = abiti.map(a => `<a class="abito-h" href="abiti.html#${a.linea}"><figure style="margin:0"><span class="abito-h__foto"><img src="assets/abiti/${a.id}.jpg" alt="${a.nome}" loading="lazy"></span><figcaption><span>${a.nome}</span><span class="label">${G.linee.find(l => l.id === a.linea).nome}</span></figcaption></figure></a>`).join('');
-  Negozio.fila(filaAbiti, { prima: document.getElementById('abiti-prima'), dopo: document.getElementById('abiti-dopo'), barra: document.getElementById('abiti-barra') });
-
-  /* Video dell'atelier: parte quando entra in vista */
-  const video = document.querySelector('#cornice-video video');
-  new IntersectionObserver(([e]) => e.isIntersecting ? video.play().catch(() => {}) : video.pause(), { threshold: .25 }).observe(video);
 
   /* Recensioni vere: loghi delle fonti e nomi delle due attività */
   const R = G.recensioni;
@@ -813,8 +769,6 @@ html.nuovo .parole { display: flex; }
   /* Feste: le colonne salgono una dopo l'altra */
   gsap.from('.col', { clipPath: 'inset(100% 0 0 0)', duration: 1.2, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: '#colonne', start: 'top 82%', once: true } });
 
-  /* Atelier: la cornice del video cresce entrando */
-  gsap.fromTo('#cornice-video', { clipPath: 'inset(14% 10% 14% 10%)' }, { clipPath: 'inset(0% 0% 0% 0%)', ease: 'none', scrollTrigger: { trigger: '#atelier', start: 'top 85%', end: 'center center', scrub: 1 } });
 
   /* Negozio: ogni vetrina si apre come una tendina (la cornice scende, la foto sale) e il mosaico si compone con lo scroll */
   const vt = [...document.querySelectorAll('.vt')], vtIn = vt.map(f => f.querySelector('.vt__in'));

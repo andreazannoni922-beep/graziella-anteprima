@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<script>try{var q=location.search;if(/[?&]prova=1/.test(q))localStorage.setItem("graziella-prova","1");if(/[?&]prova=0/.test(q))localStorage.removeItem("graziella-prova");if(localStorage.getItem("graziella-prova")==="1"){document.documentElement.classList.add("nuovo")}if(localStorage.getItem("graziella-prova")==="1"&&"onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
+<script>try{if("onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/img/logo-graziella.png">
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
@@ -322,7 +322,16 @@
       (nome.value.trim() ? tel : nome).focus();
       return;
     }
-    esito.innerHTML = `<div class="ok"><h3>Grazie, ${nome.value.trim().split(' ')[0]}.</h3><p>Nel sito vero la richiesta arriva a Sposi &amp; Sposi, che ti richiama al ${tel.value.trim()}. In questa anteprima del sito non viene ancora inviata.</p></div>`;
+    const grazie = `<div class="ok"><h3>Grazie, ${nome.value.trim().split(' ')[0]}.</h3><p>Sposi &amp; Sposi ti richiama al ${tel.value.trim()} per fissare la prova.</p></div>`;
+    /* Su WordPress la richiesta parte davvero per email; nell'anteprima statica no */
+    if (!G.wp) { esito.innerHTML = grazie.replace('</p></div>', ' In questa anteprima del sito la richiesta non viene ancora inviata.</p></div>'); return; }
+    const fd = new FormData(e.target);
+    fd.append('action', 'graziella_prova'); fd.append('nonce', G.wp.nonce);
+    ['f-nome', 'f-tel', 'f-email', 'f-giorno', 'f-msg'].forEach(id => { const c = document.getElementById(id); if (c) fd.set(id, c.value); });
+    esito.innerHTML = '<p class="muted">Invio in corso…</p>';
+    fetch(G.wp.ajax, { method: 'POST', body: fd, credentials: 'same-origin' }).then(r => r.json())
+      .then(j => { esito.innerHTML = j.success ? grazie : '<p class="muted">Non è partita. Chiamaci allo 059 819315.</p>'; })
+      .catch(() => { esito.innerHTML = '<p class="muted">Non è partita. Chiamaci allo 059 819315.</p>'; });
   });
 
   if (!window.gsap || ridotto) { entrate(); return; }

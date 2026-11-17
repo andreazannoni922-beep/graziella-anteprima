@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<script>try{var q=location.search;if(/[?&]prova=1/.test(q))localStorage.setItem("graziella-prova","1");if(/[?&]prova=0/.test(q))localStorage.removeItem("graziella-prova");if(localStorage.getItem("graziella-prova")==="1"){document.documentElement.classList.add("nuovo")}if(localStorage.getItem("graziella-prova")==="1"&&"onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
+<script>try{if("onpagereveal" in window){document.documentElement.classList.add("libro");document.write('<link rel="stylesheet" href="assets/css/cambio-pagina.css">')}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="assets/img/logo-graziella.png">
 <script>try{if(sessionStorage.getItem("graziella-passaggio")==="1"){document.documentElement.classList.add("in-passaggio");setTimeout(function(){document.documentElement.classList.remove("in-passaggio")},2500)}}catch(e){}</script>
@@ -176,7 +176,7 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   const { G, euro, festa, card, aggiungi, volaInBorsa, entrate, CONFEZIONI, MINIMO } = Negozio;
   const p = window.PRODOTTO;
   const f = festa(p.feste[0]);
-  const src = `assets/prodotti/${p.id}.webp`;
+  const src = G.foto(p);
   document.title = `${p.nome} · Bomboniere ${f.nome.toLowerCase()} · Graziella`;
   document.querySelector('meta[name=description]').content = `${p.nome}, ${p.materiale.toLowerCase()}: bomboniera per ${f.nome.toLowerCase()} confezionata a mano da Graziella a Bomporto, con bigliettino personalizzato.`;
   document.getElementById('crumb-festa').textContent = f.nome;
@@ -186,7 +186,7 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   document.getElementById('prezzo').innerHTML = `${p.prezzoPieno ? `<s class="fog" style="margin-right:8px">${euro(p.prezzoPieno)}</s>` : ''}${euro(p.prezzo)} <small>al pezzo</small>`;
   ['foto', 'th1', 'th2'].forEach(k => { document.getElementById(k).src = src; });
   /* Prodotti con più foto: una miniatura per ogni lato al posto di intero/dettaglio */
-  const VISTE = p.viste ? Array.from({ length: p.viste }, (_, k) => k ? `assets/prodotti/viste/${p.id}-${k}.webp` : src) : null;
+  const VISTE = p.viste ? Array.from({ length: p.viste }, (_, k) => k ? G.vista(p, k) : src) : null;
   if (VISTE) {
     const pollici = document.getElementById('thumbs');
     pollici.querySelectorAll('[data-vista="intero"], [data-vista="dettaglio"]').forEach(b => b.remove());

@@ -154,3 +154,7 @@ window.GRAZIELLA.linee = [
   { id: 'linea-a', nome: 'Linea ad A' },
   { id: 'colore', nome: 'Colore' }
 ];
+
+/* Foto di un prodotto. Su WordPress arrivano gli indirizzi dalla Libreria media (foto, fotoViste); qui, senza, i file della cartella assets */
+window.GRAZIELLA.foto = p => p.foto || `assets/prodotti/${p.id}.webp`;
+window.GRAZIELLA.vista = (p, k) => (p.fotoViste && p.fotoViste[k - 1]) || `assets/prodotti/viste/${p.id}-${k}.webp`;
