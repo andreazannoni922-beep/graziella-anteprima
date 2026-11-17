@@ -1,9 +1,22 @@
 /* Personalizzazione della bomboniera: scatola, testo del bigliettino, nastro e confetti.
    Enrico (05/11/2026) ha tolto carattere, carta, inchiostro, forma, simbolo e scritta sul nastro; (06/11) via anche la scatola in 3D.
-   I confetti sono solo alla mandorla o al cioccolato. */
+   I confetti sono alla mandorla, al cioccolato o misti (2 al cioccolato e 3 alla mandorla). Enrico (14/11/2026) ha aggiunto 12 colori di nastro. */
 (function () {
   const NASTRI = [
     { id: 'bianco', nome: 'Raso bianco', hex: '#F4F2EC' },
+    /* I 12 colori scritti da Enrico sul foglio del 14/11/2026 */
+    { id: 'avorio', nome: 'Avorio', hex: '#EFE5CF' },
+    { id: 'giallo', nome: 'Giallo', hex: '#F1CF45' },
+    { id: 'lilla', nome: 'Lilla', hex: '#C6A7D8' },
+    { id: 'rosso', nome: 'Rosso', hex: '#C2272D' },
+    { id: 'tiffany', nome: 'Tiffany', hex: '#81D8D0' },
+    { id: 'viola', nome: 'Viola', hex: '#6B3C8E' },
+    { id: 'arancio', nome: 'Arancio', hex: '#EA7A2A' },
+    { id: 'nero', nome: 'Nero', hex: '#1C1917' },
+    { id: 'avio', nome: 'Avio', hex: '#6E8DAE' },
+    { id: 'nocciola', nome: 'Nocciola', hex: '#A27A52' },
+    { id: 'rosa', nome: 'Rosa', hex: '#F2B9C6' },
+    { id: 'celeste', nome: 'Celeste', hex: '#A8D4EF' },
     { id: 'tortora', nome: 'Tortora', hex: '#B5A898' },
     { id: 'cipria', nome: 'Cipria', hex: '#DDB5AD' },
     { id: 'salvia', nome: 'Salvia', hex: '#9FAE95' },
@@ -17,7 +30,7 @@
     { id: 'avorio', nome: 'Avorio', foto: 'assets/img/scatola-avorio.webp' },
     { id: 'avana', nome: 'Ondulato avana', foto: 'assets/img/scatola-avana.webp', riga: 'scatola in ondulato avana' }
   ];
-  const CONFETTI = [{ id: 'mandorla', nome: 'Alla mandorla' }, { id: 'cioccolato', nome: 'Al cioccolato' }];
+  const CONFETTI = [{ id: 'mandorla', nome: 'Alla mandorla' }, { id: 'cioccolato', nome: 'Al cioccolato' }, { id: 'misti', nome: 'Misti: 2 cioccolato e 3 mandorla', riga: 'misti (2 al cioccolato e 3 alla mandorla)' }];
   const trova = (lista, id) => lista.find(x => x.id === id) || lista[0];
 
   const stato = { nomi: '', data: '', frase: '', nastro: 'bianco', scatola: 'bianca', confetti: 'mandorla' };
@@ -57,7 +70,7 @@
     const scatola = trova(SCATOLE, stato.scatola);
     parti.push(scatola.riga || `scatola ${scatola.nome.toLowerCase()}`);
     parti.push(`nastro ${trova(NASTRI, stato.nastro).nome.toLowerCase()}`);
-    parti.push(`confetti ${trova(CONFETTI, stato.confetti).nome.toLowerCase()}`);
+    { const c = trova(CONFETTI, stato.confetti); parti.push(`confetti ${c.riga || c.nome.toLowerCase()}`); }
     return parti.join(' · ');
   }
 
