@@ -302,7 +302,7 @@ button { background: none; border: 0; padding: 0; cursor: pointer; }
 }
 .card:hover .card__field img { transform: translateY(-5%) scale(1.03); }
 .card:hover .card__field::after { transform: scaleX(.8); opacity: .6; }
-.card__tag { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.card__tag { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 .card__add {
   position: absolute; left: 10px; right: 10px; bottom: 10px; z-index: 2; height: 42px;
   background: var(--nero); color: var(--paper); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
@@ -429,7 +429,8 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 .pagamenti span { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--hair); font-size: 12px; letter-spacing: .04em; color: var(--graphite); }
 
 /* Telefono: la riga delle voci entra tutta, il testo si adatta alla larghezza */
-@media (max-width: 760px) { .head__cats.label { font-size: clamp(10.5px, 3.05vw, 13px); } }
+@media (max-width: 760px) { .head__cats.label { font-size: clamp(12px, 3.1vw, 13px); } }
+@media (max-width: 400px) { .head__cats a { letter-spacing: .025em; } }
 
 /* Piede: le due porte dell'hero tornano come i due negozi veri (pannello foto del piede ORRIS, MotionSites), sotto colonne quiete su carta (Lemaire). Niente onda, niente scritta enorme. */
 .foot { position: relative; background: var(--paper); color: var(--ink); }
@@ -496,7 +497,7 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
 @media (hover: hover) and (pointer: fine) { .conto__menu a:hover { background: var(--mist); } }
 @media (min-width: 1100px) {
   .conto__btn { pointer-events: none; }
-  .conto__menu { position: static; display: grid; gap: 2px; min-width: 0; padding: 0; background: none; box-shadow: none; font-size: 11px; line-height: 1.25; }
+  .conto__menu { position: static; display: grid; gap: 2px; min-width: 0; padding: 0; background: none; box-shadow: none; font-size: 12px; line-height: 1.25; }
   .conto__menu a { min-height: 0; padding: 0; }
   @media (hover: hover) and (pointer: fine) { .conto__menu a:hover { background: none; text-decoration: underline; text-underline-offset: 3px; } }
 }
@@ -513,3 +514,24 @@ body.con-grana::after { content: ''; position: fixed; inset: -50%; z-index: 150;
   .head__left .burger > span:last-child { display: none; }
   .head__right { gap: 8px; }
 }
+
+/* ---------- Vetrina (vetrina.js): i lati del prodotto si aprono dalla linea centrale, come le pagine di 047R ---------- */
+.giro { position: absolute; inset: 0; background: var(--mist); pointer-events: none; }
+.card__field .giro { z-index: 0; }
+.card__lati { position: absolute; top: 15px; right: 14px; z-index: 2; display: flex; align-items: center; gap: 4px; opacity: 0; transform: translateY(-4px); transition: opacity .45s var(--ease), transform .45s var(--ease); pointer-events: none; }
+.card__field.is-giro .card__lati { opacity: 1; transform: none; }
+.card__lati i { display: block; height: 2px; width: max(6px, calc(28px - var(--d) * 9px)); background: var(--bruno, #3b2a20); opacity: calc(1 - var(--d) * .22); transition: width .7s var(--molla, var(--ease)), opacity .7s var(--molla, var(--ease)); }
+.card__lati i.on { opacity: 1; }
+
+/* Lente di vetro sulla foto del prodotto (Liquid Glass di HorizonX con dentro il dettaglio ingrandito) */
+.con-lente .gal__main { cursor: none; }
+.gal__main .gal__hint { z-index: 2; }
+.lente, .lente__ombra { position: absolute; z-index: 3; border-radius: 50%; opacity: 0; pointer-events: none; will-change: transform, opacity; }
+.lente__ombra { box-shadow: 0 18px 38px rgba(43, 30, 22, .26), 0 2px 7px rgba(43, 30, 22, .18); }
+.lente { overflow: hidden; background: var(--mist); }
+.lente__dentro { position: absolute; inset: 0; background: var(--mist); }
+.gal__main .lente img { position: absolute; left: 0; top: 0; bottom: auto; max-width: none; width: auto; height: auto; transform-origin: 0 0; mix-blend-mode: multiply; transition: none; }
+.lente__riflesso { position: absolute; inset: -10%; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,.38), rgba(255,255,255,0) 38%, rgba(255,255,255,0) 66%, rgba(255,255,255,.14)); }
+.lente__bordo { position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 1.5px 1.5px 0 -.5px rgba(255,255,255,.95), inset -1px -1px 0 -.5px rgba(255,255,255,.4), inset 0 0 0 1px rgba(255,255,255,.2), inset 0 0 18px rgba(43,30,22,.06); }
+/* Lente col dito: niente menu "salva immagine" né selezione mentre si tiene premuto */
+.con-lente-dito .gal__main, .con-lente-dito .gal__main img { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }

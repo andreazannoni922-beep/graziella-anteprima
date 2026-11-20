@@ -192,6 +192,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 .srv__tit { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(32px, 3.4vw, 52px); line-height: 1.02; letter-spacing: -.01em; }
 .srv__txt { color: var(--graphite); max-width: 40ch; font-size: clamp(16px, 1.25vw, 18px); }
 .srv-lista.is-sopra .srv:not(.is-su) { opacity: .32; }
+.srv-lista.is-scorre .srv:not(.is-su) { opacity: .42; }
 .palco { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
 .svela { position: absolute; top: 0; left: 0; width: 300px; height: 210px; opacity: 0; will-change: transform; }
 .svela__in, .svela__img { position: relative; width: 100%; height: 100%; overflow: hidden; }
@@ -213,6 +214,35 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 .chi__testo .h-xl + .body-l { margin-top: 32px; }
 .chi__testo .body-l + .body-l { margin-top: 18px; }
 .chi__testo .btn { margin-top: 36px; }
+/* Le persone: righe grandi; col mouse un pannello marrone si apre e sopra arriva la foto del loro reparto (Hover Placard di HorizonX) */
+.chi { position: relative; }
+.persone { list-style: none; margin: 36px 0 30px; padding: 0; border-top: 1px solid var(--hair); }
+.persona { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 20px 0 22px; border-bottom: 1px solid var(--hair); cursor: default; transition: padding .6s var(--ease); }
+.persona__nome { font-family: var(--font-titoli); font-weight: var(--peso-titoli); font-size: clamp(30px, 3.3vw, 48px); line-height: 1.05; letter-spacing: -.01em; color: var(--ink); transition: color .5s var(--ease); }
+.persona__nome .char { display: inline-block; }
+.persona__nome .parola { white-space: nowrap; }
+.persona__ruolo { font-size: 15.5px; color: var(--graphite); }
+.persona__foto { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .persone.is-sopra .persona:not(.is-su) .persona__nome { color: var(--fog); }
+  .persona.is-su { padding-left: 14px; }
+}
+.placca { position: absolute; top: 0; left: 0; z-index: 3; width: 290px; opacity: 0; pointer-events: none; will-change: transform; }
+.placca__fondo { position: absolute; inset: -12px; background: var(--bruno); }
+.placca__dentro { position: relative; overflow: hidden; }
+.placca__img { display: block; width: 100%; height: auto; }
+/* Sul telefono la riga che passa a metà schermo si accende: il pannello marrone si apre, la foto arriva sopra, il nome si riscrive */
+@media (max-width: 760px) {
+  .persona { grid-template-columns: minmax(0, 1fr) 96px; gap: 4px 20px; align-items: center; padding: 22px 0 24px; }
+  .persona__nome, .persona__ruolo { grid-column: 1; }
+  .persona__nome { align-self: end; }
+  .persona__ruolo { align-self: start; }
+  .persona__foto { display: block; position: relative; grid-column: 2; grid-row: 1 / span 2; width: 96px; }
+  .persona__fondo { position: absolute; inset: -7px; background: var(--bruno); }
+  .persona__dentro { position: relative; display: block; overflow: hidden; }
+  .persona__mini { display: block; width: 100%; height: auto; }
+  .persone.is-scorre .persona:not(.is-su) .persona__nome { color: var(--fog); }
+}
 .reel { position: relative; justify-self: center; display: block; width: min(400px, 100%); aspect-ratio: 9 / 16; border-radius: 26px; overflow: hidden; background: var(--bruno-scuro); color: var(--paper); box-shadow: 0 50px 80px -40px rgba(43, 31, 24, .55), 0 0 0 1px rgba(43, 31, 24, .08); will-change: transform; }
 .reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .reel::before, .reel::after { content: ''; position: absolute; left: 0; right: 0; z-index: 1; pointer-events: none; }
@@ -481,7 +511,12 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
     <div class="wrap chi__in">
       <div class="chi__testo">
         <h2 class="h-xl" id="t-chi" data-split>Chi siamo</h2>
-        <p class="body-l" data-fade>Il negozio di bomboniere l'ha aperto Graziella più di cinquant'anni fa insieme a William con la volontà di distinguersi per prodotti originali ed eleganti dedicati alle cerimonie. Oggi accanto a loro ci sono Enrico nel reparto bomboniere e Sara con Cinzia che si occupano dell'atelier.</p>
+        <p class="body-l" data-fade>Il negozio di bomboniere l'ha aperto Graziella più di cinquant'anni fa insieme a William, con la volontà di distinguersi per prodotti originali ed eleganti dedicati alle cerimonie.</p>
+        <ul class="persone" id="persone" aria-label="Le persone del negozio">
+          <li class="persona" data-img="assets/img/showroom-travi.webp"><span class="persona__nome">Graziella e William</span><span class="persona__ruolo">Hanno aperto il negozio, più di cinquant'anni fa</span><span class="persona__foto" aria-hidden="true"><span class="persona__fondo"></span><span class="persona__dentro"><img class="persona__mini" src="assets/img/showroom-travi.webp" alt="" width="960" height="1198" loading="lazy"></span></span></li>
+          <li class="persona" data-img="assets/img/vetrina-cristallo.webp"><span class="persona__nome">Enrico</span><span class="persona__ruolo">Il reparto bomboniere</span><span class="persona__foto" aria-hidden="true"><span class="persona__fondo"></span><span class="persona__dentro"><img class="persona__mini" src="assets/img/vetrina-cristallo.webp" alt="" width="960" height="1201" loading="lazy"></span></span></li>
+          <li class="persona" data-img="assets/img/mani-lacci.webp"><span class="persona__nome">Sara e Cinzia</span><span class="persona__ruolo">L'atelier Sposi &amp; Sposi</span><span class="persona__foto" aria-hidden="true"><span class="persona__fondo"></span><span class="persona__dentro"><img class="persona__mini" src="assets/img/mani-lacci.webp" alt="" width="1400" height="933" loading="lazy"></span></span></li>
+        </ul>
         <p class="body-l" data-fade>Quello che esce dal banco e dalla sartoria lo mostriamo su Instagram.</p>
         <a class="btn btn--line" href="https://www.instagram.com/centrosposigraziella/" target="_blank" rel="noopener" data-fade>Seguici su Instagram</a>
       </div>
@@ -560,6 +595,7 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
 <script src="assets/js/dati.js"></script>
 <script src="assets/js/recensioni.js"></script>
 <script src="assets/js/negozio.js"></script>
+<script src="assets/js/vetrina.js"></script>
 <script src="assets/js/sfilata.js"></script>
 <script>
 (function () {
@@ -822,7 +858,95 @@ html.in-apertura body::before { content: ''; position: fixed; inset: 0; z-index:
       });
     });
   }
+  /* Sul telefono il servizio che passa a metà schermo si accende e la sua foto entra a sipario; gli altri restano in secondo piano */
+  if (matchMedia('(max-width: 760px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const righe = document.getElementById('servizi-righe');
+    righe.classList.add('is-scorre');
+    righe.querySelectorAll('.srv').forEach(srv => {
+      const mini = srv.querySelector('.srv__mini');
+      srv._accendi = on => {
+        srv.classList.toggle('is-su', on);
+        if (on && mini) gsap.fromTo(mini, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: .7, ease: 'expo.out' });
+      };
+    });
+    const io = new IntersectionObserver(v => v.forEach(x => x.target._accendi(x.isIntersecting)), { rootMargin: '-57% 0px -42% 0px' });
+    righe.querySelectorAll('.srv').forEach(r => io.observe(r));
+  }
   gsap.from('.srv', { opacity: 0, y: 30, duration: 1, stagger: .08, ease: 'power3.out', clearProps: 'opacity,transform', scrollTrigger: { trigger: '#servizi-righe', start: 'top 88%', once: true } });
+
+  /* Chi siamo: Hover Placard di HorizonX. Sulla riga il pannello marrone si apre dal centro, la foto del reparto arriva sopra
+     un attimo dopo, il nome si riscrive lettera per lettera; il riquadro segue il mouse. Le foto restano intere e dritte. */
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches && window.SplitText) {
+    const palcoChi = document.getElementById('chi-siamo'), persone = document.getElementById('persone');
+    persone.querySelectorAll('.persona').forEach(riga => {
+      const placca = document.createElement('div');
+      placca.className = 'placca'; placca.setAttribute('aria-hidden', 'true');
+      placca.innerHTML = `<div class="placca__fondo"></div><div class="placca__dentro"><img class="placca__img" alt="" src="${riga.dataset.img}"></div>`;
+      palcoChi.append(placca);
+      const fondo = placca.children[0], dentro = placca.children[1], img = dentro.firstChild;
+      const lettere = SplitText.create(riga.querySelector('.persona__nome'), { type: 'words, chars', wordsClass: 'parola', charsClass: 'char' }).chars;
+      const pos = { x: 0, y: 0 }, mira = { x: 0, y: 0 };
+      const segui = e => {
+        const b = palcoChi.getBoundingClientRect();
+        mira.x = gsap.utils.clamp(0, b.width - placca.offsetWidth, e.clientX - b.left + 28);
+        mira.y = gsap.utils.clamp(0, b.height - placca.offsetHeight, e.clientY - b.top - placca.offsetHeight * .5);
+      };
+      const muovi = () => { pos.x += (mira.x - pos.x) * .16; pos.y += (mira.y - pos.y) * .16; gsap.set(placca, { x: pos.x, y: pos.y }); };
+      let tl = null;
+      riga.addEventListener('mouseenter', e => {
+        segui(e); pos.x = mira.x; pos.y = mira.y; muovi();
+        gsap.ticker.add(muovi);
+        persone.classList.add('is-sopra'); riga.classList.add('is-su');
+        tl && tl.kill(); gsap.killTweensOf([placca, fondo, dentro, img]);
+        gsap.set(placca, { opacity: 1, zIndex: 3 });
+        tl = gsap.timeline()
+          .fromTo(fondo, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, 0)
+          .fromTo(dentro, { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, .15)
+          .fromTo(img, { scale: 1.5 }, { scale: 1, duration: .8, ease: 'expo.out' }, .15);
+        gsap.killTweensOf(lettere);
+        gsap.fromTo(lettere, { opacity: 0, yPercent: 50 }, { opacity: 1, yPercent: 0, duration: .35, ease: 'expo.out', stagger: .025 });
+      });
+      riga.addEventListener('mousemove', segui);
+      riga.addEventListener('mouseleave', () => {
+        persone.classList.remove('is-sopra'); riga.classList.remove('is-su');
+        tl && tl.kill();
+        gsap.set(placca, { zIndex: 2 });
+        tl = gsap.timeline({ onComplete: () => { gsap.set(placca, { opacity: 0 }); gsap.ticker.remove(muovi); } })
+          .to([fondo, dentro], { opacity: 0, scale: .9, duration: .22, ease: 'expo.out' }, 0);
+      });
+    });
+  }
+  /* Sul telefono lo stesso Hover Placard parte scorrendo: la riga che attraversa la metà dello schermo si accende */
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches && window.SplitText && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const persone = document.getElementById('persone');
+    persone.classList.add('is-scorre');
+    persone.querySelectorAll('.persona').forEach(riga => {
+      const fondo = riga.querySelector('.persona__fondo'), dentro = riga.querySelector('.persona__dentro'), img = riga.querySelector('.persona__mini');
+      const lettere = SplitText.create(riga.querySelector('.persona__nome'), { type: 'words, chars', wordsClass: 'parola', charsClass: 'char' }).chars;
+      gsap.set([fondo, dentro], { opacity: 0, scale: 0 });
+      let tl = null;
+      const su = () => {
+        riga.classList.add('is-su');
+        tl && tl.kill();
+        tl = gsap.timeline()
+          .to(fondo, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, 0)
+          .to(dentro, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, .15)
+          .fromTo(img, { scale: 1.5 }, { scale: 1, duration: .8, ease: 'expo.out' }, .15);
+        gsap.killTweensOf(lettere);
+        gsap.fromTo(lettere, { opacity: 0, yPercent: 50 }, { opacity: 1, yPercent: 0, duration: .35, ease: 'expo.out', stagger: .025 });
+      };
+      const giu = () => {
+        riga.classList.remove('is-su');
+        tl && tl.kill();
+        tl = gsap.timeline().to([fondo, dentro], { opacity: 0, scale: .9, duration: .3, ease: 'expo.out' }, 0);
+      };
+      riga._accendi = on => on ? su() : giu();
+    });
+    /* Una linea sottile poco sotto la metà dello schermo: la riga che la attraversa è quella accesa */
+    const io = new IntersectionObserver(v => v.forEach(x => x.target._accendi(x.isIntersecting)), { rootMargin: '-57% 0px -42% 0px' });
+    persone.querySelectorAll('.persona').forEach(r => io.observe(r));
+  }
+  gsap.from('.persona', { opacity: 0, y: 26, duration: 1, stagger: .09, ease: 'power3.out', clearProps: 'opacity,transform', scrollTrigger: { trigger: '#persone', start: 'top 88%', once: true } });
 
   /* Recensioni: entrano come le colonne degli eventi */
   gsap.from('.rec-voce', { clipPath: 'inset(100% 0 0 0)', duration: 1.2, stagger: .07, ease: 'expo.out', clearProps: 'clipPath', scrollTrigger: { trigger: '#rec-fila', start: 'top 82%', once: true } });

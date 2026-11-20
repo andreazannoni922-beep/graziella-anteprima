@@ -170,6 +170,7 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   })();
 </script>
 <script src="assets/js/negozio.js"></script>
+<script src="assets/js/vetrina.js"></script>
 <script>addEventListener('hashchange', () => location.reload());</script>
 <script>
 (function () {
@@ -245,13 +246,13 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
 
   /* Galleria: intero / dettaglio, ingrandimento che segue il mouse */
   const main = document.getElementById('principale'), foto = document.getElementById('foto');
-  main.addEventListener('click', () => { if (trascinato) { trascinato = false; return; } main.classList.toggle('is-zoom'); });
+  main.addEventListener('click', () => { if (trascinato) { trascinato = false; return; } if (document.documentElement.classList.contains('con-lente')) return; main.classList.toggle('is-zoom'); });
   /* Trascinando la foto in orizzontale il prodotto passa da un lato all'altro, come girarlo in mano */
   if (VISTE) {
     let x0 = null, passo = 0;
     main.addEventListener('pointerdown', e => { x0 = e.clientX; passo = 0; trascinato = false; });
     main.addEventListener('pointermove', e => {
-      if (x0 === null) return;
+      if (x0 === null || main.classList.contains('is-dito')) return;
       const d = Math.round((e.clientX - x0) / 70);
       if (d !== passo) { trascinato = true; main.classList.remove('is-zoom'); vista('v' + ((lato + (d - passo) % VISTE.length + VISTE.length) % VISTE.length)); passo = d; }
     });
@@ -267,7 +268,11 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   let lato = 0, trascinato = false;
   function vista(v) {
     document.querySelectorAll('#thumbs button').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.vista === v)));
-    if (VISTE && /^v\d+$/.test(v)) { lato = +v.slice(1); foto.src = VISTE[lato]; }
+    if (VISTE && /^v\d+$/.test(v)) {
+      const nuovo = +v.slice(1);
+      /* Il lato nuovo si apre dalla linea centrale sopra quello di prima (047R) */
+      if (nuovo !== lato) { lato = nuovo; if (window.Vetrina) Vetrina.apri(main, VISTE[lato]); else foto.src = VISTE[lato]; }
+    }
     foto.style.transformOrigin = '50% 40%';
     main.classList.toggle('is-zoom', v === 'dettaglio');
   }
@@ -282,7 +287,6 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
   Negozio.fila(rail, { voci: track, prima: document.getElementById('rail-prima'), dopo: document.getElementById('rail-dopo'), barra: document.getElementById('rail-barra-m') });
 
   if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.from('#principale', { clipPath: 'inset(10% 10% 10% 10%)', duration: 1.3, ease: 'power4.out' });
     gsap.from(foto, { opacity: 0, duration: 1.1, ease: 'power2.out', delay: .25 });
     gsap.from('.buy > *:not(h1)', { y: 20, opacity: 0, duration: .9, stagger: .05, ease: 'power3.out', delay: .25 });
   }

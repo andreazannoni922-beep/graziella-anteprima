@@ -67,6 +67,13 @@
   const perFesta = id => id === 'offerte' ? G.prodotti.filter(p => p.prezzoPieno) : G.prodotti.filter(p => p.feste.includes(id));
   const scelteDi = id => { const l = perFesta(id), piene = l.filter(p => id === 'offerte' || !p.prezzoPieno); return (piene.length >= 3 ? piene : l).slice(0, 3); };
   const testata = document.getElementById('testata');
+  /* Voci del menu account: sul sito vero dipendono da chi è entrato (G.wp.conto lo stampa WordPress) */
+  function vociConto() {
+    const c = G.wp && G.wp.conto;
+    if (c && c.dentro) return `<a href="${c.account}">${c.nome ? 'Ciao, ' + c.nome.replace(/[<>&"]/g, '') : 'Il mio account'}</a><a href="${c.esci}">Esci</a>`;
+    if (c) return '<a href="account.html">Accedi</a><a href="account.html#registrati">Registrati</a>';
+    return '<a href="account.html">Il mio account</a><a href="account.html#registrati">Registrati</a>';
+  }
   testata.outerHTML = `
     <div class="bar label"><p><span class="bar__lungo">Confezionate a mano nel nostro negozio a Bomporto · </span>Consegna gratuita oltre ${SOGLIA_GRATIS} €</p></div>
     <header class="head" id="head">
@@ -82,7 +89,7 @@
           <a class="label hide-s" href="abiti.html#prova">059 819315</a>
           <div class="conto" id="conto">
             <button class="conto__btn" type="button" id="conto-btn" aria-label="Il mio account e registrazione" aria-expanded="false" aria-controls="conto-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4.5 4-6.5 8-6.5s7 2 8 6.5"/></svg></button>
-            <div class="conto__menu label" id="conto-menu"><a href="account.html">Il mio account</a><a href="account.html#registrati">Registrati</a></div>
+            <div class="conto__menu label" id="conto-menu">${vociConto()}</div>
           </div>
           <button class="label bag-btn" id="apri-borsa" aria-controls="borsa">Carrello <span>(<span class="bag-btn__n" id="n-borsa">0</span>)</span></button>
         </div>
@@ -458,6 +465,8 @@
     righe.querySelectorAll('[data-togli]').forEach(b => b.addEventListener('click', () => { borsa.splice(+b.dataset.togli, 1); salva(); disegnaBorsa(); }));
   }
   disegnaBorsa();
+  /* index.html#carrello apre il carrello (ci arriva chi torna indietro dalla cassa) */
+  if (location.hash === '#carrello') setTimeout(() => toggleBorsa(true), 450);
 
   /* La copia dell'oggetto vola dalla card al contatore della borsa. */
   function volaInBorsa(img) {
@@ -768,7 +777,7 @@
     let attuale = '';
     document.addEventListener('pointermove', e => {
       muoviX(e.clientX); muoviY(e.clientY);
-      const trovata = ETICHETTE.find(([sel]) => e.target.closest(sel) && !e.target.closest('button, .btn, input, select'));
+      const trovata = ETICHETTE.find(([sel]) => e.target.closest(sel) && !e.target.closest('button, .btn, input, select') && !(sel === '.gal__main' && document.documentElement.classList.contains('con-lente')));
       const nuova = trovata ? trovata[1] : '';
       if (nuova === attuale) return;
       attuale = nuova;
