@@ -61,6 +61,10 @@
 .pers__seg { display: flex; flex-wrap: wrap; gap: 6px; }
 .pers__seg button { height: 40px; padding: 0 16px; white-space: nowrap; box-shadow: inset 0 0 0 1px var(--hair); font-size: 15.5px; transition: background .3s, color .3s; }
 .pers__seg button[aria-checked="true"] { background: var(--nero); color: var(--paper); box-shadow: none; }
+.pers__allergeni { margin: 10px 0 0; color: var(--graphite); font-size: 14.5px; line-height: 1.5; max-width: 52ch; }
+.pers__allergeni b { color: var(--ink); font-weight: 600; }
+.confetti-info h3 { margin: 0 0 6px; font-size: 15.5px; font-weight: 600; color: var(--ink); }
+.confetti-info p + h3 { margin-top: 4px; }
 .riepilogo { display: flex; align-items: center; gap: 12px; margin-top: 30px; }
 .riepilogo .btn { flex: 1; height: 52px; white-space: nowrap; }
 @media (max-width: 420px) { .riepilogo .btn { padding: 0 16px; letter-spacing: .1em; } }
@@ -135,6 +139,13 @@ details p { margin: 0 0 16px; color: var(--graphite); font-size: 15.5px; max-wid
 
         <details><summary class="label">Materiale e misure</summary><p id="det-mat"></p></details>
         <details><summary class="label">Come la confezioniamo</summary><p>Al banco del negozio, a mano: oggetto, confetti, nastro e bigliettino col bollino.</p></details>
+        <details id="confetti-info" class="confetti-info"><summary class="label">Confetti: ingredienti e allergeni</summary>
+          <h3>Confetti alla mandorla · Crispo</h3>
+          <p>Ingredienti: zucchero; <b>MANDORLA</b> (35%); amido di riso e di mais; maltodestrina; gelificanti: gomma arabica; agente di rivestimento: cera carnauba; aromi: vanillina. <b>Allergeni: contiene frutta a guscio.</b> Può contenere tracce di latte, arachidi, soia e loro derivati. Senza glutine.</p>
+          <h3>Confetti al cioccolato fondente a cuore · Crispo Amorini</h3>
+          <p>Ingredienti: zucchero; cioccolato fondente 38% (zucchero, massa di cacao, burro di cacao, emulsionante: lecitina di <b>SOIA</b>, aroma: vanillina; cacao min. 45%); amido di riso e di mais; agenti gelificanti: maltodestrina, gomma arabica; colorante: carbonato di calcio; agente di rivestimento: cera carnauba; aroma: vanillina. <b>Allergeni: contiene soia.</b> Può contenere tracce di glutine, latte, frutta a guscio, arachidi e loro derivati.</p>
+          <p>Conservare in luogo fresco e asciutto, lontano da fonti di calore e dalla luce diretta del sole. Lotto e termine minimo di conservazione sono indicati sulla confezione dei confetti. Prodotti da Crispo Srl, Via Pianillo 138, 80047 San Giuseppe Vesuviano (NA). Valori nutrizionali su richiesta in negozio.</p>
+        </details>
         <details><summary class="label">Ritiro e spedizione</summary><p>Ritiro gratuito nel negozio di Bomporto (MO) negli orari di apertura. Spedizione in tutta Italia, gratuita per ordini oltre 180 €. Paghi con carta, PayPal o bonifico. <a class="link" href="spedizioni.html">Spedizione e pagamento</a></p></details>
       </div>
     </div>

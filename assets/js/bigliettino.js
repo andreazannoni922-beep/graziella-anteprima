@@ -30,7 +30,12 @@
     { id: 'avorio', nome: 'Avorio', foto: 'assets/img/scatola-avorio.webp' },
     { id: 'avana', nome: 'Ondulato avana', foto: 'assets/img/scatola-avana.webp', riga: 'scatola in ondulato avana' }
   ];
-  const CONFETTI = [{ id: 'mandorla', nome: 'Alla mandorla' }, { id: 'cioccolato', nome: 'Al cioccolato' }, { id: 'misti', nome: 'Misti: 2 cioccolato e 3 mandorla', riga: 'misti (2 al cioccolato e 3 alla mandorla)' }];
+  /* Allergeni dalle etichette Crispo fotografate in negozio il 21/11/2026 (21_oggi/etichette-confetti/confetti-ingredienti.md) */
+  const CONFETTI = [
+    { id: 'mandorla', nome: 'Alla mandorla', allergeni: '<b>Contiene frutta a guscio (mandorla).</b> Può contenere tracce di latte, arachidi e soia. Senza glutine.' },
+    { id: 'cioccolato', nome: 'Al cioccolato', allergeni: '<b>Contiene soia.</b> Può contenere tracce di glutine, latte, frutta a guscio e arachidi.' },
+    { id: 'misti', nome: 'Misti: 2 cioccolato e 3 mandorla', riga: 'misti (2 al cioccolato e 3 alla mandorla)', allergeni: '<b>Contiene frutta a guscio (mandorla) e soia.</b> Può contenere tracce di glutine, latte e arachidi.' }
+  ];
   const trova = (lista, id) => lista.find(x => x.id === id) || lista[0];
 
   const stato = { nomi: '', data: '', frase: '', nastro: 'bianco', scatola: 'bianca', confetti: 'mandorla' };
@@ -48,13 +53,21 @@
       <div class="pers__grp"><div class="label pers__lab"><span>Nastro</span><span class="fog" data-nome="nastro"></span></div>
         <div class="pers__swatch" role="radiogroup" aria-label="Nastro">${NASTRI.map(x => `<button type="button" role="radio" data-k="nastro" data-v="${x.id}" aria-label="${x.nome}" style="--c:${x.hex}"></button>`).join('')}</div></div>
       <div class="pers__grp"><div class="label pers__lab"><span>Confetti</span></div>
-        <div class="pers__seg" role="radiogroup" aria-label="Confetti">${CONFETTI.map(x => `<button type="button" role="radio" data-k="confetti" data-v="${x.id}">${x.nome}</button>`).join('')}</div></div>`;
+        <div class="pers__seg" role="radiogroup" aria-label="Confetti">${CONFETTI.map(x => `<button type="button" role="radio" data-k="confetti" data-v="${x.id}">${x.nome}</button>`).join('')}</div>
+        <p class="pers__allergeni" aria-live="polite"><span data-nome="allergeni"></span> <a class="link" href="#confetti-info" data-apri="confetti-info">Ingredienti</a></p></div>`;
     function segna() {
       contenitore.querySelectorAll('[data-k]').forEach(b => b.setAttribute('aria-checked', String(stato[b.dataset.k] === b.dataset.v)));
       contenitore.querySelector('[data-nome="nastro"]').textContent = trova(NASTRI, stato.nastro).nome;
       contenitore.querySelector('[data-nome="scatola"]').textContent = trova(SCATOLE, stato.scatola).nome;
+      contenitore.querySelector('[data-nome="allergeni"]').innerHTML = trova(CONFETTI, stato.confetti).allergeni;
     }
     contenitore.addEventListener('click', e => {
+      const a = e.target.closest('[data-apri]');
+      if (a) {
+        const d = document.getElementById(a.dataset.apri);
+        if (d) { e.preventDefault(); d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        return;
+      }
       const b = e.target.closest('[data-k]'); if (!b) return;
       stato[b.dataset.k] = b.dataset.v; segna();
     });
