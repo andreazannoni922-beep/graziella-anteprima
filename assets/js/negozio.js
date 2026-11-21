@@ -591,7 +591,7 @@
           <form class="foot__news" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie'"><input type="email" placeholder="La tua email" aria-label="Email" required><button class="label">Iscriviti</button></form>
         </div>
       </div>
-      <div class="wrap foot__bottom label"><span>© Graziella Centro Sposi</span>${PAGAMENTI}<span>Anteprima del nuovo sito · novembre 2026</span><a class="foot__firma" href="mailto:andreazannoni922@gmail.com">Sito creato da Andrea Zannoni</a></div>
+      <div class="wrap foot__bottom label"><span>© Graziella di Mantovani Graziella &amp; C. S.A.S. · P.IVA 02852250360</span><span class="foot__legali"><a href="https://www.iubenda.com/privacy-policy/47718790" target="_blank" rel="noopener">Privacy</a> · <a href="https://www.iubenda.com/privacy-policy/47718790/cookie-policy" target="_blank" rel="noopener">Cookie</a> · <a href="https://www.iubenda.com/termini-e-condizioni/47718790" target="_blank" rel="noopener">Termini</a> · <a href="#" class="iubenda-cs-preferences-link">Preferenze cookie</a></span>${PAGAMENTI}<span>Anteprima del nuovo sito · novembre 2026</span><a class="foot__firma" href="mailto:andreazannoni922@gmail.com">Sito creato da Andrea Zannoni</a></div>
     </footer>`;
 
   const mainEl = document.querySelector('main');
